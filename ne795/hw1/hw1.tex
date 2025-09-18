@@ -1,0 +1,233 @@
+\documentclass{template}
+
+\title{NE 795 Assignment 1}
+\author{Kyle Hansen}
+\date{12 September 2025}
+
+\usepackage{cancel}
+
+\usepackage{empheq}
+\newcommand*\multbox[1]{\fbox{\hspace{0ex}#1\hspace{0ex}}}
+
+\begin{document}
+
+\maketitle
+
+\section{}
+
+What are conditions (assumptions) under which the Boltzmann equation is valid?
+
+The Boltzmann Equation assumes that:
+
+\begin{itemize}
+    \item The particles form a "rarefied gas"-- the characteristic distance the particle travels between collisions $l$ is $\gg d$, the characteristic size of the particle.
+    \item The integral of motion $\Gamma$ (which contains momentum $\vec{p}$) doesn't change between collisions, except continuously by the force $\vec{F}$.
+    \item Collisions occur instantaneously at a single point in space
+    \item Enough particles exist in the system to be accurately described by a distribution function (physical particles behave statistically, but large populations may be accurately represented by only their \textit{mean} behavior)
+\end{itemize}
+
+\section{} Show that entropy decreases, where entropy is given by:
+
+\begin{equation}
+    S(t) = \int_{V}\int_{V_p}d^3r\,d^3p\;f(\vec{r}, \vec{p}, t) \cdot \ln\left(\frac{e}{f(\vec{r}, \vec{p}, t)}\right)
+\end{equation}
+
+Expanding the logarithm,
+
+\begin{equation}
+    S(t) = \int_{V}\int_{V_p}d^3r\,d^3p\;f(\vec{r}, \vec{p}, t) \left[ \ln e-\ln\left( f\left(\vec{r}, \vec{p}, t\right) \right) \right]
+\end{equation}
+\begin{equation}
+     S(t) = \int_{V}\int_{V_p}d^3r\,d^3p\;f(\vec{r}, \vec{p}, t)  \ln e-\int_{V}\int_{V_p}d^3r\,d^3p\;f(\vec{r}, \vec{p}, t) \ln f
+\end{equation}
+
+The term on the right is the function $H(t)$ from Boltzmann's $H$-theorem. The derivative of entropy, then, is
+
+% prove h-theorem
+
+\begin{equation}\label{eq:ds-dt}
+    \frac{dS}{dt} =  \int_{V}d^3r\int_{V_p}d^3p\;\frac{df}{dt} - \frac{dH}{dt}
+\end{equation}
+
+The term on the right is always positive; $(-dH/dt) \geq 0$ per Boltzmann's $H$-theorem. The term on the left is equal to zero when the system is closed. This term can be expanded in terms fo the transport equation:
+
+\begin{equation}
+    \frac{df}{dt} = I_{coll} - \vec{v}\cdot\vec{\nabla}f - \vec{F}\cdot\vec{\nabla}_pf
+\end{equation}
+\begin{equation}
+   \iint dVdV_p \; \frac{df}{dt} = \iint dVdV_p \;I_{coll} - \iint dVdV_p \;\vec{v}\cdot\vec{\nabla}f -\iint dVdV_p \; \vec{F}\cdot\vec{\nabla}_pf
+\end{equation}
+
+Using Green's theorem,
+
+\begin{equation}
+    \iint dVdV_p \; \frac{df}{dt} = \iint dVdV_p \;I_{coll} - \oint dA\int dV_p \;\vec{v}\cdot\vec{n}f -\int dV \oint dA_p \; \vec{F}\cdot\vec{n}_pf
+\end{equation}
+
+with closed-system boundary conditions in both $\vec{p}$- and $\vec{r}$-space, the $\vec{n}f$ terms both equal zero. Expanding the collision integral,
+
+\begin{equation}\label{eq:integrated-collision}
+    \iint dVdV_p \; \frac{df}{dt} = \int dV\iiiint d^3p d^3p_1 d^3p^\prime d^3p^\prime_1 \; w(p^\prime p_i^\prime \rightarrow pp_i ) \left[f^\prime f^\prime_1 - ff_1 \right]
+\end{equation}
+
+Since $\int dV_p\;A(\vec{p})I_{coll}(\vec{p}) = \frac{1}{2}\int d^3p\iiint d^3p_1 d^3p^\prime d^3p_1^\prime (A(p) + A(p_1) - A(p^\prime) - A(p^\prime_1))w^\prime f^\prime f_1^\prime$ for any function $A$, \autoref{eq:integrated-collision} is equivalent to evaluating this expression with $A = 1$, and integrating over spatial volume. Since this expression then contains the term $(A(p) + A(p_1) - A(p^\prime) - A(p^\prime_1)) = (1+1-1-1) = 0$, the full expression evaluates to zero, and thus
+
+\begin{equation}\label{eq:zeroint}
+    \iint dVdV_p \; \frac{df}{dt} = 0
+\end{equation}
+
+Since, in the expression for $dS/dt$, the $df/dt$ term is zero (\autoref{eq:zeroint}), and the $-dH/dt$ term is always non-negative per Boltzmann's $H$-theorem,
+
+\begin{equation}
+    \frac{dS}{dt} =\left(  - \frac{dH}{dt} \right)\geq 0
+\end{equation}
+
+\begin{equation}
+    \boxed{\frac{dS}{dt} \geq 0}
+\end{equation}
+
+\section{}
+
+This system is described by a system of three equations, where for each equation, collisions with the less dense gases are neglected.
+
+For $c$-particles, since collisions with both other types of particles can be neglected and it is in thermodynamic equilibrium, the collision integral and time derivative both equal zero, and the distribution can be found with
+
+\begin{equation}
+    \boxed{\left[ \vec{v}\cdot\vec{\nabla} + \vec{F}\cdot\vec{\nabla}_p \right] n_c(\vec{r}, \vec{p}) = 0}
+\end{equation}
+
+which is a linear system. The distribution of $b$-particles can then be calculated using:
+
+\begin{equation}
+    \frac{dn_b}{dt} + \vec{v}\cdot\vec{\nabla}n_b + \vec{F}\cdot\vec{\nabla}_p n_b = \sum_{i=a,b,c} \iiint d^3p_i\, d^3p^\prime \, d^3p_i^\prime \; w_{b,i}(p^\prime p_i^\prime \rightarrow pp_i )\left[    n_b^\prime n_i^\prime - n_bn_i\right]
+\end{equation}
+
+Where the $i=a,b$ terms may be neglected since $n_an_b \ll n_bn_b\ll n_bn_c$. The equation is linear in $n_b$ and can be solved exactly given proper initial and boundary conditions:
+
+\begin{equation}\label{eq:b-particles}
+\boxed{    \frac{dn_b}{dt} + \vec{v}\cdot\vec{\nabla}n_b + \vec{F}\cdot\vec{\nabla}_p n_b = \iiint d^3p_c\, d^3p^\prime \, d^3p_c^\prime \; w_{b,c}(p^\prime p_c^\prime \rightarrow pp_c )\left[    n^\prime n_c^\prime - nn_c\right]}
+\end{equation}
+
+A similar assumption can be made for $n_a$: since $n_an_b \ll n_bn_b\ll n_bn_c$, it can be assumed $a$-$a$ collisions do not contribute significantly to all collisions, and may be ignored:
+
+\begin{equation}
+    \frac{dn_a}{dt} + \vec{v}\cdot\vec{\nabla}n_a + \vec{F}\cdot\vec{\nabla}_p n_a = \sum_{i=b,c} \iiint d^3p_i\, d^3p^\prime \, d^3p_i^\prime \; w_{a,i}(p^\prime p_i^\prime \rightarrow pp_i )\left[    n_a^\prime n_i^\prime - n_an_i\right]
+\end{equation}
+
+This equation is already linearized, but can be further simplified since $n_bn_b\ll n_bn_c$, yielding a similar equation to \autoref{eq:b-particles}:
+
+\begin{equation}\label{eq:a-particles}
+\boxed{    \frac{dn_a}{dt} + \vec{v}\cdot\vec{\nabla}n_a + \vec{F}\cdot\vec{\nabla}_p n_a =  \iiint d^3p_i\, d^3p^\prime \, d^3p_c^\prime \; w_{a,c}(p^\prime p_c^\prime \rightarrow pp_c )\left[    n_a^\prime n_c^\prime - n_an_c \right]}
+\end{equation}
+
+\section{}
+
+Using the definition $f(\vec{r}, \vec{p}, t) = f^{(0)}(\vec{p})\left(1 + \xi (\vec{r}, \vec{p}, t)\right)$ where $\norm{\xi} \ll 1$ and $f^{(0)}$ is the equilibrium solution for the system, such that:
+
+\begin{equation}\label{eq:equilibrium-definition}
+    \frac{df^{(0)}}{dt} = 0 = I_{coll}(\vec{p}) - \vec{v}\cdot\vec{\nabla}f^{(0)} - \vec{F}\cdot\vec{\nabla}_p f^{(0)}
+\end{equation}
+
+The equilibrium solution $f^{(0)}$ can be a function of both space and motion $f^{(0)}(\vec{r}, \vec{p})$, but the $\vec{r}$ dependence can be suppressed here without loss of generality.
+
+Another property of the equilibrium solution, found using Boltzmann's $H$-theorem, is that
+
+\begin{equation}\label{eq:equlibrium-scattering-property}
+    \frac{f^{(0)\prime} f^{(0)\prime}_1}{f^{(0)} f^{(0)}_1} = 1, \quad\text{or} \quad f^{(0)\prime} f^{(0)\prime}_1 = f^{(0)} f^{(0)}_1
+\end{equation}
+
+
+The equation for $\xi$ can be found first by evaluating the standard BTE using the new definition of $f$:
+
+\begin{multline}
+       \left(  \frac{df^{(0)}}{dt}   + \vec{v}\cdot\vec{\nabla} f^{(0)}(\vec{p})     + \vec{F}\cdot\vec{\nabla}  f^{(0)}(\vec{p})     \right)+\\
+    \left(  \frac{d(f^{(0)}\xi)}{dt}   +   \vec{v}\cdot\vec{\nabla} \left(f^{(0)} \xi(\vec{r}, \vec{p}, t) \right)   + \vec{F}\cdot\vec{\nabla}  \left(f^{(0)} \xi(\vec{r}, \vec{p}, t) \right)    \right) = \\
+    \iiint  d^3p_1\, d^3p^\prime \, d^3p_1^\prime \; w(p^\prime p_1^\prime \rightarrow pp_1 ) \left[\left(    f^{(0)\prime}(1+\xi^\prime) f^{(0)\prime}_1(1+\xi^\prime_1)\right)   -   \left( f^{(0)}(1+\xi ) f^{(0)}_1(1+\xi_1)\right)\right]
+\end{multline}
+
+\begin{multline}
+       \left( \cancel{ \frac{df^{(0)}}{dt}   +  \vec{v}\cdot\vec{\nabla} f^{(0)}(\vec{p})     + \vec{F}\cdot\vec{\nabla}  f^{(0)}(\vec{p})  }   \right)+\\
+    \left(  \frac{d(f^{(0)}\xi)}{dt}   +   \vec{v}\cdot\vec{\nabla} \left(f^{(0)} \xi(\vec{r}, \vec{p}, t) \right)   + \vec{F}\cdot\vec{\nabla}  \left(f^{(0)} \xi(\vec{r}, \vec{p}, t) \right)    \right) = \\
+    \iiint  d^3p_1\, d^3p^\prime \, d^3p_1^\prime \; w(p^\prime p_1^\prime \rightarrow pp_1 ) \left[\left(    f^{(0)\prime}f^{(0)\prime}_1(1+\xi^\prime + \xi^\prime_1 + \cancel{\xi^\prime\xi^\prime_1}) \right) \right.- \\
+    \left. \left( f^{(0)}f^{(0)}_1(1+\xi + \xi_1 + \cancel{\xi\xi_1})\right)\right]
+\end{multline}
+
+Where the transport operator on $f^{(0)}$ is equal to zero per the definition of equilibrium in \autoref{eq:equilibrium-definition}. The second-order $\xi$ terms are neglected, since $\norm{\xi\xi}\ll\norm{\xi}\ll1$. The equation can be rewritten by expanding the differential terms on the L.H.S, and using the equilibrium solution in \autoref{eq:equlibrium-scattering-property}:
+
+\begin{multline}
+      \cancel{ \xi(\vec{r}, \vec{p}, t)\left(  \frac{df^{(0)}}{dt}   +   \vec{v}\cdot\vec{\nabla} f^{(0)}(\vec{p})     + \vec{F}\cdot\vec{\nabla}  f^{(0)}(\vec{p})     \right)}+
+        f^{(0)}(\vec{p})\left(  \frac{d\xi}{dt}   +   \vec{v}\cdot\vec{\nabla} \xi     + \vec{F}\cdot\vec{\nabla}  \xi     \right) = \\
+    \iiint  d^3p_1\, d^3p^\prime \, d^3p_1^\prime \; w(p^\prime p_1^\prime \rightarrow pp_1 ) \left[\left(    f^{(0)}f^{(0)}_1(\xi^\prime + \xi^\prime_1 ) \right)   -   \left( f^{(0)}f^{(0)}_1(\xi + \xi_1 )\right)\right] + \\
+    \cancel{\iiint  d^3p_1\, d^3p^\prime \, d^3p_1^\prime \; w(p^\prime p_1^\prime \rightarrow pp_1 ) \left[\left(    f^{(0)}f^{(0)}_1(1 ) \right)   -   \left( f^{(0)}f^{(0)}_1(1)\right)\right]}
+\end{multline}
+
+Dividing both sides by $f^{(0)}$ yields the linearized equation:
+
+\begin{equation}
+\boxed{\left[\frac{d}{dt}   +   \vec{v}\cdot\vec{\nabla}   + \vec{F}\cdot\vec{\nabla}  \right] \xi(\vec{r}, \vec{p}, t) = \iiint  d^3p_1\, d^3p^\prime \, d^3p_1^\prime \, w(p^\prime p_1^\prime \rightarrow pp_1 )\; f^{(0)} \left[\xi^\prime + \xi^\prime_1 -\xi - \xi_1 \right]}   
+\end{equation}
+
+
+\section{}
+
+Since the Boltzmann equation is given by
+
+\begin{equation}
+    \frac{df}{dt} + \vec{v}\cdot\vec{\nabla}f + \vec{F}\cdot\vec{\nabla}_p f = I_{coll}(\vec{p})
+\end{equation}
+\begin{equation}
+    I_{coll}(\vec{r}, \vec{p},t) = \iiint d^3p_1\, d^3p^\prime \, d^3p_1^\prime \; w(p^\prime p_1^\prime \rightarrow pp_1 ) \left[ f^\prime f_1^\prime -  f f_1  \right]
+\end{equation}
+
+
+In the equilibrium perturbation definition $f^{(0)}(\vec{p}) +\eta(\vec{r}, \vec{p}, t)$ the LTE solution $f^{(0)}(\vec{p})$ is found by the solution in \autoref{eq:equilibrium-definition} and has the property shown in \autoref{eq:equlibrium-scattering-property}. $f^{(0)}$ can be a function of both space and motion $f^{(0)}(\vec{r}, \vec{p})$, but the $\vec{r}$ dependence can be suppressed here without loss of generality.
+
+The BTE can be evaluated using the definition of $\eta$:
+
+\begin{multline}
+    \left(\cancel{\frac{df^{(0)}}{dt}} + \vec{v}\cdot\vec{\nabla}f^{(0)} + \vec{F}\cdot\vec{\nabla}_p f^{(0)}\right) + \left(\frac{d\eta}{dt} + \vec{v}\cdot\vec{\nabla}\eta + \vec{F}\cdot\vec{\nabla}_p \eta \right)= I_{coll}(\vec{r}, \vec{p},t) \\ 
+    = \iiint d^3p_1\, d^3p^\prime \, d^3p_1^\prime \; w(p^\prime p_1^\prime \rightarrow pp_1 ) \left[ (f^{(0)\prime} +\eta^\prime)(f^{(0)\prime}_1 +\eta_1^\prime) -  (f^{(0)} +\eta)(f^{(0)}_1   +\eta_1)  \right]
+\end{multline}
+
+Evaluating the multiplication gives
+
+\begin{multline}
+    \left( \vec{v}\cdot\vec{\nabla}f^{(0)} + \vec{F}\cdot\vec{\nabla}_p f^{(0)}\right) + \left(\frac{d\eta}{dt} + \vec{v}\cdot\vec{\nabla}\eta + \vec{F}\cdot\vec{\nabla}_p \eta \right) \\
+    = \iiint d^3p_1\, d^3p^\prime \, d^3p_1^\prime \; w(p^\prime p_1^\prime \rightarrow pp_1 ) \left[ 
+    \left( f^{(0)\prime}f^{(0)\prime}_1 + f^{(0)\prime}\eta_1^\prime  +  f^{(0)\prime}_1 \eta^\prime+ \cancel{\eta^\prime \eta_1^\prime} \right)\right.\\
+    - \left.\left(   f^{(0)}f^{(0)}_1 + f^{(0)}\eta_1  +  f^{(0)}_1 \eta+ \cancel{\eta \eta_1}  \right)\right]\\
+\end{multline}
+Where the second-order $\eta$ terms may be neglected since $\norm{\eta\eta} \ll \norm{f^{(0)}\eta}$. The $ff$ terms in the collision integral can be separated and canceled with the transport operator, by the definition of equilibrium (\autoref{eq:equilibrium-definition}):
+
+
+
+\begin{empheq}[box=\multbox]{multline}\label{eq:un-simplified}
+  \left(\frac{d\eta}{dt} + \vec{v}\cdot\vec{\nabla}\eta + \vec{F}\cdot\vec{\nabla}_p \eta \right)
+    =\\
+    \iiint d^3p_1\, d^3p^\prime \, d^3p_1^\prime \, w(p^\prime p_1^\prime \rightarrow pp_1 ) \left[ 
+       \left(f^{(0)\prime}\eta_1^\prime \right) + \left( f^{(0)\prime}_1 \eta^\prime \right)  -  \left(  f^{(0)}\eta_1  \right) + \left( f^{(0)}_1 \eta \right) \right]
+\end{empheq}
+
+
+
+
+
+To interpret physically, $f$-$f$ interactions are not considered since a collision with two equilibrium particles produces two more equilibrium particles (\autoref{eq:equlibrium-scattering-property}), and $\eta$-$\eta$ interactions are not considered since they happen far less frequently. The four terms in the collision integral, then, are:
+
+
+\textbf{Sources }(positive terms):
+
+\begin{itemize}
+    \item Within-species scattering: an $\eta$-particle of momentum $\vec{p}^\prime$ scatters to momentum $\vec{p}$ after colliding with an $f$-particle
+    \item Production: an $f$-particle is perturbed from equilibrium, producing an $\eta$-particle, when a non-equilibrium particle ($\eta_1$) collides with it
+\end{itemize}
+
+\textbf{Losses} (negative terms):
+
+\begin{itemize}
+    \item Within-species scattering: an $\eta$-particle of momentum $\vec{p}$ transfers to momentum $\vec{p}^\prime$ in a collision with an $f$-particle
+    \item "Capture": an $\eta$-particle becomes an $f$-particle (also producing a secondary $\eta$-particle in this interaction)
+\end{itemize}
+
+
+\end{document}
