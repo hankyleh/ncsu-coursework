@@ -1,0 +1,5 @@
+# latex auxiliary files
+*.log
+*.out
+_minted/
+*.aux
