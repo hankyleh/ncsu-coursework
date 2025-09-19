@@ -45,6 +45,7 @@
 \newcommand*{\defeq}{\stackrel{\text{def}}{=}}
 \newcommand{\norm}[1]{\left\| {#1} \right\|}
 \newcommand{\ip}[2]{\left\langle{#1}, {#2}\right\rangle}
+\newcommand{\e}{\text{e}}
 % \renewcommand{\vec}[1]{{\mathchoice
 %                      {\mbox{\boldmath$\displaystyle{#1}$}}
 %                      {\mbox{\boldmath$\textstyle{#1}$}}

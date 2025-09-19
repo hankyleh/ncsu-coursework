@@ -1,0 +1,64 @@
+\documentclass{template}
+\title{NE 795 Assignment 1}
+\author{Kyle Hansen}
+\date{26 September 2025}
+
+\begin{document}
+\maketitle
+
+\section{Plasma Conditions}
+
+\subsection{Conditions}
+
+List the three conditions that describe the plasma state.
+
+\subsection{}
+
+Evaluate these conditions for the following systems given the electron density ($n_\e$),
+electron temperature ($T_\e$) and plasma-neutral collision time ($\tau$):
+
+\begin{itemize}
+    \item The ionosphere ($n_\e = 1\cdot 10^{12}\text{ m}^{-3}, T_\e = 0.1\text{ eV}, \tau = 1\cdot 10^{-5}\text{ s}$)
+    \item A candle flame ($n_\e = 1\cdot 10^{14}\text{ m}^{-3}, T_\e = 0.1\text{ eV}, \tau = 1\cdot 10^{-10}\text{ s}$)
+\end{itemize}
+
+Where
+\[
+\sqrt{\frac{\e^2}{\epsilon_0 m_\e}} = 56.41 \text{ m}^{3/2}\text{s}^-1
+\]
+
+\[
+\sqrt{\frac{\epsilon_0}{\e^2}} = 7433.94\text{ eV}^{-1/2}\text{m}^{-1/2}
+\]
+
+with elementary charge ($e$) $1.602\cdot10^{-19}$ C, electron mass (me) $9.109\cdot10^{-31}$ kg and vacuum permittivity ($\epsilon_0$) $8.854 \cdot 10^{-12}$ Fm-1
+
+\subsection{}
+
+Conclude for both systems if they are a plasma (or not) and provide a reasoning for your conclusion.
+
+\section{Debye Length}
+
+Consider two infinite, parallel plates located at x = -d and x = d. Both plates are kept at a potential of $\Phi$ = 0V. The space between the plates is uniformly filled with a gas at density N of particles with charge q (note this is not a plasma, all the particles have the same charge).
+
+\subsection{}
+
+Using Poisson's equation, show that the potential distribution between the plates is given by the equation:
+
+\[
+    \Phi(x) = \frac{Nq}{2\epsilon_0}(d^2 - x^2)
+\]
+
+
+\subsection{}
+
+The Debye length $\lambda_D$ describes the scale length at which the balance between electrostatic potential energy and thermal kinetic energy is established in a plasma. Show that for $d > \lambda_D$ the electrostatic potential energy needed to transport a particle from one of the plates to the midpoint at $x=0$ exceeds the average thermal kinetic energy of particles in a one-dimensional system. Assume a one-dimensional Maxwellian distribution with $<E_{kinetic}>=\frac{1}{2}k_B T$
+
+\bibliographystyle{ieeetr}
+\bibliography{references.bib}
+
+
+
+
+
+\end{document}
