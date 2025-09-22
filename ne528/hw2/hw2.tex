@@ -1,7 +1,7 @@
 \documentclass{template}
-\title{NE 795 Assignment 1}
+\title{NE 795 Assignment 2}
 \author{Kyle Hansen}
-\date{26 September 2025}
+\date{20 September 2025}
 
 \begin{document}
 \maketitle
@@ -12,17 +12,36 @@
 
 List the three conditions that describe the plasma state.
 
-\subsection{}
-
-Evaluate these conditions for the following systems given the electron density ($n_\e$),
-electron temperature ($T_\e$) and plasma-neutral collision time ($\tau$):
+Conditions of a plasma:
 
 \begin{itemize}
-    \item The ionosphere ($n_\e = 1\cdot 10^{12}\text{ m}^{-3}, T_\e = 0.1\text{ eV}, \tau = 1\cdot 10^{-5}\text{ s}$)
-    \item A candle flame ($n_\e = 1\cdot 10^{14}\text{ m}^{-3}, T_\e = 0.1\text{ eV}, \tau = 1\cdot 10^{-10}\text{ s}$)
+    \item Sufficient ionization ($\omega_p \tau > 1$)
+    \item Collective behavior ($L \gg \lambda_D$)
+    \item Quasi-neutrality ($N_D \gg 1$)
 \end{itemize}
 
-Where
+Where plasma frequency is calculated with
+
+\begin{equation}
+    \omega_p = \left(\frac{n_\e \e^2}{\epsilon_0 m_\e} \right)^{1/2}
+\end{equation}
+
+and the Debye length is
+
+\begin{equation}
+    \lambda_d = \sqrt{\frac{\epsilon_0 k_B T}{n_i \e^2}}
+\end{equation}
+
+
+% and the Saha equation is
+
+% \begin{equation}
+%     \frac{n_i}{n_0} \approx 2.4\cdot 10^{21} \frac{T^{3/2}}{n_i}e^{-u_i /k_B T}
+% \end{equation}
+
+\subsection{}
+
+Given
 \[
 \sqrt{\frac{\e^2}{\epsilon_0 m_\e}} = 56.41 \text{ m}^{3/2}\text{s}^-1
 \]
@@ -31,11 +50,79 @@ Where
 \sqrt{\frac{\epsilon_0}{\e^2}} = 7433.94\text{ eV}^{-1/2}\text{m}^{-1/2}
 \]
 
-with elementary charge ($e$) $1.602\cdot10^{-19}$ C, electron mass (me) $9.109\cdot10^{-31}$ kg and vacuum permittivity ($\epsilon_0$) $8.854 \cdot 10^{-12}$ Fm-1
+Evaluate these conditions for the following systems given the electron density ($n_\e$),
+electron temperature ($T_\e$) and plasma-neutral collision time ($\tau$):
+
+\begin{itemize}
+    \item The ionosphere ($n_\e = 1\cdot 10^{12}\text{ m}^{-3}, T_\e = 0.1\text{ eV}, \tau = 1\cdot 10^{-5}\text{ s}$)
+    
+    \begin{itemize}
+        \item \textbf{Sufficient degree of ionization}: the plasma frequency for the ionosphere is
+        \begin{equation}
+            \omega_p = \sqrt{n_\e}\sqrt{\frac{\e^2}{\epsilon_0 m_\e}} = 5.641\cdot 10^7 \text{s}^-1
+        \end{equation}
+
+        Then the product $\omega_p \tau = (5.641\cdot 10^7)(1\cdot 10^{-5}) = 564.1$ \textit{does} satisty the ionization condition for a plasma.
+        \item \textbf{Collective behavior}: The Debye length for this system, assuming that $n_i = n_\e$, is
+
+        \begin{equation}
+            \lambda_D = \sqrt{\frac{\epsilon_0}{\e^2}}\sqrt{\frac{k_B T}{n_\e}} = ( 7433.94\text{ eV}^{-1/2}\text{m}^{-1/2})(\sqrt{\frac{0.1\text{ eV}}{1\times10^{12}\text{ m}^{-3}}}) = 2.351 \cdot 10^{-3}\text{ m}
+        \end{equation}
+
+        Which is much smaller than the length scale for the ionosphere (km), satisfying the condition for plasma.
+
+        \item \textbf{Quasi-neutrality}: The number of particles in a Debye sphere must be large, given by the formula
+        
+        \begin{equation}
+            N_D = n_\e \frac{4}{3}\pi \lambda_D^3 = (1\times 10^{12})(\frac{4}{3}\pi)(2.351 \cdot 10^{-3})^3 = 54431.0 \gg 1
+        \end{equation}
+
+        so the quasineutrality condition is satisfied.
+    \end{itemize}
+    
+
+
+
+
+    \item A candle flame ($n_\e = 1\cdot 10^{14}\text{ m}^{-3}, T_\e = 0.1\text{ eV}, \tau = 1\cdot 10^{-10}\text{ s}$)
+    
+    \begin{itemize}
+        \item \textbf{Sufficient degree of ionization}: the plasma frequency for the candle is
+        \begin{equation}
+            \omega_p = \sqrt{n_\e}\sqrt{\frac{\e^2}{\epsilon_0 m_\e}} = 5.641\cdot 10^8 \text{s}^-1
+        \end{equation}
+
+        Then the product $\omega_p \tau = (5.641\cdot 10^8)(1\cdot 10^{-10}) = 0.0564$ does \textit{not} satisty the ionization condition for a plasma.
+        \item \textbf{Collective behavior}: The Debye length for this system, assuming that $n_i = n_\e$, is
+
+        \begin{equation}
+            \lambda_D = \sqrt{\frac{\epsilon_0}{\e^2}}\sqrt{\frac{k_B T}{n_\e}} = ( 7433.94\text{ eV}^{-1/2}\text{m}^{-1/2})(\sqrt{\frac{0.1\text{ eV}}{1\times10^{14}\text{ m}^{-3}}}) = 2.351 \cdot 10^{-4}\text{ m}
+        \end{equation}
+
+        Which is much smaller than the length scale for a candle (about 1 cm), satisfying the condition for plasma.
+
+        \item \textbf{Quasi-neutrality}: The number of particles in a Debye sphere must be large, given by the formula
+        
+        \begin{equation}
+            N_D = n_\e \frac{4}{3}\pi \lambda_D^3 = (1\times 10^{14})(\frac{4}{3}\pi)( 2.351 \cdot 10^{-4})^3 = 5441.8 \gg 1
+        \end{equation}
+
+        so the quasineutrality condition is satisfied, since the population is not 'sufficiently ionized.'
+    \end{itemize}
+\end{itemize}
+
+
+
+with elementary charge ($\e$) $1.602\cdot10^{-19}$ C, electron mass ($m_\e$) $9.109\cdot10^{-31}$ kg and vacuum permittivity ($\epsilon_0$) $8.854 \cdot 10^{-12}$ Fm-1
 
 \subsection{}
 
 Conclude for both systems if they are a plasma (or not) and provide a reasoning for your conclusion.
+
+\begin{itemize}
+    \item Ionosphere: all three conditions are satisfied-- the system is quasineutral, sufficiently ionized, and behaves collectively, so the system can be considered a plasma.
+    \item Candle flame: the system cannot be considered a plasma, since the electron collision frequency is too low, and the system is not 'sufficiently ionized.'
+\end{itemize}
 
 \section{Debye Length}
 
@@ -49,13 +136,59 @@ Using Poisson's equation, show that the potential distribution between the plate
     \Phi(x) = \frac{Nq}{2\epsilon_0}(d^2 - x^2)
 \]
 
+Possion's equation for electric potential is
+
+\begin{equation}
+    \nabla^2 \Phi = \frac{-\rho}{\epsilon_0}
+\end{equation}
+
+where $\rho$ is the charge carrier density and $\epsilon_0$ is the permittivity of free space. In one dimension this becomes:
+
+\begin{equation}
+    \frac{d^2}{dx^2}\Phi = \frac{-\rho}{\epsilon_0}
+\end{equation}
+
+Integrating both sides gives:
+
+\begin{equation}
+    \frac{d}{dx}\Phi = \frac{-\rho}{\epsilon_0}x + c_1
+\end{equation}
+
+and, integrating again:
+
+\begin{equation}
+    \Phi(x) = \frac{-\rho}{2\epsilon_0}x^2 + c_1x + c_2 = 
+\end{equation}
+
+Evaluating this equation at the boundary conditions gives $c_2 = \frac{-\rho}{2\epsilon_0}d^2$ and $c_1 =0$. Expanding the form of $\rho = Nq$ then gives the equation:
+
+\begin{equation}
+    \Phi(x) = \frac{Nq}{2\epsilon_0}(d^2 - x^2).
+\end{equation}
+
 
 \subsection{}
 
 The Debye length $\lambda_D$ describes the scale length at which the balance between electrostatic potential energy and thermal kinetic energy is established in a plasma. Show that for $d > \lambda_D$ the electrostatic potential energy needed to transport a particle from one of the plates to the midpoint at $x=0$ exceeds the average thermal kinetic energy of particles in a one-dimensional system. Assume a one-dimensional Maxwellian distribution with $<E_{kinetic}>=\frac{1}{2}k_B T$
 
-\bibliographystyle{ieeetr}
-\bibliography{references.bib}
+The Debye length is given by:
+
+\begin{equation}
+    \lambda_D = \sqrt{\frac{\epsilon_0 k T}{Nq^2}} = \sqrt{\frac{E}{q} \frac{2\epsilon_0}{Nq}}
+\end{equation}
+
+Then, setting the length $d=\lambda_D$, the potential difference between the centerline and one plate, $\Phi(0) - \Phi(d)$, is
+
+\begin{equation}
+    \frac{Nq}{2\epsilon_0} (\frac{E}{q} \frac{2\epsilon_0}{Nq}) = \frac{E}{q}
+\end{equation}
+
+Which is to say that the potential can be overcome by a particle of charge $q$ and energy $E$. Increasing the distance would then increase the energy required-- if $d>\lambda_D$, then the energy must be greater than $E$ to overcome this difference.
+
+
+
+% \bibliographystyle{ieeetr}
+% \bibliography{references.bib}
 
 
 

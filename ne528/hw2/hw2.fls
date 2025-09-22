@@ -197,9 +197,6 @@ INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm1
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 OUTPUT hw2.xdv
-INPUT ./hw2.bbl
-INPUT ./hw2.bbl
-INPUT hw2.bbl
 INPUT hw2.aux
 INPUT ./hw2.out
 INPUT ./hw2.out

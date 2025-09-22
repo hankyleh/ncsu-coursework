@@ -1,19 +1,11 @@
 # Fdb version 4
-["bibtex hw2"] 0 "hw2.aux" "hw2.bbl" "hw2" 1758301560.156 -1
-  "./references.bib" 1758301284.24078 0 d41d8cd98f00b204e9800998ecf8427e ""
-  "/usr/local/texlive/2025/texmf-dist/bibtex/bst/base/ieeetr.bst" 1292289607 18361 1a00e58565e7f19bf2b3e1bfb82254ae ""
-  "hw2.aux" 1758301559.36062 1011 12e6b4ad2e40f56e9abc6009dc63c4e8 "xelatex"
-  (generated)
-  "hw2.bbl"
-  "hw2.blg"
-  (rewritten before read)
-["xdvipdfmx"] 1758301559.72348 "hw2.xdv" "hw2.pdf" "hw2" 1758301560.1576 0
-  "hw2.xdv" 1758301559.36062 19192 9c4fbba8990d68f227b2ae98b59aa8fc "xelatex"
+["xdvipdfmx"] 1758394081.74314 "hw2.xdv" "hw2.pdf" "hw2" 1758394082.38822 0
+  "hw2.xdv" 1758394081.61686 48512 e4084a62adc8c8e1caece1010d8d457b "xelatex"
   (generated)
   "hw2.pdf"
   (rewritten before read)
-["xelatex"] 1758301558.04396 "/home/khan/ncsu-coursework/ne528/hw2/hw2.tex" "hw2.xdv" "hw2" 1758301560.15615 0
-  "/home/khan/ncsu-coursework/ne528/hw2/hw2.tex" 1758301557.82062 2272 5fb0761bc061b38cc39ea183ef326781 ""
+["xelatex"] 1758394079.33081 "/home/khan/ncsu-coursework/ne528/hw2/hw2.tex" "hw2.xdv" "hw2" 1758394082.38585 0
+  "/home/khan/ncsu-coursework/ne528/hw2/hw2.tex" 1758394078.93496 7500 af6ca642d119aa63d51f3315a5b76b26 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -104,11 +96,10 @@
   "/usr/local/texlive/2025/texmf-dist/web2c/texmf.cnf" 1749313668 42213 4e2ca030e8e2640502016e9e45868dcb ""
   "/usr/local/texlive/2025/texmf-var/web2c/xetex/xelatex.fmt" 1758224592 5911855 60c62739bd31b125a7634e4013ded214 ""
   "/usr/local/texlive/2025/texmf.cnf" 1758224376.9685 455 5b996dcaa0eb4ef14a83b026bc0a008c ""
-  "hw2.aux" 1758301559.36062 1011 12e6b4ad2e40f56e9abc6009dc63c4e8 "xelatex"
-  "hw2.bbl" 1758301285.23277 49 0eba253fc001332e731e8aba3f23127b "bibtex hw2"
-  "hw2.out" 1758301559.36062 540 0ef77b8e4a951e2b4dc7511da9a434c8 "xelatex"
-  "hw2.tex" 1758301557.82062 2272 5fb0761bc061b38cc39ea183ef326781 ""
-  "template.cls" 1758301362.42077 1713 89d1cace2cd905a82b4b63c206bb0395 ""
+  "hw2.aux" 1758394081.61292 968 3ad2e4496c6bd046b18fec25c834e79b "xelatex"
+  "hw2.out" 1758394081.61292 540 0ef77b8e4a951e2b4dc7511da9a434c8 "xelatex"
+  "hw2.tex" 1758394078.93496 7500 af6ca642d119aa63d51f3315a5b76b26 ""
+  "template.cls" 1758301708.57656 1713 89d1cace2cd905a82b4b63c206bb0395 ""
   (generated)
   "hw2.aux"
   "hw2.log"
