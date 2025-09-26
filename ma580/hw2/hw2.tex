@@ -36,10 +36,10 @@ The nozero eigenvalues of $\mat{A}^T \mat{A}$ are defined such that, for some $x
 then it can be shown that this value $\lambda$ is also an eigenvalue of $\mat{A}\mat{A}^T $:
 
 \begin{equation}
-    \begin{align}
+    \begin{aligned}
     \mat{A}^T \mat{A}x &= \lambda x\\
     \mat{A}\mat{A}^T \mat{A}x &= \lambda \mat{A} x\\
-    \end{align}
+    \end{aligned}
 \end{equation}
 
 Then, for some $b = \mat{A}x$, 
@@ -53,13 +53,13 @@ That is, all nonzero eigenvalues of $\mat{A}^T \mat{A}$ are also eigenvalues of 
 The inverse can be shown similarly:
 
 \begin{equation}
-    \begin{align}
+    \begin{aligned}
     \mat{A}\mat{A}^T x &= \lambda x\\
     \mat{A}^T \mat{A}\mat{A}^Tx &= \lambda \mat{A}^T x\\
-    \end{align}
+    \end{aligned}
 \end{equation}
 
-Then for some $z=\mat{A}^Tx$, $\mat{A}^T \mat{A}z &= \lambda z$. Then the matrices $\mat{A}\mat{A}^T$ and $\mat{A}^T \mat{A}$ share all non-zero eigenvalues.
+Then for some $z=\mat{A}^Tx$, $\mat{A}^T \mat{A}z = \lambda z$. Then the matrices $\mat{A}\mat{A}^T$ and $\mat{A}^T \mat{A}$ share all non-zero eigenvalues.
 
 
 \subsection{}
@@ -69,12 +69,14 @@ This can be shown using the spectral radius, since $\norm{\mat{A}}_2 = \rho(\mat
 
 Since $\mat{A} \mat{A}^T$ and $\mat{A}^T \mat{A}$ have the same nonzero eigenvalues, then they share the same spectral radius $\rho(\mat{A}) = \text{max}|\lambda|$. Then:
 
-\begin{equation}
-    \begin{align}
+\begin{equation}\label{eq:spectral-radii}
+    \begin{aligned}
         \rho(\mat{A}^T \mat{A})^{1/2} &= \rho(\mat{A} \mat{A}^T)^{1/2}\\
         \norm{\mat{A}}_2 & = \norm{\mat{A}^T}_2.
-    \end{align}
+    \end{aligned}
 \end{equation}
+
+
 
 
 \subsection{}
@@ -84,13 +86,53 @@ Show $\norm{\mat{A}\mat{A}^T}_2
 = \norm{\mat{A}}_2^2$.
 
 
+Again using the spectral radius, these norms can be rewritten in terms of the largest eigenvalue of the two products:
 
+\begin{equation}
+    \begin{gathered}
+        \norm{\mat{A}^T\mat{A}} = \rho\left( \left(\mat{A}^T\mat{A}\right)^2\right)^{1/2}\\
+        \norm{\mat{A}\mat{A}^T} = \rho\left( \left(\mat{A}\mat{A}^T\right)^2\right)^{1/2},
+    \end{gathered}
+\end{equation}
 
+where $\left( \mat{A}^T\mat{A}\right)^T =\mat{A}^T\mat{A} $ and $\left(\mat{A}\mat{A}^T\right)^T =\mat{A}\mat{A}^T$.
+
+Since eigenvalues of a squared matrix are the squared eigenvalues of the original matrix,
+
+\begin{equation}
+    \begin{gathered}
+        \rho\left( \left(\mat{A}^T\mat{A}\right)^2\right)^{1/2} = \rho\left( \mat{A}^T\mat{A}\right)\\
+        \rho\left( \left(\mat{A}\mat{A}^T\right)^2\right)^{1/2} = \rho\left( \mat{A}\mat{A}^T\right).
+    \end{gathered}
+\end{equation}
+
+These terms are equal to the squares of \autoref{eq:spectral-radii} from the previous subsection-- since $\rho\left( \mat{A}\mat{A}^T\right)^{1/2} = \rho\left( \mat{A}^T\mat{A}\right)^{1/2} = \norm{\mat{A}}_2$, the same is true of their squares, and 
+
+\begin{equation}
+    \norm{\mat{A}\mat{A}^T}_2 = \norm{\mat{A}^T\mat{A}}_2 = \norm{\mat{A}}_2^2
+\end{equation}
 
 \subsection{}
-Suppose $\mat{A} \in \R^{n\times n}$ is nonsingular. Show $\kappa_2(\mat{A}^T\mat{A})
-= \kappa_2(\mat{A})^2$.
-% TODO
+Suppose $\mat{A} \in \R^{n\times n}$ is nonsingular. Show $\kappa_2(\mat{A}^T\mat{A}) = \kappa_2(\mat{A})^2$.
+
+The condition number of of the product is defined as
+
+\begin{equation}
+    \kappa_2(\mat{A}^T\mat{A}) = \norm{\mat{A}^T\mat{A}}_2 \norm{\left(\mat{A}^T\mat{A}\right)^{-1}}_2.
+\end{equation}
+
+From the previous section, $\norm{\mat{A}\mat{A}^T}_2 = \norm{\mat{A}^T\mat{A}}_2 = \norm{\mat{A}}_2^2$, so 
+
+\begin{equation}
+    \kappa_2(\mat{A}^T\mat{A}) = \norm{\mat{A}}_2^2 \norm{\left(\mat{A}^T\mat{A}\right)^{-1}}_2.
+\end{equation}
+
+Where the inverse term can be expanded as $\left(\mat{A}^T\mat{A}\right)^{-1} = \mat{A}^{-1}(\mat{A}^T)^{-1}$. Since the inverse of a transpose is the transpose of an inverse, this can be rewritten $\mat{A}^{-1}(\mat{A}^{-1})^{T}$. The same property as above can be applied again, since $\norm{\mat{A}^{-1}(\mat{A}^{-1})^T}_2 = \norm{(\mat{A}^{-1})^T\mat{A}^{-1}}_2 = \norm{\mat{A}^{-1}}_2^2$, and 
+
+\begin{equation}
+    \kappa_2(\mat{A}^T\mat{A}) = \norm{\mat{A}}_2^2 \norm{\mat{A}^{-1}}_2^2 = \left(\norm{\mat{A}}_2\norm{\mat{A}^{-1}}_2\right) = \kappa_2(\mat{A}^2)
+\end{equation}
+
 
 
 
@@ -101,10 +143,7 @@ induced matrix norm.
 Then, $\mat{A}+\mat{E}$ is nonsingular, and
 \[
    \norm{(\mat{A} + \mat{E})^{-1}} \leq 2 \norm{\mat{A}^{-1}}.
-\] 
-[Hint: You can use Fact 2.23 in Ipsen. You are essentially proving
-a special case of Corollary 2.24 in that book. Provide a complete 
-proof, do not just quote that corollary.]
+\]
 
 
 Since $\mat{A}$ is nonsingular, the addition can be rewritten
@@ -144,12 +183,11 @@ Again using the Cauchy-Schwarz inequality and the result from \autoref{eq:ipsen-
 
 
 \section{}
-This problem provides a geometric interpretation of the condition
-number of a matrix. Let $\norm{\cdot}$ be a vector norm. 
+Let $\norm{\cdot}$ be a vector norm. 
 Let $\mat{A}$ be a nonsingular matrix.
 Consider the maximum and minimum magnification, 
-$\maxmag(\mat{A})$ and $\minmag(\mat{A})$, 
-which we defined in the class.  
+$\maxmag(\mat{A})$ and $\minmag(\mat{A})$.
+ 
 Show that 
 \[
    \kappa(\mat{A}) = \frac{\maxmag(\mat A)}{\minmag(\mat A)}.
@@ -224,16 +262,35 @@ and with $n = 2^k, k = 3,
 
 The code is presented in \autoref{sec:code}. As an example, a numerical solution is shown in \autoref{fig:numerical_solution} and its absolute error is shown in \autoref{fig:numerical_error}.
 
+The results for all run cases are presented in \autoref{tab:results}. The results clearly demonstrate a logarithmic convergence rate, where each doubling of $n$ (or quadrupling of $n^2$) results in a reduction in error by one quarter. Because of this convergence rate, a linear increase in the number of meshpoints (which results in significantly increased computational cost) has a diminishing effect on error reduction.
 
 
-\begin{figure}
+\begin{table}
+    \centering
+    \caption{Convergence results for two-dimensional Poisson problem}
+    \label{tab:results}
+    \begin{tabular}{c||l|l|l}
+        $h$ & no. of unknowns & $\norm{e_h}_\infty$ & $\norm{e_{2h}}_\infty/\norm{e_h}_\infty$\\
+        \hline
+        0.125 & $8^2$     & $ 1.72\cdot 10^{-1}$  & 0.2298\\
+        0.0625 & $16^2$   & $ 3.96\cdot 10^{-2}$  & 0.2449\\
+        0.03125 & $32^2$  & $ 9.70\cdot 10^{-3}$  & 0.2487\\
+        0.01563 & $64^2$  & $ 2.41\cdot 10^{-3}$  & 0.2499\\
+        0.00781 & $128^2$ & $ 6.03\cdot 10^{-3}$  & 0.2500\\
+        0.00391 & $256^2$ & $ 1.51\cdot 10^{-4}$  & 0.2500\\
+        0.00195 & $512^2$ & $ 3.77\cdot 10^{-4}$  & 0.2500\\
+        0.00098& $1024^2$ & $ 9.42\cdot 10^{-5}$  & --
+    \end{tabular}
+\end{table}
+
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.65\linewidth]{num_soln.png}
     \caption{Numerical solution, $n=2^{10}$}
     \label{fig:numerical_solution}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.65\linewidth]{abs_errs.png}
     \caption{Absolute error, $n=2^{10}$}
@@ -250,18 +307,28 @@ Scipy's \verb|linalg.onenormest| could be used to estimate the one norm $\norm{\
 
 Matlab provides the function \verb|condest|, which uses an iterative method \cite{hager1984condition} that computes the gradient of $f(\vec{x}) = \norm{\mat{A}\vec{x}}_1$, in order to converge on an upper bound for $\norm{\mat{A^{-1}}}_1$. When I tested my own implementation of this algorithm I found its results to be equivalent to directly computing the matrix inverse and using \verb|onenormest|. This iterative estimate appears as \verb|hager_invnorm| in the Python code.
 
-The condition numbers for $n$ up to $2^{10}$ are shown in \autoref{fig:condition}. $\kappa$ shows a clear $\kappa \propto n^c$ increase, clearly justifying the need for a stable algorithm, potentially different than the GE scheme used in this solve.
+The condition numbers for $n$ up to $2^{10}$ are shown in \autoref{fig:condition}. $\kappa$ shows a clear $\kappa \propto n^{\approx 2}$ increase, clearly justifying the need for a more stable algorithm, potentially different than the GE scheme used in this solve.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
-    \includegraphics[width=0.65\linewidth]{condition_linear.png}
+    \includegraphics[width=0.65\linewidth]{condition_log.png}
     \caption{Condition number estimates, $\kappa_1(\mat{A})$}
     \label{fig:condition}
 \end{figure}
 
+
+\clearpage
+
+\bibliographystyle{ieeetr}
+\bibliography{references}
+
+\appendix
+
+\section{Python Code}\label{sec:code}
+
 \begin{minted}[linenos]{python}
 import numpy
-import scipy
+# import scipy
 import scipy.sparse as sparse
 import matplotlib
 import matplotlib.pyplot as plt
@@ -300,14 +367,17 @@ def system_def(f, n):
     T = sparse.diags([-e, 4*e, -e], [-1, 0, 1], (m,m))
     S = sparse.diags([-e, -e], [-1, 1], (m,m))
     A = sparse.kron(I, T) + sparse.kron(S, I)
+    
     h = 1/n
     x = numpy.arange(h, 1, h)
     y = numpy.arange(h, 1, h)
     q_vec = numpy.zeros((n-1)**2)
+
     for i in range(0, (n-1)):
         for j in range(0, (n-1)):
             k = i+ (j)*(n-1)
             q_vec[k] = (h**2)*source_function(x[i], y[j])
+
     return poisson_system(x, y, A, q_vec)
 
 def hager_invnorm(A):
@@ -323,9 +393,9 @@ def hager_invnorm(A):
             return numpy.sum(abs(y))
         x = numpy.zeros(n)
         x[numpy.argmax(z)] = 1
-        
 
-k = numpy.arange(3, 9, 1)
+
+k = numpy.arange(3, 11, 1)
 n = 2**k
 h = 1/n
 e = numpy.zeros(n.shape)
@@ -349,10 +419,7 @@ for ni in range(0, n.size):
             K[i][j] = analytic_solution(x[i], y[j])
 
     e[ni] = numpy.max(numpy.abs(K-U))
-    I = sparse.eye(A.shape[0], A.shape[1])
-    A_inv = sparse.linalg.spsolve(A, I)
     cond[ni] = sparse.linalg.onenormest(A)*hager_invnorm(A)
-    # cond[ni] = numpy.linalg.cond(A.toarray(), p=1)
     print(cond[ni])
     if (ni>0):
         r[ni] = e[ni]/e[ni-1]
@@ -362,36 +429,39 @@ for ni in range(0, n.size):
         fig = plt.figure()
         ax = plt.axes(projection="3d")
         ax.plot_surface(x, y,(U-K), cmap=matplotlib.cm.Reds)
-        plt.title("Absolute Error, h="+str(h[ni]))
+        plt.title("Absolute Error, $h="+str(h[ni])+"$")
+        ax.set_xlabel("$x$")
+        ax.set_ylabel("$y$")
+        ax.set_zlabel("$f_c - f$")
         plt.show()
+        # plt.savefig("abs_errs")
+        plt.close()
 
         fig = plt.figure()
         ax = plt.axes(projection="3d")
-        ax.plot_surface(x, y, U, cmap=matplotlib.cm.Blues)
-        plt.title("Numerical solution, h="+str(h[ni]))
+        ax.plot_surface(x, y,U, cmap=matplotlib.cm.Blues)
+        plt.title("Numerical solution, $h="+str(h[ni])+"$")
+        ax.set_xlabel("$x$")
+        ax.set_ylabel("$y$")
+        ax.set_zlabel("$f_c(x,y)$")
         plt.show()
+        # plt.savefig("num_soln")
+        plt.close()
 
-print("h")
-print(h)
-print("n")
-print(n)
-print("e")
-print(e)
-print("r")
-print(r)
-print("condition number")
-print(cond)
+fig = plt.figure()
+plt.scatter(n, cond)
+plt.title("Condition Number Estimates")
+plt.xlabel("$n$")
+plt.ylabel("$\\kappa_1(A)$, upper bound")
+plt.show()
+# plt.savefig("condition_linear")
+plt.xscale("log")
+plt.yscale("log")
+plt.show()
+# plt.savefig("condition_log")
+plt.close()
+
 \end{minted}
-
-
-\bibliographystyle{ieeetr}
-\bibliography{references}
-
-\appendix
-
-\section{Python Code}\label{sec:code}
-
-
 
 
 

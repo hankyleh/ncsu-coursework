@@ -90,10 +90,7 @@ for ni in range(0, n.size):
             K[i][j] = analytic_solution(x[i], y[j])
 
     e[ni] = numpy.max(numpy.abs(K-U))
-    # I = sparse.eye(A.shape[0], A.shape[1])
-    # A_inv = sparse.linalg.spsolve(A, I)
     cond[ni] = sparse.linalg.onenormest(A)*hager_invnorm(A)
-    # cond[ni] = numpy.linalg.cond(A.toarray(), p=1)
     print(cond[ni])
     if (ni>0):
         r[ni] = e[ni]/e[ni-1]
@@ -108,7 +105,7 @@ for ni in range(0, n.size):
         ax.set_ylabel("$y$")
         ax.set_zlabel("$f_c - f$")
         plt.show()
-        plt.savefig("abs_errs")
+        # plt.savefig("abs_errs")
         plt.close()
 
         fig = plt.figure()
@@ -119,7 +116,7 @@ for ni in range(0, n.size):
         ax.set_ylabel("$y$")
         ax.set_zlabel("$f_c(x,y)$")
         plt.show()
-        plt.savefig("num_soln")
+        # plt.savefig("num_soln")
         plt.close()
 
 fig = plt.figure()
@@ -128,21 +125,9 @@ plt.title("Condition Number Estimates")
 plt.xlabel("$n$")
 plt.ylabel("$\\kappa_1(A)$, upper bound")
 plt.show()
-plt.savefig("condition_linear")
+# plt.savefig("condition_linear")
 plt.xscale("log")
 plt.yscale("log")
 plt.show()
-plt.savefig("condition_log")
+# plt.savefig("condition_log")
 plt.close()
-
-
-print("h")
-print(h)
-print("n")
-print(n)
-print("e")
-print(e)
-print("r")
-print(r)
-print("condition number")
-print(cond)
