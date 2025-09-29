@@ -4,7 +4,6 @@
 \date{1 October 2025}
 
 \usepackage{cancel}
-\usepackage{empheq}
 \newcommand*\multbox[1]{\fbox{\hspace{0ex}#1\hspace{0ex}}}
 
 
@@ -22,29 +21,119 @@
     I_\nu = ch\nu\psi_\nu.
 \]
 
+Intensity $I$ is defined as the power (rate of energy delivery) by radiation per unit solid angle, equal to:
+
+\begin{equation}
+        \text{Intensity} = \frac{\text{Energy}}{\text{particle}}\times\text{particle speed}\times\text{angular density}
+\end{equation}
+
+Where, for photons, speed is always $c$ and energy $E=h\nu$. Then
+
+\begin{equation}
+        \text{Intensity} = I_\nu = h\nu \times c\times\text{angular density}
+\end{equation}
+
+and the density is $\psi_\nu = \text{particles}\cdot\text{m}^{-3}\cdot \text{Sr}^{-1}$, and thus $I_\nu = ch\nu\psi_\nu$.
+
+% TODO -- check units
+
 
 \section{}
 
 Show that the equilibrium intensity is equal to
 
 \[
-    I_\nu = B_\nu = \frac{2h\nu^3}{c^2}\frac{1}{e^{h\nu/kT}-1}.
+I_\nu = B_\nu = \frac{2h\nu^3}{c^2}\frac{1}{e^{h\nu/kT}-1}.
 \]
 
+% TODO
 
-\section{} Moments \dots
 
-\section{} Derive the speed of radiation wave in vauum in the radiative transfer (RT) model defined by
+\section{} Derive the form of the following moments of the specific intensity:
+
+\begin{gather*}
+    E_\nu = \frac{1}{c} \int_{4\pi} I_\nu d\Omega, \qquad E = \int_0^\infty E_{\nu} d \nu,\\
+    F_\nu = \int_{4\pi} \Omega I_\nu d\Omega,\\
+    \mathbb{P}_\nu
+\end{gather*}
+
+\hrule
+
+Given the Radiative Transfer equation:
+
+\begin{equation}
+    \frac{1}{c}\frac{\partial I_\nu}{\partial t} + \vec{\Omega}\cdot\vec{\nabla}I_\nu + \varkappa_\nu I\nu = \eta_\nu
+\end{equation}
+
+integrating over angle:
+
+\begin{equation}
+    \int_{4\pi} {\left\{\frac{1}{c}\frac{\partial I_\nu}{\partial t} + \vec{\Omega}\cdot\vec{\nabla}I_\nu + \varkappa_\nu I\nu = \eta_\nu\right\}} d\Omega
+\end{equation}
+
+becomes
+
+\begin{equation}
+    \frac{\partial E_\nu}{\partial t} + \int{\vec{\nabla}\cdot\left(\vec{\Omega} I_\nu\right)} d\Omega + c\varkappa_\nu E\nu =  4\pi \eta_\nu
+\end{equation}
+
+\begin{equation}
+    \boxed{\frac{\partial E_\nu}{\partial t} + \vec{\nabla}F_\nu + c\varkappa_\nu E\nu = 4\pi \eta_\nu}
+\end{equation}
+
+(this is the monochromatic continuity equation)
+
+The equation for $E = \int E_\nu d\nu$ is:
+
+\begin{equation}
+    \int_0^\infty \left\{\frac{\partial E_\nu}{\partial t} + \vec{\nabla}F_\nu + c\varkappa_\nu E\nu = 4\pi \eta_\nu\right\} d\nu
+\end{equation}
+
+\begin{equation}
+    \boxed{\frac{\partial E}{\partial t} + \vec{\nabla}F + c  \int_0^\infty {\varkappa_\nu E\nu d\nu}=  \int_0^\infty{4\pi\eta_\nu d\nu}}
+\end{equation}
+
+(this is the energy-integrated continuity equation)
+
+The equation for $F = \int \Omega I_\nu d\Omega $ is:
+
+\begin{equation}
+    \int_{4\pi} \Omega {\left\{\frac{1}{c}\frac{\partial I_\nu}{\partial t} + \vec{\Omega}\cdot\vec{\nabla}I_\nu + \varkappa_\nu I\nu = \eta_\nu\right\}} d\Omega
+\end{equation}
+
+\begin{equation}
+    \frac{1}{c}\frac{\partial F_\nu}{\partial t} + \vec{\nabla}\int_{4\pi} {\Omega \otimes \Omega I_\nu d\Omega} + \varkappa_\nu F\nu = \cancelto{0}{\int_{4\pi} {\Omega \eta_\nu d\Omega}}
+\end{equation}
+
+where the source term reduces to zero (assuming isotropic source emission). The streaming term can be written in terms of the pressure tensor:
+
+\begin{equation}
+    \boxed{\frac{1}{c}\frac{\partial F_\nu}{\partial t} + c\vec{\nabla}\mathbb{P}_\nu + \varkappa_\nu F\nu = 0}
+\end{equation}
+
+
+% TODO -- field is in thermal equilibrium-- emission equals capture, redefine all previous progress.
+
+\section{} Derive the speed of radiation wave in vacuum in the radiative transfer (RT) model defined by
 
 \begin{itemize}
     \item The grey time-dependent $P_1$ equations
     \item The grey time-dependent $P_{1/3}$ equations
 \end{itemize}
 
+% TODO
 
+\section{} Derive the system of the time-dependent $P_1$ and MEB equations in multigroup form from the spectral $P_1$ and MEB equations given by
 
-\section{} Derive the system of the time-dependent $P_1$ and MEB equations in multigroup form from the spectral $P_1$ and MEB equations given by \dots
+\begin{gather*}
+    \frac{\partial E_\nu}{\partial t} + \nabla F_\nu = c\varkappa_\nu E\nu = 4\pi \varkappa_\nu B_\nu\\
+    \frac{\partial F_\nu}{\partial t} + \frac{1}{3}\nabla E_\nu + \varkappa_\nu F_\nu = 0\\
+    \frac{\partial \varepsilon(T)}{\partial t} = \varkappa _ \nu (cE_\nu - 4\pi B_\nu)
+\end{gather*}
+
 
 Note that as part of this derivation you will need to define group opacities in the multigroup photon balance, first moment, and MEB equations.
+
+% TODO
 
 \end{document}

@@ -8,11 +8,12 @@
 \usepackage{titlesec}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{amssymb}
 \usepackage{enumerate}
 \usepackage{enumitem}
 \usepackage[pdfborderstyle={/S/U/W 1}]{hyperref}
 \usepackage{parskip}
-\usepackage{amsthm}
+% \usepackage{amsthm}
 \usepackage{subcaption}
 
 
@@ -25,7 +26,7 @@
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
-\renewcommand\qedsymbol{QED}
+% \renewcommand\qedsymbol{QED}
 \renewcommand\theoremautorefname{Lemma }
 
 \setlength{\parindent}{0em}
