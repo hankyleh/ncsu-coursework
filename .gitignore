@@ -3,3 +3,7 @@
 *.out
 _minted/
 *.aux
+*.bbl
+*.blg
+
+venv/
