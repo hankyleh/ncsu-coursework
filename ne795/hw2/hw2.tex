@@ -46,7 +46,29 @@ Show that the equilibrium intensity is equal to
 I_\nu = B_\nu = \frac{2h\nu^3}{c^2}\frac{1}{e^{h\nu/kT}-1}.
 \]
 
-% TODO
+Given the radiative transfer equation:
+
+\begin{equation}
+    \frac{1}{c}\frac{\partial I_\nu}{\partial t} + \vec{\Omega}\cdot\vec{\nabla}I_\nu + \varkappa_\nu I\nu = \eta_\nu,
+\end{equation}
+
+Where the function $\eta_\nu$ is the emission spectrum. Planck's and Kirchoff's laws, which describe the physics of photon emission, hold that the intensity of emitted radiation is
+
+\begin{equation}
+    \varkappa_\nu B_\nu = \varkappa_\nu B(\nu, T) = (\varkappa_\nu) \frac{2h\nu^3}{c^2}\frac{1}{e^{h\nu/kT}-1}.
+\end{equation}
+
+At equilibrium, the time and spatial derivatives both go to zero, so
+
+\begin{equation}
+    \varkappa_\nu B_\nu = \varkappa_\nu I_\nu
+\end{equation}
+
+or
+
+\begin{equation}
+    \boxed{B_\nu (\vec{r}, \vec{\Omega}) = I_\nu(\vec{r}, \vec{\Omega})}
+\end{equation}
 
 
 \section{} Derive the form of the following moments of the specific intensity:
@@ -54,86 +76,267 @@ I_\nu = B_\nu = \frac{2h\nu^3}{c^2}\frac{1}{e^{h\nu/kT}-1}.
 \begin{gather*}
     E_\nu = \frac{1}{c} \int_{4\pi} I_\nu d\Omega, \qquad E = \int_0^\infty E_{\nu} d \nu,\\
     F_\nu = \int_{4\pi} \Omega I_\nu d\Omega,\\
-    \mathbb{P}_\nu
+    \mathbb{P}_\nu = \frac{1}{c} \int_{4\pi} \Omega \otimes \Omega I_\nu d\Omega, \qquad \mathbb{P} = \int_{0}^{\infty}\mathbb{P}_\nu d\nu
 \end{gather*}
 
 \hrule
 
-Given the Radiative Transfer equation:
+At equilibrium, since $I_\nu = B_\nu$, the radiative transfer equation can be reduced to
 
 \begin{equation}
-    \frac{1}{c}\frac{\partial I_\nu}{\partial t} + \vec{\Omega}\cdot\vec{\nabla}I_\nu + \varkappa_\nu I\nu = \eta_\nu
+    \frac{1}{c}\frac{\partial I_\nu}{\partial t} + \vec{\Omega}\cdot\vec{\nabla}I_\nu  = \varkappa_\nu B\nu- \varkappa_\nu I\nu = 0.
 \end{equation}
 
-integrating over angle:
+
+Integrating over angle:
 
 \begin{equation}
-    \int_{4\pi} {\left\{\frac{1}{c}\frac{\partial I_\nu}{\partial t} + \vec{\Omega}\cdot\vec{\nabla}I_\nu + \varkappa_\nu I\nu = \eta_\nu\right\}} d\Omega
+    \int_{4\pi} {\left\{\frac{1}{c}\frac{\partial I_\nu}{\partial t} + \vec{\Omega}\cdot\vec{\nabla}I_\nu =0\right\}} d\Omega
 \end{equation}
 
 becomes
 
 \begin{equation}
-    \frac{\partial E_\nu}{\partial t} + \int{\vec{\nabla}\cdot\left(\vec{\Omega} I_\nu\right)} d\Omega + c\varkappa_\nu E\nu =  4\pi \eta_\nu
+    \frac{\partial E_\nu}{\partial t} + \int{\vec{\nabla}\cdot\left(\vec{\Omega} I_\nu\right)} d\Omega = 0
 \end{equation}
 
 \begin{equation}
-    \boxed{\frac{\partial E_\nu}{\partial t} + \vec{\nabla}F_\nu + c\varkappa_\nu E\nu = 4\pi \eta_\nu}
+    \boxed{\frac{\partial E_\nu}{\partial t} + \vec{\nabla}F_\nu = 0}
 \end{equation}
 
-(this is the monochromatic continuity equation)
+
+(this is the monochromatic equilibrium continuity equation)
 
 The equation for $E = \int E_\nu d\nu$ is:
 
 \begin{equation}
-    \int_0^\infty \left\{\frac{\partial E_\nu}{\partial t} + \vec{\nabla}F_\nu + c\varkappa_\nu E\nu = 4\pi \eta_\nu\right\} d\nu
+    \int_0^\infty \left\{\frac{\partial E_\nu}{\partial t} + \vec{\nabla}F_\nu = 0 \right\} d\nu
 \end{equation}
 
 \begin{equation}
-    \boxed{\frac{\partial E}{\partial t} + \vec{\nabla}F + c  \int_0^\infty {\varkappa_\nu E\nu d\nu}=  \int_0^\infty{4\pi\eta_\nu d\nu}}
+    \boxed{\frac{\partial E}{\partial t} + \vec{\nabla}F + c  = 0}
 \end{equation}
 
-(this is the energy-integrated continuity equation)
+(this is the energy-integrated equilibrium continuity equation).
+
+
 
 The equation for $F = \int \Omega I_\nu d\Omega $ is:
 
 \begin{equation}
-    \int_{4\pi} \Omega {\left\{\frac{1}{c}\frac{\partial I_\nu}{\partial t} + \vec{\Omega}\cdot\vec{\nabla}I_\nu + \varkappa_\nu I\nu = \eta_\nu\right\}} d\Omega
+    \int_{4\pi} \Omega {\left\{\frac{1}{c}\frac{\partial I_\nu}{\partial t} + \vec{\Omega}\cdot\vec{\nabla}I_\nu =0\right\}} d\Omega
 \end{equation}
 
 \begin{equation}
-    \frac{1}{c}\frac{\partial F_\nu}{\partial t} + \vec{\nabla}\int_{4\pi} {\Omega \otimes \Omega I_\nu d\Omega} + \varkappa_\nu F\nu = \cancelto{0}{\int_{4\pi} {\Omega \eta_\nu d\Omega}}
+    \frac{1}{c}\frac{\partial F_\nu}{\partial t} + \vec{\nabla}\int_{4\pi} {\Omega \otimes \Omega I_\nu d\Omega} = 0
 \end{equation}
-
-where the source term reduces to zero (assuming isotropic source emission). The streaming term can be written in terms of the pressure tensor:
 
 \begin{equation}
-    \boxed{\frac{1}{c}\frac{\partial F_\nu}{\partial t} + c\vec{\nabla}\mathbb{P}_\nu + \varkappa_\nu F\nu = 0}
+    \boxed{\frac{1}{c}\frac{\partial F_\nu}{\partial t} + c\vec{\nabla}\mathbb{P}_\nu = 0}
 \end{equation}
 
+and the same equation integrated over frequency is
+\begin{equation}
+    \boxed{\frac{1}{c}\frac{\partial F}{\partial t} + c\vec{\nabla}\mathbb{P} = 0}
+\end{equation}
 
-% TODO -- field is in thermal equilibrium-- emission equals capture, redefine all previous progress.
+Then the pressure tensor can be found similarly:
+
+\begin{equation}
+    \int_{4\pi} \Omega \otimes \Omega {\left\{\frac{1}{c}\frac{\partial I_\nu}{\partial t} + \vec{\Omega}\cdot\vec{\nabla}I_\nu =0\right\}} d\Omega
+\end{equation}
+
+\begin{equation}
+    \boxed{\frac{\partial \mathbb{P_\nu}}{\partial t} +  \int_{4\pi} \Omega \otimes \Omega (\vec{\Omega}\cdot\vec{\nabla}I_\nu)d\Omega = 0}
+\end{equation}
+
+and the frequency-integrated equation:
+
+\begin{equation}
+    \boxed{\frac{\partial \mathbb{P}}{\partial t} +  \int_{4\pi} \Omega \otimes \Omega (\vec{\Omega}\cdot\vec{\nabla}I)d\Omega = 0}
+\end{equation}
+
+In the case of the $P_1$ equations, the pressure equation is closed by an approximation.
+
+
+
 
 \section{} Derive the speed of radiation wave in vacuum in the radiative transfer (RT) model defined by
 
 \begin{itemize}
-    \item The grey time-dependent $P_1$ equations
-    \item The grey time-dependent $P_{1/3}$ equations
+    \item The gray time-dependent $P_1$ equations
+    \item The gray time-dependent $P_{1/3}$ equations
 \end{itemize}
 
-% TODO
+In a vacuum, the gray $P_1$ equations are:
+
+\begin{gather}\label{eq:gray-p1}
+    \frac{\partial E}{\partial t} + \vec{\nabla} F = 0\\
+    \frac{1}{c}\frac{\partial F}{\partial t} + \frac{c}{3}\vec{\nabla}E = 0
+\end{gather}
+
+and the gray $P_{1/3}$ equations are:
+
+\begin{gather}\label{eq:gray-p13}
+    \frac{\partial E}{\partial t} + \vec{\nabla} F = 0\\
+    \frac{1}{3c}\frac{\partial F}{\partial t} + \frac{c}{3}\vec{\nabla}E = 0
+\end{gather}
+
+
+\subsection{} The grey time-dependent $P_1$ equations:
+
+The speed of the wave can be found using the standard wave equation:
+
+\begin{equation}\label{eq:wave-eqn}
+    \frac{\partial^2 u}{\partial t^2} = v^2 \nabla^2 u
+\end{equation}
+
+For some quantity $u$ traveling at speed $v$. In this case, $u=E$. Then, from \autoref{eq:gray-p1}, the second time derivative is
+
+\begin{equation}\label{eq:second-time-d}
+    \frac{\partial^2 E}{\partial t^2} = -\nabla \frac{\partial F}{\partial t}
+\end{equation}
+
+where $\nabla F$ can be found from the second line of \autoref{eq:gray-p1}:
+
+\begin{equation}
+    \frac{1}{c}\frac{\partial F}{\partial t} = - \frac{c}{3}\vec{\nabla}E
+\end{equation}
+\begin{equation}
+     \frac{\partial F}{\partial t} = - \frac{c^2}{3}\vec{\nabla}E
+\end{equation}
+\begin{equation}
+    \nabla \frac{\partial F}{\partial t} = - \nabla \frac{c^2}{3}\nabla E = - \frac{c^2}{3}\nabla^2 E
+\end{equation}
+
+plugging back into \autoref{eq:second-time-d},
+
+\begin{equation}
+    \frac{\partial^2 E}{\partial t^2} = -\nabla \frac{c^2}{3}\nabla^2 E
+\end{equation}
+
+which takes the form of the wave equation (\autoref{eq:wave-eqn}), where $v^2 = c^2/3$ or
+
+\begin{equation}
+    \boxed{v = \frac{c}{\sqrt{3}}}
+\end{equation}
+
+\subsection{} The grey time-dependent $P_{1/3}$ equations:
+
+Since the first equation of the two approximations are the same, the second time derivative of $E$ still isotropic
+
+\begin{equation}\label{eq:p13-second-time-d}
+    \frac{\partial^2 E}{\partial t^2} = -\nabla \frac{\partial F}{\partial t}
+\end{equation}
+
+the $\nabla F$ term can be found using the second line of \autoref{eq:gray-p13}:
+
+\begin{equation}
+    \frac{1}{3c}\frac{\partial F}{\partial t} = - \frac{c}{3}\vec{\nabla}E
+\end{equation}
+\begin{equation}
+    \frac{\partial F}{\partial t} = - c^2\nabla E
+\end{equation}
+\begin{equation}
+    \nabla \frac{\partial F}{\partial t} = - c^2\nabla^2 E
+\end{equation}
+
+Then, plugging into \autoref{eq:p13-second-time-d}, 
+
+\begin{equation}
+    \frac{\partial^2 E}{\partial t^2} = c^2\nabla^2 E
+\end{equation}
+
+This equation again takes the form of the wave equation, where
+
+\begin{equation}
+    \boxed{v = c}
+\end{equation}
+
+
+
 
 \section{} Derive the system of the time-dependent $P_1$ and MEB equations in multigroup form from the spectral $P_1$ and MEB equations given by
 
 \begin{gather*}
-    \frac{\partial E_\nu}{\partial t} + \nabla F_\nu = c\varkappa_\nu E\nu = 4\pi \varkappa_\nu B_\nu\\
+    \frac{\partial E_\nu}{\partial t} + \nabla F_\nu + c\varkappa_\nu E\nu = 4\pi \varkappa_\nu B_\nu\\
     \frac{\partial F_\nu}{\partial t} + \frac{1}{3}\nabla E_\nu + \varkappa_\nu F_\nu = 0\\
-    \frac{\partial \varepsilon(T)}{\partial t} = \varkappa _ \nu (cE_\nu - 4\pi B_\nu)
+    \frac{\partial \varepsilon(T)}{\partial t} = \varkappa_\nu (cE_\nu - 4\pi B_\nu)
 \end{gather*}
 
+Using the multigroup photon frequency convention:
 
-Note that as part of this derivation you will need to define group opacities in the multigroup photon balance, first moment, and MEB equations.
+\begin{gather*}
+    I_p = \int_{\nu_p}^{\nu_{p+1}}I_\nu d\nu\\
+    E_p = \int_{\nu_p}^{\nu_{p+1}}E_\nu d\nu\\
+    F_p = \int_{\nu_p}^{\nu_{p+1}}F_\nu d\nu
+\end{gather*}
 
-% TODO
+with the frequency range groups 
+
+\begin{gather*}
+    \omega_p = [\nu_p, \nu_{p+1}]; \; p=1,2,\dots,N_p\\
+    \nu_1 = 0; \; \nu_{N_p + 1} = \infty.
+\end{gather*}
+
+The zeroth moment is equal exactly to:
+
+\begin{equation}
+    \frac{\partial E_p}{\partial t} + \nabla F_p + c \int_p d\nu \; \varkappa_\nu E\nu = 4\pi \int_p d\nu \;\varkappa_\nu B_\nu.
+\end{equation}
+
+with the shorthand notation $\int_p = \int_{\nu_p}^{\nu_{p+1}}$. Substituting the opacities for their group-averaged opacities (weighted with the appropriate distribution) leaves the exact equation intact:
+
+\begin{equation}
+    \boxed{\frac{\partial E_p}{\partial t} + \nabla F_p + c \varkappa_p^E E_p = 4\pi \varkappa_p^B B_p}
+\end{equation}
+
+where the weighted opacities are:
+
+\begin{align}
+    \varkappa_p^B  &= \frac{\int_p d\nu \; \varkappa_\nu B_\nu}{\int_p d\nu \; B_\nu}\\
+    \varkappa_p^E &=  \frac{\int_p d\nu \; \varkappa_\nu E_\nu}{\int_p d\nu \; E_\nu}
+\end{align}
+
+
+Integrating the first moment over group frequency, and using the group opacity approximation defined above, is:
+
+\begin{equation}
+    \boxed{\frac{\partial F_p}{\partial t} + \frac{1}{3}\nabla E_p + \varkappa_p^F F_\nu = 0}
+\end{equation}
+
+with the weighted opacity:
+
+\begin{equation}
+    \varkappa_p^F  = \frac{\int_p d\nu \; \varkappa_\nu F_\nu}{\int_p d\nu \; F_\nu}.
+\end{equation}
+
+Integrating the MEB equation and using the group opacities from before yields:
+
+\begin{equation}
+    \boxed{\frac{\partial \varepsilon(T)}{\partial t} =  c\varkappa_p^E E_\nu - 4\pi \varkappa_p^B B_\nu}
+\end{equation}
+
+This leaves the group opacities:
+
+\begin{align}
+    \varkappa_p^B  &= \frac{\int_p d\nu \; \varkappa_\nu B_\nu}{\int_p d\nu \; B_\nu}\\
+    \varkappa_p^E &=  \frac{\int_p d\nu \; \varkappa_\nu E_\nu}{\int_p d\nu \; E_\nu}\\
+    \varkappa_p^F  &= \frac{\int_p d\nu \; \varkappa_\nu F_\nu}{\int_p d\nu \; F_\nu}.
+\end{align}
+
+
+Since $B_\nu(T)$ is a known distribution, the group opacity $\varkappa_p^B$ can be evaluated exactly, but the other two cannot, and must be approximated. Near equilibrium, when $E_\nu \approx B_\nu$, then the same $\varkappa_p^B$ can be used-- this method offers the advantage that group opacities are set once, and do not need to be calcualted iteratively. Another approximation would be averaging this opacity over $B_\nu(T_{rad})$ using the equivalent temperature of the radiation at this point in phase space, rather than the physical temperature, Where
+
+\begin{equation}
+    T_{rad} = \left(\frac{1}{a_R}\int_0 ^\infty E_\nu\right)^{1/4} = \left(\frac{1}{a_R}\sum_{p=1}^{N_p} E_p\right)^{1/4}.
+\end{equation}
+
+Using this approximation, 
+
+\begin{equation}
+     \varkappa_p^E  \approx \frac{\int_p d\nu \; \varkappa_\nu B_\nu (T_{rad})}{\int_p d\nu \; B_\nu (T_{rad})}.
+\end{equation}
+
 
 \end{document}
