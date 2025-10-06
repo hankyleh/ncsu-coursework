@@ -1,0 +1,59 @@
+\documentclass{template}
+\title{NE 795 Assignment 3}
+\author{Kyle Hansen}
+\date{8 October 2025}
+
+\begin{document}
+\maketitle
+
+
+\section{Plasma Based Ion Thrusters}
+
+\subsection{Exit velocity}
+
+A particle of charge $1\cdot q_e$ accelerated through a field with a potential difference of $500 \text{ V}$ will gain an energy of $500 \text{ eV}$. Then assuming $v_0 = 0$ and Xenon mass is $131.3\text{ amu}\cdot 931.5 \text{ MeV/c2 amu}$, the velocity gain at the end of the cylinder is
+
+\begin{equation}
+    \boxed{v_E = \sqrt{\frac{2E}{m}} = \sqrt{\frac{2\cdot 500 eV}{129.76 \text{ GeV/c2}}} = 8.18 \cdot 10^{-5}c = 2.711 \cdot 10^4 \text{m s}^{-1}.}
+\end{equation}
+
+The electric field strength can be found by dividing the potential difference by the length of the cylinder:
+
+\begin{equation}
+    \vec{E} = \frac{500\text{ V}}{0.15\text{ m}} = 3.333\cdot 10^3 \text{ V m}^{-1} = 3.333\cdot 10^3 \text{ N C}^{-1}
+\end{equation}
+
+Then the $E \times V$ velocity is:
+
+\begin{equation}
+    \boxed{|v_{E\times B}| = \frac{|\vec{E}_\perp\times\vec{B}|}{|B|^2} = \frac{2.5\times10^{-3}\cdot 3.33\times10^{3} }{\left(2.5\times10^{-3} \right)^2}\frac{\text{m}}{\text{s}} = 1.333\cdot 10^6 \frac{\text{m}}{\text{s}}
+    }
+\end{equation}
+
+where the vectors are orthogonal, so $|\vec{E}\times\vec{B}| = |\vec{E}|\cdot|\vec{B}|$. The direction of the velocity, defining the $E$-field to be parallel with the $z$-axis, is clockwise motion (away from the page at the bottom of the cylinder, into the page at the top of the cylinder)-- tangent to the cylinder.
+
+\subsection{Xe feed rate}
+
+Since force can be expressed in a change in momentum over time $dp/dt$, the force a flow of Xe fuel can be calculated using the exit velocity:
+
+\begin{equation}
+    F = \frac{\Delta p}{\Delta t} = \frac{\Delta (m)}{\Delta t} = \Delta v \frac{\Delta m}{\Delta t} = v_{\text{exit}} \dot{m}
+\end{equation}
+
+then, accounting for ionization efficiency (def. $\eta$), the mass consumption rate is:
+
+\begin{equation}
+    \boxed{\dot{m} = \frac{F}{\eta \cdot v_{\text{exit}} } = \frac{0.08\text{ N}}{0.9 \cdot 2.711 \cdot 10^4 \text{ m s}^{-1}} = 3.280 \cdot 10^{-6} \; \frac{\text{kg}}{\text{s}}}
+\end{equation}
+
+
+
+
+% \bibliographystyle{ieeetr}
+% \bibliography{references.bib}
+
+
+
+
+
+\end{document}
