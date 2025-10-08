@@ -1,4 +1,6 @@
 import numpy
+import scipy
+import scipy.integrate as integrate
 import matplotlib
 from matplotlib import pyplot as plt
 
@@ -27,8 +29,29 @@ def FC_opacity(k0, T, nu):
     kappa = (k0/(h*nu)**3)*(1-numpy.exp(-h*nu/(k*T)))
     return kappa
 
+def group_opacity_planck(T, nu, kappa):
+    z0 = (h*nu[0])/(k*T)
+    z1 = (h*nu[1])/(k*T)
+    sigma = (z0**3)+(3*z0**2)+(6*z0)+7.28 - (numpy.exp(z0-z1)*((z1**3)+(3*z1**2)+(6*z1)+7.28))
+    int_k = kappa * (1 - numpy.exp(z0-z1)) / (sigma* (k*T)**3)
+    return int_k
+
+def dBdT(T, nu):
+    d = ((2* h**2 * nu**4)/(c**2 * k * T**2))*numpy.exp(h*nu/(k*T))/(numpy.exp(h*nu/(k*T)) - 1)
+    return d
+
 def fr(T, nu):
     return((h*nu)/(k*T))
+
+def group_opacity_rosseland(T, nu, kappa):
+    def num_func(n):
+        return dBdT(T, n)/kappa(27, T, n)
+    numerator = integrate.quad(num_func, nu[0], nu[1])
+    denominator = numpy.abs(numpy.exp(fr(T, nu[1])) - 1) - numpy.abs(numpy.exp(fr(T, nu[0])) - 1)
+    return numerator/denominator
+
+
+
 
 T = numpy.array([1, 10**2, 10**3]/k).astype(numpy.float128)
 nu = numpy.zeros((3, 1000))
@@ -54,7 +77,7 @@ bounds = numpy.array([0, 0.7075, 1.415, 2.123, 2.830, 3.538, 4.245,
     13.09, 1e4])*(1000/h)
 
 bin_widths = (bounds[1:] - bounds[0:-1])
-log_nu = numpy.linspace(numpy.log(0.01*bounds[1]), numpy.log(bounds[-1]), 250)
+log_nu = numpy.linspace(numpy.log(0.001*bounds[1]), numpy.log(bounds[-1]), 250)
 nu = numpy.exp(log_nu)
 
 B_g = numpy.zeros((3, len(bounds)-1))
@@ -67,28 +90,31 @@ for t in range(0, len(T)):
     plt.xscale('log')
     plt.yscale('log')
     plt.legend()
-    plt.show()
+    # plt.show()
     plt.close()
 
 
-kappa_B_g = B_g
+kappa_B_g  = numpy.zeros(B_g.shape)
 for t in range(0, len(T)):
     for g in range(0, len(bounds)-1):
         z = fr(T[t], bounds[g])
         z1 = fr(T[t], bounds[g+1])
         # if (z >= 10) and (z1 >= 10):
-        kappa_B_g[t][g] = 27*(1 - numpy.exp(-(bounds[g+1]-bounds[g])*h/(k*T[t])))/(((k*T[t])**3)* numpy.exp(fr(T[t], bounds[g])) *(int_planck(T[t], bounds[g+1]) - int_planck(T[t], bounds[g])))
-        # else:
-            # kappa_B_g[t][g] = 27*(numpy.exp(-z1) - numpy.exp(-z))/(((k*T[t])**3)*(int_planck(T[t], bounds[g+1]) - int_planck(T[t], bounds[g])))
+        # kappa_B_g[t][g] = group_opacity_planck(T[t], bounds[g:g+2], 27)
+        print(group_opacity_rosseland(T[t], bounds[g:g+2], FC_opacity))
+        kappa_B_g[t][g] = group_opacity_rosseland(T[t], bounds[g:g+2], FC_opacity)
+
     plt.figure()
     plt.plot(nu*h, FC_opacity(27, T[t], nu), label = "spectral opacity")
     plt.stairs(kappa_B_g[t], edges = (bounds*h), label = "Group opacity")
     plt.legend()
     plt.xscale('log')
     plt.yscale('log')
-    plt.show()
+    # plt.show()
     plt.close()
-print(kappa_B_g)
+    print(kappa_B_g[t])
+    print()
+    print(B_g[t])
 
 ratio = kappa_B_g
 for t in range(0, len(T)):
