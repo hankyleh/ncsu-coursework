@@ -3,6 +3,8 @@
 \author{Kyle Hansen}
 \date{8 October 2025}
 
+\usepackage{cancel}
+
 \begin{document}
 \maketitle
 
@@ -46,6 +48,58 @@ then, accounting for ionization efficiency (def. $\eta$), the mass consumption r
     \boxed{\dot{m} = \frac{F}{\eta \cdot v_{\text{exit}} } = \frac{0.08\text{ N}}{0.9 \cdot 2.711 \cdot 10^4 \text{ m s}^{-1}} = 3.280 \cdot 10^{-6} \; \frac{\text{kg}}{\text{s}}}
 \end{equation}
 
+
+\subsection{Chemical Rocket Equivalent}
+
+Using the same formula as for the Xe consumption (where force is change in momentum), and assuming an efficiency of $\eta = 1$,
+
+\begin{equation}
+    \boxed{\frac{F}{\eta \cdot v_{\text{exit}} } = \frac{0.08\text{ N}}{9.0 \cdot 10^3 \text{ m s}^{-1}} = 8.89 \cdot 10^{-5} \; \frac{\text{kg}}{\text{s}}}
+\end{equation}
+
+or about 27 times the mass consumption rate for the ion thruster.
+
+\section{Particle Trajectories}
+
+Because there si no $\vec{I}$ field, the only variables to consider in this particle's equation of motion are Lorentz force $\vec{F} = q\left(\vec{v}\times\vec{B}\right)$ and the generalized drift velocity $\vec{v}_{drift} = \left(  \vec{v}_\parallel^2  + \frac{1}{2} \vec{v}_\perp^2 \right) \frac{\vec{B}\times\nabla\vec{B}}{\omega_c B^2}$. Since the magnetic field around a current is given by
+
+\begin{equation}
+    B = \frac{\mu_0 I}{2\pi r}
+\end{equation}
+
+and has a (right-handed) curved shape relative to the $+\vec{I}$-direction, some quantities can be found:
+
+\begin{equation}
+    \nabla\vec{B} = \frac{\partial \vec{B}}{\partial r} = -\frac{\mu_0 I}{2\pi}\frac{1}{r^2}
+\end{equation}
+
+(in the direction of $-r$, towards the wire)
+
+\begin{equation}
+    |\vec{B}\times\nabla\vec{B}| = \left(frac{\mu_0 I}{2\pi}\right)\frac{1}{r^3}.
+\end{equation}
+
+Then, the magnitude of $\vec{v}_{drift}$ is
+
+\begin{equation}
+    |\vec{v}_{drift}| = \left(  \vec{v}_\parallel^2  + \frac{1}{2} \vec{v}_\perp^2 \right)\frac{1}{\omega_c r},
+\end{equation}
+
+where $\vec{v}_\parallel$ is the velocity parallel to the $B$-field. Since $\vec{v}_0$ is parallel to the current, $\vec{v}_\parallel|_{t=0} = 0$ and $\vec{v}_\perp|_{t=0} = \vec{v}_0$.
+
+The Lorentz force can be subdivided into its components, where $\vec{v} = \vec{v}_\parallel + \vec{v}_\perp$ (perpendicular and parallel to $\vec{B}$, implying no relation to $\vec{I}$). The force is then
+
+\begin{equation}
+    \frac{F} = q\left( \vec{v} \times \vec{B} \right) = \cancelto{0}{q\left( \vec{v}_\parallel \times \vec{B} \right)} + q\left( \vec{v}_\perp \times \vec{B} \right).
+\end{equation}
+
+Note that since the drift velocity is always parallel to $\vec{I}$ and the Lorentz force is perpendicular to the direction of the magnetic field, assuming no other force acts on the charge, the charge always stays in the same plane, and the position can be represented as only two variables, $r$ and $z$. Its velocity is also always perpendicular to $\vec{B}$.
+
+\begin{equation}
+    \vec{F} = q\left( \sqrt{v_r+v_z}\cdot B \right)\hat{n}
+\end{equation}
+
+where $\hat{n}$ is the unit vector in the direction of $\vec{v}\times\vec{B}$.
 
 
 
