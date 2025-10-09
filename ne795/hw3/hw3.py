@@ -12,7 +12,6 @@ sigR = numpy.float128(3.53916934e7) # eV / (cm^2 * s * K^4)
 aR = numpy.float128(4.72215928e-3)  # eV / (cm^2 * s * K^4) 
 
 
-
 def planck(T, nu):
     B = (2*h*(nu**3)/(c**2))*(1/numpy.exp((h*nu)/(k*T)))
     return(B)
