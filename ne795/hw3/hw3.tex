@@ -17,14 +17,263 @@
 
 \section{Equilibrium Diffusion Limit}
 
+The asymptotic analysis of the full TRT problem (in intensity rather than energy density) finds that:
+
+\begin{equation*}
+  (C_v + 4a_R T^3)\frac{\partial T}{\partial t} - \nabla \frac{4a_R T^3}{3\varkappa}\nabla T = 0
+\end{equation*}
+
+To order of $\epsilon^1$.
+
+The $P_{1/3}$ equations are given by:
+
+\begin{gather*}
+  \frac{\partial E}{\partial t} + \vec{\nabla}\cdot\vec{F} + c \varkappa E = \varkappa a c T^4\\
+  \frac{1}{3c}\frac{\partial F}{\partial t} + \frac{c}{3}\nabla E + \varkappa \vec{F} = 0\\
+  c_v \frac{\partial T}{\partial t} = \varkappa c \left( E - aT^4 \right)
+\end{gather*}
+
+where $a = a_R$. In the asymptotic limit, where $\frac{\partial}{\partial t} \rightarrow \epsilon^2 \frac{\partial}{\partial t}$ and $\nabla \rightarrow \epsilon \nabla$, assuming the true distributions can be expanded as a power series in $\epsilon$, the expanded equations become:
+
+\begin{gather}
+  \epsilon^2 \sum \epsilon^n \frac{\partial E^{(n)}}{\partial t} + \epsilon\vec{\nabla} \cdot \sum \epsilon^n \vec{F^{(n)}} + c \varkappa \sum \epsilon^n E^{(n)} = \varkappa a c \sum \epsilon^n \left(T^4\right)^{(n)}\\
+  \frac{\epsilon^2}{3c} \sum \epsilon^n\frac{\partial F^{(n)}}{\partial t} + \frac{\epsilon}{3} \sum \epsilon^n\nabla E^{(n)} + \varkappa \sum \epsilon^n \vec{F^{(n)}} = 0\\
+  \epsilon^2 c_v \sum \epsilon^n \frac{\partial T^{(n)}}{\partial t} = \varkappa c \sum \epsilon^n \left( E^{(n)} - a\left(T^4\right)^{(n)} \right)
+\end{gather}
+
+Then, the $O(\epsilon^0)$ equations are:
+
+\begin{equation}\label{eq:o0-energy}
+  c\varkappa E^{(1)} = c\varkappa a \left(T^4 \right)^{(1)}
+\end{equation}
+
+\begin{equation}\label{eq:o0-flux}
+   \varkappa \vec{F^{(1)}} = 0
+\end{equation}
+
+\begin{equation}\label{eq:o0-material}
+  0 = \varkappa c \left[ E^{(0)} - a \left( T^4 \right)^{(0)} \right] 
+\end{equation}
+
+
+And the $O(\epsilon^1)$ equations are:
+
+\begin{equation}\label{eq:o1-energy}
+   \vec{\nabla}\vec{F}^{(0)} + c\varkappa E^{(1)} = c\varkappa a \left(T^4 \right)^{(1)}
+\end{equation}
+
+\begin{equation}\label{eq:o1-flux}
+   \frac{c}{3}\nabla E^{(0)} + \varkappa \vec{F^{(1)}} = 0
+\end{equation}
+
+\begin{equation}\label{eq:o1-material}
+  0 = \varkappa c \left[ E^{(1)} - a \left( T^4 \right)^{(1)} \right] 
+\end{equation}
+
+And the $O(\epsilon^2)$ equations are:
+
+\begin{equation}\label{eq:o2-energy}
+   \frac{\partial E^{(0)}}{\partial t} + \vec{\nabla}\vec{F}^{(1)} + c\varkappa E^{(2)} = c\varkappa a \left(T^4 \right)^{(2)}
+\end{equation}
+
+\begin{equation}\label{eq:o2-flux}
+  \frac{1}{3c}\frac{\partial F^{(0)}}{\partial t} + \frac{c}{3}\nabla E^{(1)} + \varkappa \vec{F^{(2)}} = 0
+\end{equation}
+
+\begin{equation}\label{eq:o2-material}
+  c_v \frac{\partial T^{(0)}}{\partial t} = \varkappa c \left[ E^{(2)} - a \left( T^4 \right)^{(2)} \right] 
+\end{equation}
+
+And the $O(\epsilon^3)$ equations are:
+
+\begin{equation}\label{eq:o3-energy}
+   \frac{\partial E^{(1)}}{\partial t} + \vec{\nabla}\vec{F}^{(2)} + c\varkappa E^{(3)} = c\varkappa a \left(T^4 \right)^{(3)}
+\end{equation}
+
+\begin{equation}\label{eq:o3-flux}
+  \frac{1}{3c}\frac{\partial F^{(1)}}{\partial t} + \frac{c}{3}\nabla E^{(2)} + \varkappa \vec{F^{(3)}} = 0
+\end{equation}
+
+\begin{equation}\label{eq:o3-material}
+  c_v \frac{\partial T^{(1)}}{\partial t} = \varkappa c \left[ E^{(3)} - a \left( T^4 \right)^{(3)} \right] 
+\end{equation}
+
+
+From these equations, some results are immediately apparant. From \autoref{eq:o0-energy} and \autoref{eq:o0-flux}, 
+
+\begin{equation}
+  \boxed{ E^{(0)} = a (T^4)^{(0)} = a\left(T^{(0)} \right)^4}
+\end{equation}
+
+\begin{equation}
+  \boxed{   \vec{F}^{(0)} = 0.}
+\end{equation}
+
+
+From \autoref{eq:o1-material}, 
+
+\begin{gather}
+  0 = \varkappa c \left[ E^{(1)} - a \left( T^4 \right)^{(1)} \right]\\
+  0 = \left[ E^{(1)} - a \left( T^4 \right)^{(1)} \right]\\
+  \boxed{
+    E^{(1)}  =     a \left( T^4 \right)^{(1)}  = 4a \left( T^{(0)} \right)^3 T^{(1)}}
+\end{gather}
+
+and from \autoref{eq:o1-flux}:
+
+\begin{gather}
+  \vec{F^{(1)}} = -\frac{c}{3 \varkappa} \nabla E^{(0)}\\
+  \boxed{\vec{F^{(1)}} = -\frac{c a}{3 \varkappa} \nabla \left(T^{(0)} \right)^4}
+\end{gather}
+
+These results give the $O(\epsilon)$ and $O(1)$ asymptotic limits of energy density and flux. The temperature approximation can be found using \autoref{eq:o2-energy} and plugging in the results found above,
+
+
+\begin{gather}
+     \frac{\partial E^{(0)}}{\partial t} + \vec{\nabla}\vec{F}^{(1)} + c\varkappa E^{(2)} = c\varkappa a \left(T^4 \right)^{(2)}\\
+  a \frac{\partial \left( T^{(0)} \right)^4}{\partial t} + \nabla \left( -\frac{c a}{3 \varkappa} \nabla {\left(T^{(0)} \right)}^4\right) + \cancelto{0}{ c \varkappa E^{(0)}} = \cancelto{0}{c \varkappa E^{(0)}} - c_v \frac{\partial T^{(0)}}{\partial t}\\
+  c_v \frac{\partial T^{(0)}}{\partial t} + a \frac{\partial \left( T^{(0)} \right)^4}{\partial t} - \nabla\frac{ca}{3\varkappa}\nabla\left(T^{(0)} \right)^4 = 0
+\end{gather}
+
+and, since $\frac{\partial T^4}{\partial t} = 4T^3\frac{\partial T}{\partial t}$ and $\nabla T^4 = 4T^3 \nabla T$, this result reduces to 
+
+\begin{equation} 
+  \boxed{ \left( c_v + 4a\left(T^{(0)} \right)^3 \right) \frac{\partial T^{(0)}}{\partial t}  - \nabla \frac{4ca \left(T^{(0)} \right)^3}{3\varkappa} \nabla T^{(0)}. }
+\end{equation}
+
+
+Then, similarly evaluating \autoref{eq:o3-energy}, using terms from \autoref{eq:o1-material} and \autoref{eq:o2-flux}, and expanding $T^4$ terms as before,
+
+
+\begin{gather}
+  \frac{\partial E^{(1)}}{\partial t} + \vec{\nabla}\vec{F}^{(2)} + c\varkappa E^{(3)} = c\varkappa a \left(T^4 \right)^{(3)}\\
+  \frac{\partial }{\partial t} \left( a \left( T^4 \right)^{(1)}  = 4a \left( T^{(0)} \right)^3 T^{(1)}\right) + \vec{\nabla} \left(  \cancelto{0}{-\frac{1}{3\varkappa c} \frac{\partial F^{(0)}}{\partial t} }    - \frac{c}{3\varkappa} \nabla E^{(1)}  \right) + \cancelto{0}{c\varkappa E^{(3)}} = \cancelto{0}{c\varkappa E^{(3)}} - c_v \frac{\partial T^{(1)}}{\partial t}\\
+  \boxed{c_v \frac{\partial T^{(1)}}{\partial t} + 4a {T^{(0)}}^3 \frac{\partial  T^{(1)}}{\partial t} - \nabla \frac{4ca \left(T^{(0)} \right)^3}{3\varkappa} \nabla T^{(1)}}  
+\end{gather}
+
+Then, the $O(\epsilon)$ approximation of temperature is $T = T^{(0)} + \epsilon T^{(1)}$. Then, multiplying the $T^{(1)}$ equation by $\epsilon$ and adding to the $T^{(0)}$ equation yields the equilibrium diffusion limit which is consistent with the tranpsort limit:
+
+\begin{equation}
+  \boxed{ \left( c_v + 4aT^3 \right) \frac{\partial T}{\partial t}  - \nabla \frac{4ca T^3}{3\varkappa} \nabla T. }
+\end{equation}
+
+
+
+\clearpage
 \section{Spectral Planck Function}
 
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{planck1.0.png}
+        \caption{1 eV}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{planck100.0.png}
+        \caption{100 eV}
+    \end{subfigure}
+
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{planck1000.0.png}
+        \caption{1000 eV}
+    \end{subfigure}
+  \caption{Planck function}
+\end{figure}
+
+
+
+\clearpage
 \section{Group Planck Function}
 
+\begin{figure}[h]
+  \centering
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{group_planck1.0.png}
+        \caption{1 eV}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{group_planck100.0.png}
+        \caption{100 eV}
+    \end{subfigure}
+
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{group_planck1000.0.png}
+        \caption{1000 eV}
+    \end{subfigure}
+  \caption{Grouped planck function}
+\end{figure}
+
+\clearpage
 \section{Group Planck Opacities}
 
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{planckopacities1.0.png}
+        \caption{1 eV}
+    \end{subfigure}
+  \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{planckopacities100.0.png}
+        \caption{100 eV}
+    \end{subfigure}
+
+  \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{planckopacities1000.0.png}
+        \caption{1000 eV}
+    \end{subfigure}
+  \caption{Group Planck Opacities}
+\end{figure}
+
+
+
+\clearpage
 \section{Group Rosseland Opacities}
 
+Algebraic manipulation yields a formula for Rosseland opacities when using Fleck-Cummings opacity:
 
+\begin{equation}
+  \varkappa_{g,R} =  \frac{\varkappa^\star}{h^3}   \frac{ \int_g d\nu \;   \nu^4 {\left(  1 - e^{-h\nu/kT}  \right)}^{-2}   }{     \int_g d\nu \;   \nu^7 {\left(  1 - e^{-h\nu/kT}  \right)}^{-3}  }
+\end{equation}
+
+which I numerically integrated using \verb|scipy.integrate.quad()|.
+
+\begin{figure}[h]
+  \centering
+  
+  \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{rosseland1.0.png}
+        \caption{1 eV}
+  \end{subfigure}
+  \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{rosseland100.0.png}
+        \caption{100 eV}
+  \end{subfigure}
+
+  \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{rosseland1000.0.png}
+        \caption{1000 eV}
+  \end{subfigure}
+  \caption{Group Rosseland Opacities}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+
+  \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{comparison1.0.png}
+        \caption{1 eV}
+  \end{subfigure}
+  \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{comparison100.0.png}
+        \caption{100 eV}
+  \end{subfigure}
+
+  \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{comparison1000.0.png}
+        \caption{1000 eV}
+  \end{subfigure}
+  \caption{Grouped Opacities}
+\end{figure}
 
 \end{document}

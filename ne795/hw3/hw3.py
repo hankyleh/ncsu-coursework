@@ -13,7 +13,7 @@ aR = numpy.float128(4.72215928e-3)  # eV / (cm^2 * s * K^4)
 
 
 def planck(T, nu):
-    B = (2*h*(nu**3)/(c**2))*(1/numpy.exp((h*nu)/(k*T)))
+    B = 2*h*(nu**3)/((c**2)*(numpy.exp((h*nu)/(k*T)) - 1))
     return(B)
 
 def int_planck(T, nu):
@@ -61,20 +61,21 @@ def group_opacity_rosseland(T, nu, kappa):
 T = numpy.array([1, 10**2, 10**3]/k).astype(numpy.float128)
 nu = numpy.zeros((3, 1000))
 
-nu[0] = numpy.linspace(0.001, 3e15, 1000)*(1/h)
-nu[1] = numpy.linspace(0.001, 3e17, 1000)*(1/h)
-nu[2] = numpy.linspace(0.001, 3e18, 1000)*(1/h)
+nu[0] = numpy.linspace(0.001, 1e1, 1000)*(1/h)
+nu[1] = numpy.linspace(0.001, 1e3, 1000)*(1/h)
+nu[2] = numpy.linspace(0.001, 1e4, 1000)*(1/h)
 
 
 colors = ['green', 'orange', 'red']
 for t in range(0, len(T)):
-    plt.figure()
-    plt.plot(h*nu[t], planck(T[t], (nu[t]*h)), label=f"kT = {k*T[t]:.1f} eV", color=colors[t])
+    plt.figure(dpi=350)
+    plt.plot(h*nu[t], planck(T[t], (nu[t])), label=f"kT = {k*T[t]:.1f} eV", color=colors[t])
     plt.legend()
     plt.title(f"Planck Function, kT = {k*T[t]:.1f} eV")
     plt.xlabel("$h\\nu$ [eV]")
     plt.ylabel("$B_\\nu(T)$ [eV/cm2]")
     # plt.show()
+    plt.savefig(f"planck{T[t]*k:.1f}.png")
     plt.close()
 
 bounds = numpy.array([0.000, 0.7075, 1.415, 2.123, 2.830, 3.538, 4.245,
@@ -89,13 +90,18 @@ B_g = numpy.zeros((3, len(bounds)-1))
 for t in range(0, len(T)):
     for g in range(0, len(bounds)-1):
         B_g[t][g] = (2*(k*T[t])**4)*(int_planck(T[t], bounds[g+1]) - int_planck(T[t], bounds[g]))/((h**3)*(c**2))
-    plt.figure()
+    plt.figure(dpi=350)
     plt.plot(nu*h, planck(T[t], nu), label= "Planck Function")
     plt.stairs((B_g[t]/(bin_widths)), edges = (bounds*h), label="Group approximation")
     plt.xscale('log')
     plt.yscale('log')
+    plt.ylim(1e-8, 1e20)
     plt.legend()
+    plt.title(f"Group Planck Aprpoximations, T={T[t]*k:.1f} eV")
+    plt.xlabel("$h\\nu$ [eV]")
+    plt.ylabel("$B(\\nu)$")
     # plt.show()
+    plt.savefig(f"group_planck{T[t]*k:.1f}.png")
     plt.close()
 
 kappa_B_g  = numpy.zeros(B_g.shape)
@@ -104,35 +110,47 @@ for t in range(0, len(T)):
     for g in range(0, len(bounds)-1):
         z = fr(T[t], bounds[g])
         z1 = fr(T[t], bounds[g+1])
-        # if (z >= 10) and (z1 >= 10):
-        # kappa_B_g[t][g] = group_opacity_planck(T[t], bounds[g:g+2], 27)
-        # print(group_opacity_rosseland(T[t], bounds[g:g+2], FC_opacity))
         kappa_B_g[t][g] = group_opacity_planck(T[t], bounds[g:g+2], 27)
         kappa_R_g[t][g] = group_opacity_rosseland(T[t], bounds[g:g+2], FC_opacity)
 
-    plt.figure()
-    plt.plot(nu*h, FC_opacity(27, T[t], nu), label = "spectral opacity")
-    plt.stairs(kappa_B_g[t], edges = (bounds*h), label = "Group opacity")
+    plt.figure(dpi=350)
+    plt.plot(nu*h, FC_opacity(27, T[t], nu), label = "Spectral Opacity")
+    plt.stairs(kappa_B_g[t], edges = (bounds*h), label = "Group Opacity")
     plt.legend()
     plt.xscale('log')
     plt.yscale('log')
-    plt.show()
-    plt.savefig(f"planck{T[t]:.0f}.png")
+    plt.title(f"Planck Group Opacities, T={T[t]*k:.1f} eV")
+    plt.xlabel("$h\\nu$ [eV]")
+    plt.ylabel("$\\varkappa$")
+    # plt.show()
+    plt.savefig(f"planckopacities{T[t]*k:.1f}.png")
     plt.close()
 
-    plt.figure()
-    plt.plot(nu*h, FC_opacity(27, T[t], nu), label = "spectral opacity")
+    plt.figure(dpi=350)
+    plt.plot(nu*h, FC_opacity(27, T[t], nu), label = "Spectral Opacity")
     plt.stairs(kappa_R_g[t], edges = (bounds*h), label = "Group Opacity")
     plt.legend()
     plt.xscale('log')
     plt.yscale('log')
-    plt.show()
-    plt.savefig(f"rosseland{T[t]:.0f}.png")
+    plt.title(f"Rosseland Group Opacities, T={T[t]*k:.1f} eV")
+    plt.xlabel("$h\\nu$ [eV]")
+    plt.ylabel("$\\varkappa$")
+    # plt.show()
+    plt.savefig(f"rosseland{T[t]*k:.1f}.png")
     plt.close()
 
 
-    plt.figure()
-    plt.stairs
+    plt.figure(dpi=350)
+    plt.stairs(kappa_R_g[t], edges = (bounds*h), label = "Rosseland")
+    plt.stairs(kappa_B_g[t], edges = (bounds*h), label = "Planck")
+    plt.legend()
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.xlabel("$h\\nu$ [eV]")
+    plt.ylabel("$\\varkappa$")
+    plt.title(f"Group Opacity Comparison, T = {T[t]*k:.1f} [eV]")
+    plt.savefig(f"comparison{T[t]*k:.1f}.png")
+    plt.close()
 
 
 
