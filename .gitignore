@@ -9,5 +9,5 @@ _minted/
 *.fls
 *.xdv
 *.fdb_latexmk
-
+*.png
 venv/

@@ -1,0 +1,383 @@
+\documentclass{template}
+
+\title{MA 580 Assignment 2}
+\author{Kyle Hansen}
+\date{26 September 2025}
+
+\usepackage{cancel}
+
+\newcommand{\maxmag}{\mathrm{\mathbf{maxmag}}}
+\newcommand{\minmag}{\mathrm{\mathbf{minmag}}}
+
+\begin{document}
+
+\maketitle
+
+\textbf{AI Use Statement: }Here is where I put the AI use Statement
+
+
+\section{Rank 1 matrices}
+
+\subsection{}
+
+If $v \in \mathbb{R}^n$ and $u \in \mathbb{R}^m$, then the product $A = uv^T$ can be expressed visually as:
+
+\begin{equation}\label{eq:first-statement}
+  A = uv^T = \begin{pmatrix}
+            u_1\\
+            u_2\\
+            \vdots \\
+            u_m\end{pmatrix} \begin{pmatrix}
+              v_1 v_2 \cdots v_n
+  \end{pmatrix} = 
+  \begin{bmatrix}
+    u_1v_1 & u_1v_2 & \cdots &   \\
+    u_2v_1 & u_2v_2 &  &  \\
+    \vdots  &  &  \ddots  &  \\
+      &  & &  u_mv_n  \\
+  \end{bmatrix}
+\end{equation}
+
+clearly each column is the vector $u$, scaled by constant $v_1, v_2, \dots, v_n$ and each row is a similarly scaled vector $v^T$. Since all rows and all columns are linarly dependent on each other (there are no two linearly independent rows or columns), the matrix has rank 1.
+
+The column and row vectors of any matrix rank 1 $A \in \mathbb{R}^{m\times n}$ must be scalar multiples of each other (linear dependence, by the definiiton of rank 1), so it may be written, using appropriate definitions of $u_i$ and $v_i$, as
+
+\begin{equation}
+  A = \begin{bmatrix}
+    u_1v_1 & u_1v_2 & \cdots &   \\
+    u_2v_1 & u_2v_2 &  &  \\
+    \vdots  &  &  \ddots  &  \\
+      &  & &  u_mv_n  \\
+  \end{bmatrix}.
+\end{equation}
+
+This defines such a matrix where all rows and all columns are scalar mulitples of each other, and can be alternatively be rewritten $A = uv^T$ where $v \in \mathbb{R}^n$ and $u \in \mathbb{R}^m$ and both vectors are nonzero. Thus if the matrix $A$ has rank 1, it can be written as $A = uv^T$. From \autoref{eq:first-statement}, the reverse is also true-- if a matrix $A \in \mathbb{R}^{m\times n}$ is defined as $A = uv^T$ for any nonzero $v \in \mathbb{R}^n$ and $u \in \mathbb{R}^m$, then $A$ has rank 1.
+
+Then the original problem statement has been proven: a matrix $A \in \mathbb{R}^{m\times n}$ is rank 1 if and only if $A = uv^T$ for nonzero $v \in \mathbb{R}^n$ and $u \in \mathbb{R}^m$.
+
+\subsection{}
+
+From the previous part, a rank 1 matrix $A$ can be written using nonzero $v \in \mathbb{R}^n$ and $u \in \mathbb{R}^m$. 
+
+
+$\hat{U}$ and $\hat{V}$ are defined using $u$ and $v$ from the previous part, where $\hat{U}$ is the vector $u$, normalized and repeated $m$ times, and $\hat{V}$ is the vector $v$, normalized and repeated $n$:
+
+\begin{equation}
+  \begin{gathered}
+  \hat{U}= \begin{bmatrix}
+    u/\norm{u} & u/\norm{u} & \cdots & u/\norm{u}
+  \end{bmatrix}^{m\times m}\\
+  \hat{V} = \begin{bmatrix}
+    v/\norm{v} & v/\norm{v} & \cdots & v/\norm{v}
+  \end{bmatrix}^{n\times n}
+  \end{gathered}
+\end{equation}
+
+This satisfies the dimension of $\hat{U}$ and $\hat{V}$, as well as the condition that they have unitary columns.
+
+Since a rank 1 matrix only has one non-zero singular value $\sigma$, the singular value matrix $\hat{\Sigma}$ is composed of all zero elements, except $\Sigma_{1,1} = \sigma$, where in this case
+
+\begin{equation}
+  \sigma = \norm{u}\cdot \norm{v}.
+\end{equation}
+
+Alternatively, all three matrices can be further reduced, defining the $1\times 1$ matrix $\hat{\Sigma} = \sigma$, and $\hat{U}$ and $\hat{V}$ can be reduced to $m\times 1$ and $n \times 1$ matrices, respectively. Then this condensed SVD is:
+
+\begin{equation}
+  A = \frac{u}{\norm{u}}\norm{u}\norm{v}\frac{v}{\norm{v}}.
+\end{equation}
+
+\subsection{}
+
+In this matrix, $u = \begin{bmatrix}3&4\end{bmatrix}^T$ and $v = \begin{bmatrix}1&2&3\end{bmatrix}^T$. Then, since $\norm{u}_2 = 5$ and $\norm{v}_2 = \sqrt{14}$, the condensed SVD (using $\hat{U} \in \mathbb{R}^{m\times 1}$ and $\hat{V} \in \mathbb{R}^{n\times 1}$ as before) is:
+
+\begin{equation}
+  A = (5\sqrt{14}) \begin{bmatrix}
+    \frac{3}{5}\\
+    \frac{4}{5}
+  \end{bmatrix}\begin{bmatrix}
+    \frac{1}{\sqrt{14}} & \frac{2}{\sqrt{14}} & \frac{3}{\sqrt{14}}
+  \end{bmatrix}
+\end{equation}
+
+and $\norm{A}_2 = 5\sqrt{14}$.
+
+
+\section{SVD}
+
+Using some definitions
+
+\begin{equation}
+  \begin{aligned}
+    A &= U\Sigma V^T\\
+    A^T &= V \Sigma U^T\\
+    A^\dagger &= V\Sigma^\dagger U^T
+  \end{aligned}
+\end{equation}
+
+And letting the product $\Sigma^\dagger \Sigma = \tilde{I}$ be defined by:
+
+\begin{equation}
+  \Sigma^\dagger \Sigma = \begin{bmatrix}
+    \hat{\Sigma}^{-1} & 0\\
+    0 & 0
+  \end{bmatrix}\begin{bmatrix}
+    \hat{\Sigma} & 0\\
+    0 & 0
+  \end{bmatrix} = \begin{bmatrix}
+    I^{r\times r} & 0\\
+    0 & 0
+  \end{bmatrix} = \tilde{I}
+\end{equation}
+
+where $\tilde{I}$ is the $m\times m$ matrix where the first $r$ diagonal entries are ones, and the rest are zeros-- the result of this operation is retaining only the first $r$ rows when multipling on the right, and only the first $r$ columns when multiplying on the right. Since both $\Sigma$ and $\Sigma^\dagger$ contain only $r$ nonzero rows and columns, $\tilde{I}\Sigma = \Sigma$, and $\tilde{I}\Sigma^\dagger = \Sigma^\dagger$
+
+Then the proof can be shown with some algebraic manipulation:
+
+\begin{equation}
+  \begin{aligned}
+    A^T A &=  V\Sigma \cancelto{I}{U^T U} \Sigma V^T\\
+    (A^T A) &=V\Sigma\Sigma V^T\\
+    (A^T A)^{-1} &= V\Sigma^\dagger\Sigma^\dagger V^T\\
+    (A^T A)^{-1}A^T &= V\Sigma^\dagger\Sigma^\dagger \cancelto{I}{V^T V} \Sigma U^T\\
+    (A^T A)^{-1}A^T &= V\Sigma^\dagger \cancelto{\tilde{I}}{\Sigma^\dagger \Sigma} U^T\\
+    (A^T A)^{-1}A^T &= V\Sigma^\dagger U^T\\
+    (A^T A)^{-1}A^T &= A^\dagger.
+  \end{aligned}
+\end{equation}
+
+This is equivalent to directly solving the normal equations for overdetermined least squares:
+
+\begin{equation}
+  \begin{aligned}
+    Ax &= b\\
+    A^T Ax &= A^T b\\
+    x &= (A^T A)^{-1} A^T b\\
+    x &=A^\dagger b.
+  \end{aligned}
+\end{equation}
+
+\subsection{}
+
+Similar to before,
+
+\begin{equation}
+  \begin{aligned}
+    A A^T &= U\Sigma \cancel{V^T V} \Sigma U^T\\
+    (A A^T)^{-1} &= U \Sigma^\dagger\Sigma^\dagger U^T\\
+    A^T(A A^T)^{-1} &= V \Sigma \cancel{U^T U} \Sigma^\dagger\Sigma^\dagger U^T\\
+    A^T(A A^T)^{-1} &= V \cancel{\Sigma\Sigma^{-1}}\Sigma^{-1} U^T\\
+    A^T(A A^T)^{-1} &= V \Sigma^\dagger U^T\\
+    A^T(A A^T)^{-1} &= A^\dagger\\
+  \end{aligned}
+\end{equation}
+
+\subsection{}
+
+The third part can be shown similarly to the previous two:
+
+\begin{equation}
+  \begin{aligned}
+    A^\dagger A &= V \Sigma^\dagger \cancel{U^T U} \Sigma V^T\\
+    A^\dagger A &= V \cancel{\Sigma^\dagger \Sigma} V^T\\
+    A^\dagger A &= V  V^T\\
+    A^\dagger A &= I\\
+    A^\dagger &= A^{-1}.
+  \end{aligned}
+\end{equation}
+
+\section{Least Squares using QR Factorization}
+
+My MATLAB code (and a back-substitution algorithm from K. Ming Leung, 2003) is listed in \autoref{sec:lsqr}. The relative errors from 14 solutions are provided in \autoref{tab:lsqr-results}.
+
+
+\begin{table}
+  \centering
+    \caption{Results from Least-Squares Polynomial Fits}\label{tab:lsqr-results}
+  \begin{tabular}{r||ll|l}
+    $n$ & $\varepsilon_{rel}(\text{Direct})$ & $\varepsilon_{rel}(\text{QR})$ & $\kappa_2(A^T A)$\\
+    \hline
+     1&0.9926&0.9926&1.000E+00\\
+     2&0.6996&0.6996&1.567E+01\\
+     3&0.2963&0.2963&3.891E+02\\
+     4&0.14397&0.14397&1.245E+04\\
+     5&0.12144&0.12144&4.126E+05\\
+     6&0.12051&0.12051&1.725E+07\\
+     7&0.082461&0.082461&6.264E+08\\
+     8&0.071419&0.071419&1.646E+10\\
+     9&0.070484&0.070484&7.477E+11\\
+     10&0.063618&0.063618&2.268E+13\\
+     11&0.06326&0.06326&6.717E+14\\
+     12&0.063257&0.063257&4.893E+16\\
+     13&0.064037&0.052675&3.882E+17\\
+    14&0.065135&0.012167&1.496E+18\\
+  \end{tabular} 
+\end{table}
+
+For increasing values of $n$, the matrix $A^T A$ becomes increasingly ill-conditioned, which can be seen when comparing results of the direct solve to QR-- the relative error at $n=14$ is 0.065 for the direct solve, but only 0.012 for the QR solve. After about $n=10$, the condition number becomes so large that increasing the size of the matrix returns no additional precision for the direct solve, since at this point, noise from roundoff error is enough to greately perturb the solution. MATLAB's backslash operator likely has reduced the rank of the matrix for these solutions, which is why they change little with different values of $n$. The difference between the QR solution, which makes no approximation, and the backslash solution, which accounts for this instability, can be seen in \autoref{fig:increasing-n}.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{fig_2.png}
+        \caption{$n$ = 2}
+        \label{}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{fig_3.png}
+        \caption{$n$ = 3}
+        \label{}
+    \end{subfigure}
+
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{fig_4.png}
+        \caption{$n$ = 4}
+        \label{}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{fig_5.png}
+        \caption{$n$ = 5}
+        \label{}
+    \end{subfigure}
+    \caption{Data and Least-Squares interpolation using QR method}
+    \label{fig:increasing-n}
+\end{figure}
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.65\linewidth]{n14.png}
+  \caption{Comparison of direct and QR solve}
+  \label{fig:method-comparison}
+\end{figure}
+
+\subsection{}
+
+For this example, using $n=4$ is a good choice for interpolating the data, since it retains enough information about the trend of the data without being overfit, though different sources of data may justify different degrees of interpolation (for example, if the data were taken from an experiment that models a physical phenomenon that is expected to have $t^2$ behavior, there is no justification for any more precision than that in the least squares fit).
+
+\clearpage
+\appendix
+\section{Least-Squares MATLAB Code}\label{sec:lsqr}
+
+\begin{minted}[linenos]{matlab}
+T = [0.0100 0.0400 0.1400 0.2100 0.2200 0.3800 0.4600 0.4800 0.6000 0.6600 0.7200 0.7900 0.9200 0.9700 0.9900]';
+F = [0.0639 -0.0973 0.5178 0.9686 0.7827 0.9832 0.8183 0.6544 0.3314 0.0661 -0.1612 -0.5417 -1.0467 -1.0230 -1.0262]';
+
+N = 1:14;
+data = zeros(14, 4); % Ouput table for report
+data(:, 1) = N';
+
+for n = N
+    [x_direct, c] = direct_solve(T, F, n)
+    x_qr     = qr_solve(T, F, n)
+    
+    soln_direct = polyval(x_direct, T)
+    soln_qr     = polyval(x_qr, T)
+
+    err_direct  = norm(soln_direct - F, 2)/norm(F, 2)
+    err_qr      = norm(soln_qr     - F, 2)/norm(F, 2)
+
+    
+
+    data(n, 2:4) = [err_direct err_qr c]
+
+end
+
+N = 2:5;
+plt_t = linspace(min(T), max(T), 100);
+
+%% plots
+for n=N
+    x_qr     = qr_solve(T, F, n)
+    phi_t = polyval(x_qr, plt_t);
+
+    figure()
+    hold on
+    scatter(T, F, "filled")
+    plot(plt_t, phi_t)
+    hold off
+    legend("$(t_i, f_i)$", "$\varphi(t)$", interpreter="latex")
+    title(sprintf("Polynomial Interpolation, N=%i", n))
+    saveas(gcf, "fig_"+n+".png")
+end
+
+%%
+x_qr     = qr_solve(T, F, 14);
+x_direct = direct_solve(T, F, 14);
+phi_qr = polyval(x_qr, plt_t);
+phi_direct = polyval(x_direct, plt_t);
+
+figure()
+hold on
+scatter(T, F)
+plot(plt_t, phi_direct, LineStyle="--")
+plot(plt_t, phi_qr)
+saveas(gcf, "n14.png")
+legend("$(t_i, f_i)$", "$\varphi_{direct}(t)$","$\varphi_{QR}(t)$", interpreter="latex")
+
+
+%% print data to latex
+output_string = "";
+for i = 1:14
+    for j = 1:3
+        output_string = output_string +"&"+ data(i, j) ;
+    end
+    output_string = output_string +"&"+ sprintf("%.3E", data(i, 4)) ;
+    output_string = output_string + "\\"+ newline;
+end
+output_string
+
+%% functions
+function [x, c] = direct_solve(t, f, n)
+    m = length(t);
+    t = reshape(t, [m 1]);
+    f = reshape(f, [m 1]);
+    A = ones(m, n);
+
+    for i = 1:n-1
+        A(:, n-i) = t.^(i);
+    end
+    x = (A' * A)\(A' * f);
+
+    c = cond((A' * A), 2);
+end
+
+function x = qr_solve(t, f, n)
+    m = length(t);
+    t = reshape(t, [m 1]);
+    f = reshape(f, [m 1]);
+    A = ones(m, n);
+    for i = 1:n-1
+        A(:, n-i) = t.^(i);
+    end
+    [Q,R] = qr(A, 0);
+    z = Q' * f;
+    x = UTriSol(R, z, length(z)); % from K. Ming Leung, 01/26/03
+end
+\end{minted}
+
+Included is the function \verb|backSubstitution| (implemented as \verb|UTriSol| in my code), from \hyperlink{https://cse.engineering.nyu.edu/~mleung/CS3734/s03/ch02/backSubstitutionU.htm}{cse.engineering.nyu.edu/~mleung/}:
+
+\begin{minted}[linenos]{matlab}
+function x=backSubstitution(U,b,n)
+% Solving an upper triangular system by back-substitution
+% Input matrix U is an n by n upper triangular matrix
+% Input vector b is n by 1
+% Input scalar n specifies the dimensions of the arrays
+% Output vector x is the solution to the linear system
+% U x = b
+% K. Ming Leung, 01/26/03
+
+x=zeros(n,1);
+for j=n:-1:1
+    if (U(j,j)==0) error('Matrix is singular!'); end;
+    x(j)=b(j)/U(j,j);
+    b(1:j-1)=b(1:j-1)-U(1:j-1,j)*x(j);
+end
+\end{minted}
+
+% \bibliographystyle{ieeetr}
+\bibliography{references}
+
+
+\end{document}
