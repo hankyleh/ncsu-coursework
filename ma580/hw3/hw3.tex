@@ -1,8 +1,8 @@
 \documentclass{template}
 
-\title{MA 580 Assignment 2}
+\title{MA 580 Assignment 3}
 \author{Kyle Hansen}
-\date{26 September 2025}
+\date{17 October 2025}
 
 \usepackage{cancel}
 
@@ -13,7 +13,7 @@
 
 \maketitle
 
-\textbf{AI Use Statement: }Here is where I put the AI use Statement
+\textbf{AI Use Statement: }No AI used for this assignment
 
 
 \section{Rank 1 matrices}
@@ -253,7 +253,148 @@ For increasing values of $n$, the matrix $A^T A$ becomes increasingly ill-condit
 
 \subsection{}
 
-For this example, using $n=4$ is a good choice for interpolating the data, since it retains enough information about the trend of the data without being overfit, though different sources of data may justify different degrees of interpolation (for example, if the data were taken from an experiment that models a physical phenomenon that is expected to have $t^2$ behavior, there is no justification for any more precision than that in the least squares fit).
+For this example, using $n=4$ is a good choice for interpolating the data, since it retains enough information about the trend of the data without being overfit, though different sources of data may justify different degrees of interpolation (for example, if the data were taken from an experiment that models a physical phenomenon that is expected to have $t^2$ behavior, there is no physical justification for any more precision than that in the least squares fit).
+
+
+\section{Cholesky Heat Equation}
+
+The provided code uses matlab backslash to solve the system $Gu^{n+1} = u^n$, specifically using the code snippet:
+
+\textbf{Direct solve (runs in 95.21 seconds):}
+\begin{minted}{matlab}
+  .
+  .
+  .
+U = zeros((nx-1)^2,nt+1);
+U(:,1) = U0(:);
+I = speye((nx-1)^2);
+
+fprintf('time integration in progress ...\n');
+tic; 
+G = I + dt * A;
+for n = 1 : nt
+   % show progress 
+   if mod(ti(n), 1) == 0
+      fprintf('t = %4.2f\n', ti(n));
+   end
+   % euler step
+   U(:,n+1) = G \ U(:,n);
+end
+compute_time = toc;
+fprintf('time integration complete in %g seconds\n', compute_time);
+  .
+  .
+  .
+\end{minted}
+
+The computational cost of solving the system can be reduced by computing the Cholesky factor $L$ of the SPD matrix $G$, $G = L^T L$. The speed can be further improved by permuting $G$ before computing its Cholesky factor, in order to produce a sparse Cholesky factor, which can be solved in fewer flops. In the provided MATLAB code, this is implemented as follows:
+
+\textbf{Cholesky (runs in 25.26 seconds):}
+\begin{minted}{matlab}
+  .
+  .
+  .
+U = zeros((nx-1)^2,nt+1);
+U(:,1) = U0(:);
+I = speye((nx-1)^2);
+
+fprintf('time integration in progress ...\n');
+tic; 
+
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+G = I + dt * A;
+L = chol(G);
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+
+for n = 1 : nt
+  .
+  .
+    Z = L' \ U(:, n);
+    U(:, n+1) = L \ Z;
+  .
+  .
+\end{minted}
+
+\textbf{Cholesky and symamd (runs in 4.65 seconds):}
+
+\begin{minted}{matlab}
+  .
+  .
+  .
+U = zeros((nx-1)^2,nt+1);
+U(:,1) = U0(:);
+I = speye((nx-1)^2);
+
+fprintf('time integration in progress ...\n');
+tic; 
+
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+G = I + dt * A;
+p = symamd(G);
+L = chol(G(p, p));
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+
+for n = 1 : nt
+  .
+  .
+    Z = L' \ U(p, n);
+    U(p, n+1) = L \ Z;
+  .
+  .
+\end{minted}
+
+
+The results of the solve (using Cholesky \& symamd) are shown in \autoref{fig:heat-eqn}. In this example, it is clearly most appropriate to optimize the linear system before attempting to solve it, by pre-factoring a sparse Cholesky factor, but in some cases this may not be beneficial-- the time to factorize the sparse factor using symamd was 2.63449e-01 seconds, about twice the time of solving for a single time step without Cholesky.
+
+In this case, with 500 time steps, the extra computational cost of pre-factorizing is worth the time saved in solving, but would not be appropriate for a system with only a few time steps, where regular Cholesky or direct solve may be more appropriate.
+
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{heat_eqn_t0.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{heat_eqn_t1.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{heat_eqn_t2.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{heat_eqn_t4.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{heat_eqn_t7.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{heat_eqn_t10.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+    \caption{Solutions of Heat Equation using sparse Cholesky}
+    \label{fig:heat-eqn}
+\end{figure}
+
+
+
+
+
 
 \clearpage
 \appendix
