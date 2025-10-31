@@ -1,0 +1,118 @@
+load("data3d_validation.mat")
+workspaces = ["data3d_dense.mat", "data3d_sparse.mat"]
+names = ["Dense", "Sparse"]
+
+for ws = [1,2,3]
+    clear x1 y1 
+    load(workspaces(ws))
+
+
+    data_length = length(x1);
+    Density  = "Sparse";
+    [X, Y] = meshgrid(linspace(min(x1), max(x1), 100), linspace(min(x2), max(x2), 100));
+    
+    
+    for order = [2, 3, 4]
+        dof = (order+1)*(order+2)/2;
+        if dof <= data_length
+            fprintf("Using QR solver\n")
+            c = qr_solve(x1, x2, f, order);
+        else
+            fprintf("Using SVD pseudoinverse")
+            c = min_norm_lsqr(x1, x2, f, order);
+        end
+        
+        Z = eval_poly(X, Y, c, order);
+    
+        figure()
+        surf(X, Y, Z, 'FaceAlpha',0.7, LineStyle="none")
+        hold on
+        scatter3(x1, x2, f, 'filled')
+        view(-130.2,32.4)
+        xlabel("x")
+        ylabel("y")
+        zlabel("f(x, y)")
+        title(sprintf("%s data, Degree %i polynomial. E=%.2e", names(ws), order, e))
+        saveas(gcf, sprintf("%s%i.png", names(ws), order))
+
+        e = norm(eval_poly(x_v, y_v, c, order)-f_v, 2)/norm(f_v, 2);
+
+        figure()
+        surf(X, Y, Z, 'FaceAlpha',0.7, LineStyle="none")
+        hold on
+        scatter3(x_v, y_v, f_v, 'filled')
+        view(-130.2,32.4)
+        xlabel("x")
+        ylabel("y")
+        zlabel("f(x, y)")
+        title(sprintf("Validation data, %s data, Degree %i polynomial. E=%.2e", names(ws), order, e))
+        saveas(gcf, sprintf("validation_%s%i.png",names(ws), order))
+
+    end
+    
+end
+
+function x = qr_solve(x1, x2, f, n)
+    m = length(x1);
+    x1 = reshape(x1, [m 1]);
+    x2 = reshape(x2, [m 1]);
+    f = reshape(f, [m 1]);
+    A = zeros([m (n+1)*(n+2)/2]);
+    %
+    col = 0;
+    for i = 0:n
+        for j = 0:(n-i)
+            col = col + 1;
+            for r = 1:m
+                A(r, col) = (x1(r)^i)*(x2(r)^j);
+            end
+        end
+    end
+    [Q,R] = qr(A, 0);
+    z = Q' * f;
+    x = R\z;
+end
+
+function x = min_norm_lsqr(x1, x2, f, n)
+    m = length(x1);
+    x1 = reshape(x1, [m 1]);
+    x2 = reshape(x2, [m 1]);
+    f = reshape(f, [m 1]);
+    A = zeros([m (n+1)*(n+2)/2]);
+    col = 0;
+    for i = 0:n
+        for j = 0:(n-i)
+            col = col + 1;
+            for r = 1:m
+                A(r, col) = (x1(r)^i)*(x2(r)^j);
+            end
+        end
+    end
+    [U, S, V] = svd(A);
+    x = zeros(size(A, 2), 1);
+    for r = 1:size(A, 1)
+        x = x + (1/S(r,r))*U(:, r)'*f*V(:, r);
+    end
+end
+
+function [i, j] = unpack_index(r, n)
+    % find i by cumulative sum
+    S = 0;
+    for ii = 0:n
+        prevS = S;
+        S = S + (n - ii + 1);
+        if r <= S
+            i = ii;
+            j = r - prevS - 1;
+            return
+        end
+    end
+end
+
+function Z = eval_poly(X, Y, c, n)
+    Z = zeros(size(X));
+    for r = 1:((n+1)*(n+2)/2)
+        [i, j] = unpack_index(r, n);
+        Z = Z + (c(r).*(X.^i).*(Y.^j));
+    end
+end

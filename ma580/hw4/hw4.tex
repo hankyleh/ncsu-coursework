@@ -1,0 +1,393 @@
+\documentclass{template}
+
+\title{MA 580 Assignment 4}
+\author{Kyle Hansen}
+\date{31 October 2025}
+
+\usepackage{cancel}
+
+\newcommand{\maxmag}{\mathrm{\mathbf{maxmag}}}
+\newcommand{\minmag}{\mathrm{\mathbf{minmag}}}
+
+\begin{document}
+
+\maketitle
+
+\textbf{AI Use Statement: }AI was used to write the \verb|unpack_index| function in the MATLAB code, which gives exponents of the basis functions for least squares based on the index of flattened 2d data.
+
+\section{Exercise 4.2.25}
+
+\subsection{Image of Unit Circle}
+
+Let $A \in \mathbb{R}^{2\times 2}$ with singular values $\sigma_1 \geq \sigma_2 > 0$. Show that the set $\left\{ Ax | \norm{x}_2 = 1  \right\}$ (the image of the unit circle) is an ellipse in $\mathbb{R}^2$ whose major and minor semiaxes have lengths $\sigma_1$ and $\sigma_2$ respectively.
+
+Let $\mathcal{S}_2 = \left\{ x | \norm{x}_2 = 1 \right\}$ be the $2-$dimensional unit sphere. Then for every $y \in A(\mathcal{S}_2)$, there is some $x \in \mathcal{S}_2$ such that $y=Ax$. Since $\norm{x \in \mathcal{S}_2}_2 = 1$,
+
+\begin{equation}
+  1 = \norm{x}_2^2 = \norm{A^{-1}Ax}_2^2 = \norm{A^{-1}y}_2^2 = \norm{V\Sigma^{-1} U^T y}_2^2.
+\end{equation}
+
+Since $V$ is an orthonormal matrix (and does not affect magnitude), 
+
+\begin{equation}
+  1 = \cdots = \norm{\Sigma^{-1} U^T y}_2^2.
+\end{equation}
+
+Then, with $w = U^T y$ (which is a rotation only),
+
+\begin{equation}
+  1 = \cdots = \norm{\Sigma^{-1} w}_2^2 = \left(\frac{w_1}{\sigma_1}\right)^2 + \left(\frac{w_2}{\sigma_2}\right)^2.
+\end{equation}
+
+Then $w$ is the set of vectors describing an ellipse with semiaxes $\sigma_1, \sigma_2$, and y describes a rotation of that same ellipse.
+
+\subsection{Hyperellipsoid}
+
+Let $A \in \mathbb{R}^{m \times n}, m\geq n, \text{rank}(A)=n.$ Show that the set $\left\{  Ax | \norm{x}_2 = 1 \right\}$ is an $n$-dimensional hyperellipsoid with semiaxes $\sigma_1, \sigma_2, \dots n.$ Notice that the lengths of the longest and shortest semiaxes are $\text{maxmag}(A)$ and $\text{minmag}(A)$, respectively.
+
+From the previous homework assignment, for $A \in \mathbb{R}^{m \times n}$, $A^\dagger A = I^{n\times n}$, and $AA^\dagger = I^{m\times m}.$ Let $\mathcal{S}_n = \left\{ x | \norm{x}_2 = 1 \right\}$ be the $n-$dimensional unit sphere. Then for every $y \in A(\mathcal{S}_n)$, there is some $x \in \mathcal{S}_n$ such that $y=Ax$. Since $\norm{xin \mathcal{S}_n}_2 = 1$, 
+
+\begin{equation}
+  1 = \norm{x}_2^2 = \norm{A^\dagger Ax}_2^2 = \norm{A^\dagger y}_2^2 = \norm{V\Sigma^\dagger U^T y}_2^2
+\end{equation}
+
+since $V$ is an orthonormal matrix (and does not affect magnitude),
+
+\begin{equation}
+  1 = \dots = \norm{\Sigma^\dagger U^T y}_2^2.
+\end{equation}
+
+Then, with $w = U^T y$ (which is a rotation only), 
+
+\begin{equation}
+  1 = \dots = \norm{\Sigma^\dagger w}_2^2 = \left( \frac{w_1}{\sigma_1}\right)^2 + \left( \frac{w_2}{\sigma_2}\right)^2 + \cdots + \left( \frac{w_n}{\sigma_n}\right)^2 + \cancel{(0\cdot w_{n+1})^2} + \cdots \cancel{(0\cdot w_{m})^2}
+\end{equation}
+
+then $w = U^T y = U^T Ax$ describes a hyperellipsoid with semiaxes $\sigma_1, \dots ,\sigma_n$. Since $U^T$ is only a rotation with no scaling, $Ax$ also describes such an ellipsoid.
+
+\section{Stationary Iterative Methods -- Invertible}
+
+Let $\mat{M} \in \R^{n \times n}$. Prove that 
+$(\mat{I} - \mat{M})$ is invertible with $(\mat{I} - \mat{M})^{-1} = \sum_{n = 0}^\infty \mat{M}^n$ 
+if and only if $\rho(\mat{M}) < 1$. Recall that $\rho(\mat{M})$ is the spectral 
+radius of $\mat{M}$. 
+
+This is a result of the Banach Lemma. Considering the sequence of partial sums
+
+\begin{equation}
+  S_k = \sum_{l=0}^{k}M^l
+\end{equation}
+
+for some $m>k$, using submultaplicativaty of matrices,
+
+\begin{equation}
+  \norm{S_k - S_m} = \norm{\sum_{l=k+1}^{m}M^l} \leq \sum_{l=k+1}^{m}\norm{M^l} \leq \sum_{l=k+1}^{m}\norm{M}^l = \norm{M}^{k+1}\sum_{l=0}^{m-k-1}\norm{M}^l
+\end{equation}
+
+then
+
+\begin{equation}
+  \norm{S_k - S_m}  \leq \norm{M}^{k+1}\sum_{l=0}^{m-k-1}\norm{M}^l
+\end{equation}
+
+which is a finite geometric series times $\norm{M}^{k+1}$, and can be rewritten
+
+\begin{equation}
+  \norm{S_k - S_m} \leq \norm{M}^{k+1} \frac{1 - \norm{M}^{m-k}}{\norm{M}}.
+\end{equation}
+
+As $k$ and $m$ approach $\infty$, the difference between terms $\norm{S_k - S_m}$ approaches zero, and the series is convergent when $\norm{M}<1$, since $\lim_{m\rightarrow\infty}\norm{M}^{m+1} = 0$, and does not converge when $\norm{M}\geq 1$. Since $\rho(M)\leq \norm{M}$ for any induced norm, the series does not converge for $\rho \geq 1$.
+
+Then let the sum of the infinite series be $S = \sum_{l=0}^{\infty}M^l = I+\sum_{l=1}^{\infty}M^l$. Then:
+
+\begin{equation}
+  MS = M\left( \sum_{l=0}^{\infty}M^l\right) = \sum_{l=1}^{\infty}M^l = S - I
+\end{equation}
+
+then
+
+\begin{align}
+  MS &= S - I\\
+  I &= S - MS\\
+  I &= (I-M)S\\
+\end{align}
+
+then $S^{-1} =(I-M) $, or $S =(I-M)^{-1}$. 
+
+
+\section{Stationary Iterative Methods -- Convergence}
+Prove that for every $\vec{x}_0 \in \R^n$ and $\vec{b} \in \R^n$ the iteration 
+\[
+   \vec{x}_{k+1} = \mat{M}\vec{x}_k + \vec{b}, \quad k = 0, 1, 2, \ldots 
+\]
+converges to $(\mat{I}-\mat{M})^{-1}\vec{b}$ if and only if $\rho(\mat{M}) < 1$.
+
+
+From the previous question, $(I-M)$ is nonsingular (with $(I-M)^{-1} = S = \sum_{l=0}^{\infty}M^l$) for $\rho(M) < 1$, so the solution to $(I - M)x = b$ exists. Let this exact solution be denoted
+
+\begin{equation}
+  x^\star = (I-M)^{-1}b.
+\end{equation}
+
+Then the error of each iterate is
+
+\begin{equation}\label{eq:checkpoint}
+  \epsilon_{k+1} = x_{k+1} - x^\star = Mx_k + b - x^\star.
+\end{equation}
+
+Also,
+
+\begin{align}
+  (I-M)x^\star &= b\\
+  x^\star - Mx^\star &= b\\
+  x^\star &= b + Mx^\star.
+\end{align}
+
+Then from \autoref{eq:checkpoint},
+
+\begin{align}
+  \epsilon_{k+1} = x_{k+1} - x^\star &= Mx_k + \cancel{b - b} - Mx^\star\\
+  \epsilon_{k+1} &= M(x_k) - M(x^\star)\\
+  \epsilon_{k+1} &= M(x_k - x^\star)\\
+  \epsilon_{k+1} &= M\epsilon_k
+\end{align}
+
+Then, from some initial guess $x_0$ with error $\epsilon_0$, 
+
+\begin{align}
+  \epsilon_k &= M^k\epsilon_0\\
+  \norm{\epsilon_k} &= \norm{M^k\epsilon_0} \leq \norm{M}^k\cdot\norm{\epsilon_0}
+\end{align}
+
+From the previous part, $\lim_{k\rightarrow\infty}\norm{M}^k = 0$, so $\lim_{k\rightarrow\infty}\norm{\epsilon_k} = 0$.
+
+\section{2D Least-Squares}
+
+\subsection{MATLAB Code}
+
+\autoref{fig:Underdetermined} and \autopageref{fig:overdetermined} show the multivariate polynomial least-squares fit for the under- and over-determined cases, respectively. Both cases approximate the given data well with even a low-degree polynomial-- the relative squared difference between the data and fit reached a maximum of $0.0179$. The most appropriate choice of least-squares fit depends on the application, but the degree-1 may be enough for many cases.
+
+\begin{minted}{matlab}
+load("data3d_validation.mat")
+workspaces = ["data3d_dense.mat", "data3d_sparse.mat"]
+names = ["Dense", "Sparse"]
+
+for ws = [1,2,3]
+    clear x1 y1 
+    load(workspaces(ws))
+
+
+    data_length = length(x1);
+    Density  = "Sparse";
+    [X, Y] = meshgrid(linspace(min(x1), max(x1), 100), linspace(min(x2), max(x2), 100));
+    
+    
+    for order = [2, 3, 4]
+        dof = (order+1)*(order+2)/2;
+        if dof <= data_length
+            fprintf("Using QR solver\n")
+            c = qr_solve(x1, x2, f, order);
+        else
+            fprintf("Using SVD pseudoinverse")
+            c = min_norm_lsqr(x1, x2, f, order);
+        end
+        
+        Z = eval_poly(X, Y, c, order);
+    
+        figure()
+        surf(X, Y, Z, 'FaceAlpha',0.7, LineStyle="none")
+        hold on
+        scatter3(x1, x2, f, 'filled')
+        view(-130.2,32.4)
+        xlabel("x")
+        ylabel("y")
+        zlabel("f(x, y)")
+        title(sprintf("%s data, Degree %i polynomial. E=%.2e", names(ws), order, e))
+        saveas(gcf, sprintf("%s%i.png", names(ws), order))
+
+        e = norm(eval_poly(x_v, y_v, c, order)-f_v, 2)/norm(f_v, 2);
+
+        figure()
+        surf(X, Y, Z, 'FaceAlpha',0.7, LineStyle="none")
+        hold on
+        scatter3(x_v, y_v, f_v, 'filled')
+        view(-130.2,32.4)
+        xlabel("x")
+        ylabel("y")
+        zlabel("f(x, y)")
+        title(sprintf("Validation data, %s data, Degree %i polynomial. E=%.2e", names(ws), order, e))
+        saveas(gcf, sprintf("validation_%s%i.png",names(ws), order))
+
+    end
+    
+end
+
+function x = qr_solve(x1, x2, f, n)
+    m = length(x1);
+    x1 = reshape(x1, [m 1]);
+    x2 = reshape(x2, [m 1]);
+    f = reshape(f, [m 1]);
+    A = zeros([m (n+1)*(n+2)/2]);
+    %
+    col = 0;
+    for i = 0:n
+        for j = 0:(n-i)
+            col = col + 1;
+            for r = 1:m
+                A(r, col) = (x1(r)^i)*(x2(r)^j);
+            end
+        end
+    end
+    [Q,R] = qr(A, 0);
+    z = Q' * f;
+    x = R\z;
+end
+
+function x = min_norm_lsqr(x1, x2, f, n)
+    m = length(x1);
+    x1 = reshape(x1, [m 1]);
+    x2 = reshape(x2, [m 1]);
+    f = reshape(f, [m 1]);
+    A = zeros([m (n+1)*(n+2)/2]);
+    col = 0;
+    for i = 0:n
+        for j = 0:(n-i)
+            col = col + 1;
+            for r = 1:m
+                A(r, col) = (x1(r)^i)*(x2(r)^j);
+            end
+        end
+    end
+    [U, S, V] = svd(A);
+    x = zeros(size(A, 2), 1);
+    for r = 1:size(A, 1)
+        x = x + (1/S(r,r))*U(:, r)'*f*V(:, r);
+    end
+end
+
+function [i, j] = unpack_index(r, n)
+    % find i by cumulative sum
+    S = 0;
+    for ii = 0:n
+        prevS = S;
+        S = S + (n - ii + 1);
+        if r <= S
+            i = ii;
+            j = r - prevS - 1;
+            return
+        end
+    end
+end
+
+function Z = eval_poly(X, Y, c, n)
+    Z = zeros(size(X));
+    for r = 1:((n+1)*(n+2)/2)
+        [i, j] = unpack_index(r, n);
+        Z = Z + (c(r).*(X.^i).*(Y.^j));
+    end
+end
+\end{minted}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{dense2.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{dense3.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{dense4.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+    \caption{Overdetermined Case}
+    \label{fig:overdetermined}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{sparse2.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{sparse3.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{sparse4.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+    \caption{Underdetermined Case}
+    \label{fig:Underdetermined}
+\end{figure}
+
+\clearpage
+
+\subsection{Validation}
+
+The overdetermined polynomial fits generally have lower error than the underdetermined, though the errors are close for the degree-2 polynomial. The underdetermined error actually increases with increasing polynomial order, while the overdetermined error does decrease as expected, though the error decreases little from $n=3$ to $n=4$ (less than 10 percent), even though there are additional 5 ($+50$ percent) degrees of freedom in the fit. 
+
+Sparse data may be desirable if only a low-degree fit is needed since it produces a similar approximation with less data needed, but for high-order polynomials the overdetermined case is certainly preferable if available.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{validation_Dense2.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{validation_Dense3.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{validation_Dense4.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+    \caption{Underdetermined Case}
+    \label{fig:validation_dense}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{validation_Sparse2.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{validation_Sparse3.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\linewidth]{validation_Sparse4.png}
+        \caption{}
+        \label{}
+    \end{subfigure}
+    \caption{Underdetermined Case}
+    \label{fig:val_sparse}
+\end{figure}
+
+% TODO
+
+% \bibliographystyle{ieeetr}
+% \bibliography{references}
+
+
+\end{document}
