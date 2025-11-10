@@ -3,6 +3,7 @@
 *.out
 _minted/
 *.aux
+*.synctex.gz
 *.bbl
 *.blg
 *.dvi
