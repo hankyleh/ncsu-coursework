@@ -1,0 +1,154 @@
+\documentclass{template}
+\title{NE 795 Assignment 4}
+\author{Kyle Hansen}
+\date{10 November 2025}
+
+\usepackage{cancel}
+\usepackage{empheq}
+\newcommand*\multbox[1]{\fbox{\hspace{0ex}#1\hspace{0ex}}}
+
+
+
+
+
+
+\begin{document}
+
+\maketitle
+
+\section{Differential Fourier Analysis}
+
+\subsection{Iterative Error Equations}
+
+Using the definitions of iterative error,
+
+\begin{gather}
+  \delta \psi^{(s+1/2)} = \psi^\star - \psi^{(s+1/2)}\\
+  \delta F^{(s+1/2)} = F^\star - F^{(s+1/2)}\\
+  \delta J^{(s+1)} = J^\star - J^{(s+1)}\\
+  \delta \phi^{(s+1)} = \phi^\star - \phi^{(s+1)},
+\end{gather}
+
+The equations for iterative error of the transport equation can be found by subtracting the equation for the $(s+1/2)$ iterate from the equation for the true (converged) solution:
+
+
+\begin{align}
+  \mu\frac{d\psi^\star}{dx}  -   \mu\frac{d\psi^{(s+1/2)}}{dx}    + \sigma_t \psi^\star - \sigma_t \psi^{(s+1/2)} &= \frac{1}{2}\left( \sigma_s \phi^\star + q \right) - \frac{1}{2}\left( \sigma_s \phi^{(s)} + q \right)\\
+  \mu\frac{d\delta\psi^{(s+1/2)}}{dx} + \sigma_t \delta\psi^{(s+1/2)} &= \frac{1}{2}\left( \sigma_s \delta\phi^{(s)} \right)
+\end{align}
+
+where 
+
+\begin{align}
+  \delta\psi^{(s+1/2)}(0, \mu) = (\psi_{in}^+ - \psi_{in}^+) =  0 & \quad\text{for }\mu > 0\\
+  \delta\psi^{(s+1/2)}(X, \mu) = (\psi_{in}^- - \psi_{in}^-) =  0 & \quad\text{for }\mu < 0
+\end{align}
+
+and $^\star$ denotes the true (converged) solution. The equations for error in the closure terms are found in a similar way:
+
+\begin{equation}
+  \delta F^{(s+1/2)} = \int_{-1}^{1} \left(\frac{1}{3} - \mu^2 \right)\delta\psi^{(s+1/2)}d\mu
+\end{equation}
+\begin{subequations}
+  \begin{gather}
+    \delta P_L^{(s+1/2)} = \int_{-1}^{1} \left(  \frac{1}{2} - |\mu| \right)\delta\psi^{(s+1/2)}(0, \mu)d\mu\\
+  \delta P_R^{(s+1/2)} = \int_{-1}^{1} \left(  \frac{1}{2} - |\mu| \right)\delta\psi^{(s+1/2)}(X, \mu)d\mu.
+  \end{gather}
+\end{subequations}
+
+The equations for the error in the second moment equations is found the same way:
+
+\begin{gather}
+  \label{eq:flux-error-J-dependent}\frac{d \delta J^{(s+1)}}{dx} + \left(\sigma_t - \sigma_s\right)\delta\phi^{(s+1)} = 0\\
+  \label{eq:J-error}\frac{1}{3}\frac{d\delta\phi^{(s+1)}}{dx} + \sigma_t\delta J^{(s+1)} = \frac{d \delta F^{(s+1/2)}}{dx}\\
+  \label{eq:J0}\delta J^{(s+1)}(0) =  - \frac{1}{2}\delta\phi^{(s+1)}(0) + \delta P_L^{(s+1/2)}\\
+  \label{eq:JX}\delta J^{(s+1)}(X) = \frac{1}{2}\delta\phi^{(s+1)}(X) - \delta P_R^{(s+1/2)}
+\end{gather}
+
+These equations resemble the original iterative equations, with source (and incoming flux boundary conditions) set to zero. By taking the derivative of \autoref{eq:J-error} with respect to x and plugging into equation \autoref{eq:flux-error-J-dependent}, these equations can be reduced to a single equation for $\delta\phi$ only:
+
+\begin{align}
+   \sigma_t\delta J^{(s+1)} &= \frac{d \delta F^{(s+1/2)}}{dx} - \frac{1}{3}\frac{d\delta\phi^{(s+1)}}{dx}\\
+   \label{eq:J}\delta J^{(s+1)} &= \frac{1}{\sigma_t}\frac{d \delta F^{(s+1/2)}}{dx} - \frac{1}{3\sigma_t}\frac{d\delta\phi^{(s+1)}}{dx}\\
+  \frac{d \delta J^{(s+1)}}{dx} &= \frac{1}{\sigma_t}\frac{d^2 \delta F^{(s+1/2)}}{dx^2} - \frac{1}{3\sigma_t}\frac{d^2 \delta\phi^{(s+1)}}{dx^2},
+\end{align}
+
+evaluating \autoref{eq:flux-error-J-dependent} using this equation for $(\delta J)_x$, 
+
+\begin{align}
+  \left(\sigma_t - \sigma_s\right)\delta\phi^{(s+1)} &+ \frac{d \delta J^{(s+1)}}{dx}  = 0\\
+  \left(\sigma_t - \sigma_s\right)\delta\phi^{(s+1)} &+ \frac{1}{\sigma_t}\frac{d^2 \delta F^{(s+1/2)}}{dx^2} - \frac{1}{3\sigma_t}\frac{d^2 \delta\phi^{(s+1)}}{dx^2} =0.
+\end{align}
+
+The boundary conditions $J(0)$ and $J(X)$ can be used to formulate axiliary conditions for the equation for $\phi$. Evaluating \autoref{eq:J} using Equations~\ref{eq:J0} and~\ref{eq:JX} yields the auxiliary conditions:
+
+\begin{subequations}
+  \begin{align}
+  \frac{1}{\sigma_t(0)} \left. \frac{d \delta F^{(s+1/2)}}{dx}\right\vert_{x=0} - \left. \frac{1}{3\sigma_t}\frac{d\delta\phi^{(s+1)}}{dx}\right\vert_{x=0} &= - \frac{1}{2}\delta\phi^{(s+1)}(0) + \delta P_L^{(s+1/2)}\\
+  \frac{1}{\sigma_t(X)} \left. \frac{d \delta F^{(s+1/2)}}{dx}\right\vert_{x=X} - \left. \frac{1}{3\sigma_t}\frac{d\delta\phi^{(s+1)}}{dx}\right\vert_{x=X} &= - \frac{1}{2}\delta\phi^{(s+1)}(X) + \delta P_R^{(s+1/2)}
+\end{align}
+\end{subequations}
+
+
+Then the full set of equations for iterative error for the SM iterative algorithm is:
+
+\begin{subequations}\label{eq:error_equations}
+  \begin{empheq}[box=\multbox]{gather}
+    \mu\frac{d\delta\psi^{(s+1/2)}}{dx} + \sigma_t \delta\psi^{(s+1/2)} = \frac{1}{2}\left(\sigma_s \delta\phi^{(s)} \right)\\
+    \delta\psi^{(s+1/2)}(0, \mu)  =  0  \quad\text{for }\mu > 0 \qquad \text{and} \qquad \delta\psi^{(s+1/2)}(X, \mu)  =  0  \quad\text{for }\mu < 0\\
+    \delta F^{(s+1/2)} = \int_{-1}^{1} \left(\frac{1}{3} - \mu^2 \right)\delta\psi^{(s+1/2)}d\mu\\
+  \delta P_L^{(s+1/2)} = \int_{-1}^{1} \left(  \frac{1}{2} - |\mu| \right)\delta\psi^{(s+1/2)}(0, \mu)d\mu\\
+  \delta P_R^{(s+1/2)} = \int_{-1}^{1} \left(  \frac{1}{2} - |\mu| \right)\delta\psi^{(s+1/2)}(X, \mu)d\mu\\
+  \left(\sigma_t - \sigma_s\right)\delta\phi^{(s+1)} + \frac{1}{\sigma_t}\frac{d^2 \delta F^{(s+1/2)}}{dx^2} - \frac{1}{3\sigma_t}\frac{d^2 \delta\phi^{(s+1)}}{dx^2} =0\\
+  \frac{1}{\sigma_t(0)} \left. \frac{d \delta F^{(s+1/2)}}{dx}\right\vert_{x=0} - \left. \frac{1}{3\sigma_t}\frac{d\delta\phi^{(s+1)}}{dx}\right\vert_{x=0} = - \frac{1}{2}\delta\phi^{(s+1)}(0) + \delta P_L^{(s+1/2)}\\
+  \frac{1}{\sigma_t(X)} \left. \frac{d \delta F^{(s+1/2)}}{dx}\right\vert_{x=X} - \left. \frac{1}{3\sigma_t}\frac{d\delta\phi^{(s+1)}}{dx}\right\vert_{x=X} = - \frac{1}{2}\delta\phi^{(s+1)}(X) + \delta P_R^{(s+1/2)}
+  \end{empheq}
+\end{subequations}
+
+\subsection{Fourier Analysis}
+
+Validity of Fourier analysis depends on the conditions:
+
+\begin{itemize}
+  \item Infinite spatial domain
+  \item Constant coefficients in all equations ($\sigma_t(x) = \sigma_t$ and $\sigma_s(x) = \sigma_s$).
+\end{itemize}
+
+If these conditions are true, the Fourier Ansatz is used to formulate an assumed form of the solutions to the system defined in~\ref{eq:error_equations}:
+
+\begin{subequations}
+  \begin{gather}
+    \delta \psi^{(s+1/2)} = \int_{-\infty}^{\infty} \beta(\lambda, \mu) \omega^{(s)}e^{i\lambda x} d\lambda \\
+    \delta F^{(s+1/2)} = \int_{-\infty}^{\infty} \alpha(\lambda, \mu) \omega^{(s)}e^{i\lambda x} d\lambda\\
+    
+  \end{gather}
+\end{subequations}
+
+where $\lambda$ is the Fourier mode wavenumber.
+
+
+% TODO
+
+\subsection{Plots}
+% TODO
+
+\subsection{Spectral Radius}
+% TODO
+
+
+\section{Discretized Fourier Analysis}
+\subsection{Iterative Error Equations}
+% TODO
+
+\subsection{Fourier Analysis}
+% TODO
+
+\subsection{Plots}
+% TODO
+
+\subsection{Spectral Radius}
+% TODO
+
+
+
+\end{document}
