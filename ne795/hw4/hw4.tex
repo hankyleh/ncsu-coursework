@@ -1,7 +1,7 @@
 \documentclass{template}
 \title{NE 795 Assignment 4}
 \author{Kyle Hansen}
-\date{10 November 2025}
+\date{14 November 2025}
 
 \usepackage{cancel}
 \usepackage{empheq}
@@ -12,8 +12,9 @@
 
 
 
-\begin{document}
 
+
+\begin{document}
 \maketitle
 
 \section{Differential Fourier Analysis}
@@ -260,36 +261,78 @@ Like the continuous form of the SM method, Fourier Analysis of the discretized f
   \item Uniform spatial grid $\Delta x$
 \end{itemize}
 
-Then, using the Fourier Ansatz, the assumed form of the errors are
+First, the iterative equations are rewritten to apply the assumptions, and eliminating the variable $\delta d_i$ for simplicity. The new iterative system is 
 
 \begin{gather}
-  \delta\psi_{m, i+1/2}^{(s+1/2)} =\int_{-\infty}^{\infty} f_m^{(s+1/2)}(\lambda)e^{i\sigma_t \lambda x_{i+1/2}} d\lambda\\
-  \delta\psi_{m, i}^{(s+1/2)} =\int_{-\infty}^{\infty} \Psi_m^{(s+1/2)}(\lambda)e^{i\sigma_t \lambda x_{i}} d\lambda\\
-  \delta d_{i}^{(s+1/2)} =\int_{-\infty}^{\infty} g^{(s+1/2)}(\lambda)e^{i\sigma_t \lambda x_{i}} d\lambda\\
-  \delta\phi_{i}^{(s+1)} =\int_{-\infty}^{\infty} h^{(s)}(\lambda)e^{i\sigma_t \lambda x_{i}} d\lambda\\
+  \label{eq:discrete-transport}\mu_m\left(\delta\psi_{m, i+1/2}^{(s+1/2)}  - \delta\psi_{m, i-1/2}^{(s+1/2)}\right) + \sigma_{t}\Delta x (\delta\psi_{m, i}^{(s+1/2)}) =\frac{1}{2}\left(\sigma_{s}\delta\phi_i^{(s)}\right) \Delta x\\
+  \label{eq:alpha-differencing}\delta\psi_{m, i}^{(s+1/2)} = \alpha_{m, i}\left( \delta \psi_{m,i-1/2}^{(s+1/2)} \right) + (1-\alpha_{m, i})\left( \delta\psi_{m,i+1/2}^{(s+1/2)} \right)\\
+  (2a + \sigma_{a}\Delta x)\delta\phi_i^{(s+1)} -a (\delta\phi_{i-1}^{(s+1)} + \delta\phi_{i+1}^{(s+1)}) = \frac{1}{\sigma_t \Delta x} \left[\sum_{m=1}^{M}\left(\frac{1}{3} - \mu_m^2 \right) \left( 2\delta\psi_{m, i}^{(s+1/2)} - \delta\psi_{m, i+1/2}^{(s+1/2)} - \delta\psi_{m, i-1/2}^{(s+1/2)} \right) \right].
 \end{gather}
 
-where $f_m(\lambda)$ denotes $f(\lambda, \mu_m)$. Substituting these into the system~\ref{eq:disc_error_eqns} yields the system to find $\omega(\lambda) = h^{(s+1)}/h^{(s)}$. First, some common terms can be simplified:
-
-\begin{align}
-\delta\psi_{m, i+1/2}^{(s+1/2)} - \delta\psi_{m, i-1/2}^{(s+1/2)} &= f_m^{(s+1/2)}\left[e^{i\lambda\sigma_t x_{i+1/2}} - e^{i\lambda\sigma_t x_{i-1/2}}\right] \\
-&= f_m^{(s+1/2)}\left[e^{i\lambda\sigma_t (x_{i}+\frac{1}{2}\Delta x)} - e^{i\lambda\sigma_t (x_{i}-\frac{1}{2}\Delta x)}\right]\\
-&= f_m^{(s+1/2)}e^{i\lambda\sigma_t x_{i}}\left[e^{\frac{1}{2}i\lambda\sigma_t \Delta x} - e^{-\frac{1}{2}i\lambda\sigma_t \Delta x}\right]
-\end{align}
-
-then
-
+The SM equation can also be rewritten using the SC differencing equation to eliminate $\psi_i$ dependence, reducing the system to two equations.
 
 \begin{multline}
-  \delta\psi_{m, i+1/2}^{(s+1/2)} - \delta\psi_{m, i-1/2}^{(s+1/2)} =f_m^{(s+1/2)}e^{i\lambda\sigma_t x_{i}}\left[\cos\left(\frac{1}{2}\lambda\sigma_t \Delta x\right) + i\sin\left(\frac{1}{2}\lambda\sigma_t \Delta x\right)\right.\\
-  - \left.\cos\left(-\frac{1}{2}\lambda\sigma_t \Delta x\right) - i\sin\left(-\frac{1}{2}\lambda\sigma_t \Delta x\right)\right].
+  (2a + \sigma_{a}\Delta x)\delta\phi_i^{(s+1)} -a (\delta\phi_{i-1}^{(s+1)} + \delta\phi_{i+1}^{(s+1)}) = \\
+  \frac{1}{\sigma_t \Delta x} \left\{\sum_{m=1}^{M}\left(\frac{1}{3} - \mu_m^2 \right) \left( 2 \left[ \alpha_{m}\left( \delta \psi_{m,i-1/2}^{(s+1/2)} \right) + (1-\alpha_{m})\left( \delta\psi_{m,i+1/2}^{(s+1/2)} \right)\right] \right.\right.\\
+  \left.\left.- \delta\psi_{m, i+1/2}^{(s+1/2)} - \delta\psi_{m, i-1/2}^{(s+1/2)} \right) \right\}
 \end{multline}
-Since $\cos(-\theta) = \cos(\theta)$ and $\sin(-\theta) = -\sin(\theta)$, 
 
-\begin{equation}
-  \delta\psi_{m, i+1/2}^{(s+1/2)} - \delta\psi_{m, i-1/2}^{(s+1/2)} =f_m^{(s+1/2)}e^{i\lambda\sigma_t x_{i}}\left[2i\sin\left(\frac{1}{2}\lambda\sigma_t \Delta x\right)\right].
+Then, applying the Fourier Ansatz, the asssumed form of the two solution functions are
+
+\begin{gather}
+  \delta\psi_{m, i+1/2}^{(s+1/2)} = \int_{-\infty}^{\infty} f_m^{(s+1/2)}(\lambda)e^{i\lambda\sigma_t x_{i+1/2}} d\lambda\\
+  \delta\phi_{i}^{(s)} = \int_{-\infty}^{\infty} h^{(s)}(\lambda)e^{i\lambda\sigma_t x_i} d\lambda
+\end{gather}
+
+where $f_m(\lambda)$ denotes $f(\lambda, \mu_m)$. The cell-edge and neighboring cell terms can be expanded in the assumed form to simplify:
+\begin{equation}\label{eq:subtract-psi}
+  \begin{split}
+  \delta\psi_{m, i+1/2}^{(s+1/2)}  - \delta\psi_{m, i-1/2}^{(s+1/2)} &= f_m^{(s+1/2)}\left( e^{i\lambda\sigma_t x_{i+1/2}} - e^{i\lambda\sigma_t x_{i+1/2}}  \right)\\
+      &= f_m^{(s+1/2)}\left( e^{i\lambda\sigma_t (x_i + \frac{1}{2}\Delta x)} - e^{i\lambda\sigma_t (x_i - \frac{1}{2}\Delta x)}  \right)\\
+      &= f_m^{(s+1/2)}e^{i\lambda\sigma_t x_i}\left( e^{\frac{1}{2}i\lambda\sigma_t \Delta x} - e^{-\frac{1}{2}i\lambda\sigma_t \Delta x}  \right)\\
+      &= f_m^{(s+1/2)}e^{i\lambda\sigma_t x_i}\left( \cos \frac{1}{2}i\lambda\sigma_t \Delta x + i\sin \frac{1}{2}i\lambda\sigma_t \Delta x- \cos \frac{-1}{2}i\lambda\sigma_t \Delta x - i\sin \frac{-1}{2}i\lambda\sigma_t \Delta x\right)\\
+      &= f_m^{(s+1/2)}(\lambda)e^{i\lambda\sigma_t x_i}\left( 2i\sin \left(-\frac{1}{2}i\lambda\sigma_t \Delta x \right)\right)
+\end{split}
 \end{equation}
 
+
+which uses the identities $\sin(-\theta) = -\sin\theta$ and $\cos(-\theta) = \cos\theta$. The SC differencing scheme is similarly rewritten:
+
+\begin{equation}\label{eq:fourier-alpha}
+  \begin{split}
+  (\alpha)\delta\psi_{m, i+1/2}^{(s+1/2)} + (1 - \alpha )\delta\psi_{m, i-1/2}^{(s+1/2)} &= f_m^{(s+1/2)} \left( \alpha   e^{i\lambda\sigma_t x_{i-1/2}}     + \left(1-  \alpha\right)e^{i\lambda\sigma_t x_{i+1/2}}\right)\\
+      &= f_m^{(s+1/2)} \left( \alpha \left(e^{i\lambda\sigma_t (x_i - \frac{1}{2}\Delta x)} - e^{i\lambda\sigma_t (x_i + \frac{1}{2}\Delta x)} \right) + e^{i\lambda\sigma_t (x_i + \frac{1}{2}\Delta x)}\right)\\
+      &= f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i}\left( \alpha \left(e^{-\frac{1}{2}i\lambda\sigma_t  \Delta x} - e^{\frac{1}{2}i\lambda\sigma_t  \Delta x} \right) + e^{\frac{1}{2}i\lambda\sigma_t \Delta x}\right)\\
+      &= f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i}\left( -2i\alpha\sin\left( \frac{1}{2} \lambda\sigma_t \Delta x\right) + e^{\frac{1}{2}i\lambda\sigma_t \Delta x}\right)
+\end{split}
+\end{equation}
+
+The cell-centered scalar flux term from the SM equation becomes
+
+\begin{equation}\label{eq:add-phi}
+  \begin{split}
+    \delta\phi_{i+1}^{(s+1)} + \delta\phi_{i-1}^{(s+1)} &= h^{(s+1)}\left[ e^{i\lambda\sigma_t x_{i+1}} + e^{i\lambda\sigma_t x_{i-1}} \right]\\
+    &= h^{(s+1)}e^{i\lambda\sigma_t x_{i}}\left[ e^{i\lambda\sigma_t \Delta x} + e^{-i\lambda\sigma_t \Delta x} \right]\\
+    &= h^{(s+1)}e^{i\lambda\sigma_t x_{i}}\left[ \cos(\lambda\sigma_t \Delta x) + i\sin(\lambda\sigma_t \Delta x) + \cos(-\lambda\sigma_t \Delta x) + i\sin(-\lambda\sigma_t \Delta x) \right]\\
+    &= h^{(s+1)}e^{i\lambda\sigma_t x_{i}}\left[ 2\cos(\lambda\sigma_t \Delta x)  \right]
+  \end{split}
+\end{equation}
+
+and the cell-edge scalar flux term in the SM equation is similarly
+
+\begin{equation}\label{eq:add-psi}
+  \begin{split}
+    \delta\psi_{m, i+1/2}^{(s+1/2)} + \delta\psi_{m, i-1/2}^{(s+1/2)} &= f_m^{(s+1/2)}\left[ e^{i\lambda\sigma_t (x_i + \frac{1}{2}\Delta x)} + e^{i\lambda\sigma_t (x_i - \frac{1}{2}\Delta x)}\right]\\
+    &= \cdots\\
+        &= f_m^{(s+1/2)}e^{i\lambda\sigma_t x_i}\left[ 2\cos\left(\frac{1}{2}\lambda\sigma_t \Delta x \right)\right].
+  \end{split}
+\end{equation}
+
+Next, \autoref{eq:discrete-transport} is evaluated using using the Fourier Ansatz forms, and plugging in \autoref{eq:alpha-differencing} for $\delta\psi_{m, i}$ and using~\ref{eq:subtract-psi} and~\ref{eq:fourier-alpha} for the cell-edge terms:
+
+\begin{equation}
+  f
+\end{equation}
 
 
 \subsection{Plots}

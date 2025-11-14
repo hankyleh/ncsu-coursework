@@ -11,7 +11,7 @@ def continuous_eig (t, c, l):
 
 # Continuous Fourier Modes
 c_vec = [0.1, 0.5, 0.9, 0.999, 1]
-l_vec = numpy.linspace(0.001, 20, 50)
+l_vec = numpy.linspace(0.001, 20, 500)
 
 continuous_omega = numpy.zeros((len(c_vec), len(l_vec)))
 
@@ -23,6 +23,9 @@ for c in range(len(c_vec)):
 
 spec_rad = numpy.max(continuous_omega, axis=1, keepdims=True)
 spec_eig = ((matlib.repmat(l_vec, len(c_vec), 1))[continuous_omega==spec_rad])
+
+print(spec_rad)
+print(spec_eig)
 
 plt.scatter(spec_eig, spec_rad, s=15)
 plt.legend()
