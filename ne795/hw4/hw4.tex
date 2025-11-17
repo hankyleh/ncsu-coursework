@@ -293,14 +293,14 @@ Then, applying the Fourier Ansatz, the asssumed form of the two solution functio
   \delta\phi_{i}^{(s)} = \int_{-\infty}^{\infty} h^{(s)}(\lambda)e^{i\lambda\sigma_t x_i} d\lambda
 \end{gather}
 
-where $f_m(\lambda)$ denotes $f(\lambda, \mu_m)$. The cell-edge and neighboring cell terms can be expanded in the assumed form to simplify:
+where $f_m(\lambda)$ denotes $f(\lambda, \mu_m)$. The cell-edge and neighboring cell terms can be expanded in the assumed form to simplify. Introducing $\beta = \frac{1}{2}\lambda\sigma_t \Delta x$, 
 \begin{equation}\label{eq:subtract-psi}
   \begin{split}
   \delta\psi_{m, i+1/2}^{(s+1/2)}  - \delta\psi_{m, i-1/2}^{(s+1/2)} &= f_m^{(s+1/2)}\left( e^{i\lambda\sigma_t x_{i+1/2}} - e^{i\lambda\sigma_t x_{i+1/2}}  \right)\\
       &= f_m^{(s+1/2)}\left( e^{i\lambda\sigma_t (x_i + \frac{1}{2}\Delta x)} - e^{i\lambda\sigma_t (x_i - \frac{1}{2}\Delta x)}  \right)\\
-      &= f_m^{(s+1/2)}e^{i\lambda\sigma_t x_i}\left( e^{\frac{1}{2}i\lambda\sigma_t \Delta x} - e^{-\frac{1}{2}i\lambda\sigma_t \Delta x}  \right)\\
-      &= f_m^{(s+1/2)}e^{i\lambda\sigma_t x_i}\left( \cos \frac{1}{2}i\lambda\sigma_t \Delta x + i\sin \frac{1}{2}i\lambda\sigma_t \Delta x- \cos \frac{-1}{2}i\lambda\sigma_t \Delta x - i\sin \frac{-1}{2}i\lambda\sigma_t \Delta x\right)\\
-      &= f_m^{(s+1/2)}(\lambda)e^{i\lambda\sigma_t x_i}\left( 2i\sin \left(\frac{1}{2}i\lambda\sigma_t \Delta x \right)\right)
+      &= f_m^{(s+1/2)}e^{i\lambda\sigma_t x_i}\left( e^{i\beta} - e^{-i\beta}  \right)\\
+      &= f_m^{(s+1/2)}e^{i\lambda\sigma_t x_i}\left( \cos \beta + i\sin \beta- \cos (-\beta) - i\sin (-\beta)\right)\\
+      &= f_m^{(s+1/2)}(\lambda)e^{i\lambda\sigma_t x_i}\left( 2i\sin \beta\right)
 \end{split}
 \end{equation}
 
@@ -310,9 +310,9 @@ which uses the identities $\sin(-\theta) = -\sin\theta$ and $\cos(-\theta) = \co
 \begin{equation}\label{eq:fourier-alpha}
   \begin{split}
   (\alpha_m)\delta\psi_{m, i+1/2}^{(s+1/2)} + (1 - \alpha_m )\delta\psi_{m, i-1/2}^{(s+1/2)} &= f_m^{(s+1/2)} \left( \alpha_m   e^{i\lambda\sigma_t x_{i-1/2}}     + \left(1-  \alpha_m\right)e^{i\lambda\sigma_t x_{i+1/2}}\right)\\
-      &= f_m^{(s+1/2)} \left( \alpha_m \left(e^{i\lambda\sigma_t (x_i - \frac{1}{2}\Delta x)} - e^{i\lambda\sigma_t (x_i + \frac{1}{2}\Delta x)} \right) + e^{i\lambda\sigma_t (x_i + \frac{1}{2}\Delta x)}\right)\\
-      &= f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i}\left( \alpha_m \left(e^{-\frac{1}{2}i\lambda\sigma_t  \Delta x} - e^{\frac{1}{2}i\lambda\sigma_t  \Delta x} \right) + e^{\frac{1}{2}i\lambda\sigma_t \Delta x}\right)\\
-      &= f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i}\left( -2i\alpha_m\sin\left( \frac{1}{2} \lambda\sigma_t \Delta x\right) + e^{\frac{1}{2}i\lambda\sigma_t \Delta x}\right)
+      &= f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i}\left( \alpha_m   e^{-i\beta}     + \left(1-  \alpha_m\right)e^{i\beta}\right)\\
+      &= f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i}\left( i\sin\beta (1- \alpha_m - \alpha_m) + \cos\beta (\alpha + 1 -\alpha)\right)\\
+      &= f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i}\left(\cos\beta - 2\alpha_m\sin\beta\right)
 \end{split}
 \end{equation}
 
@@ -321,83 +321,33 @@ The cell-centered scalar flux term from the SM equation becomes
 \begin{equation}\label{eq:add-phi}
   \begin{split}
     \delta\phi_{i+1}^{(s+1)} + \delta\phi_{i-1}^{(s+1)} &= h^{(s+1)}\left[ e^{i\lambda\sigma_t x_{i+1}} + e^{i\lambda\sigma_t x_{i-1}} \right]\\
-    &= h^{(s+1)}e^{i\lambda\sigma_t x_{i}}\left[ e^{i\lambda\sigma_t \Delta x} + e^{-i\lambda\sigma_t \Delta x} \right]\\
-    &= h^{(s+1)}e^{i\lambda\sigma_t x_{i}}\left[ \cos(\lambda\sigma_t \Delta x) + i\sin(\lambda\sigma_t \Delta x) + \cos(-\lambda\sigma_t \Delta x) + i\sin(-\lambda\sigma_t \Delta x) \right]\\
-    &= h^{(s+1)}e^{i\lambda\sigma_t x_{i}}\left[ 2\cos(\lambda\sigma_t \Delta x)  \right]
+    &= h^{(s+1)}e^{i\lambda\sigma_t x_{i}}\left[ e^{2i\beta} + e^{-2i\beta} \right]\\
+    &= h^{(s+1)}e^{i\lambda\sigma_t x_{i}}\left[ \cos(2\beta) + i\sin(2\beta) + \cos(-2\beta) + i\sin(-2\beta) \right]\\
+    &= h^{(s+1)}e^{i\lambda\sigma_t x_{i}}\left[ 2\cos(2\beta)  \right]
   \end{split}
 \end{equation}
 
-% and the cell-edge scalar flux term in the SM equation is similarly
+and the center angular flux term from the SM equation similarly becomes
 
-% \begin{equation}\label{eq:add-psi}
-%   \begin{split}
-%     \delta\psi_{m, i+1/2}^{(s+1/2)} + \delta\psi_{m, i-1/2}^{(s+1/2)} &= f_m^{(s+1/2)}\left[ e^{i\lambda\sigma_t (x_i + \frac{1}{2}\Delta x)} + e^{i\lambda\sigma_t (x_i - \frac{1}{2}\Delta x)}\right]\\
-%     &= \cdots\\
-%         &= f_m^{(s+1/2)}e^{i\lambda\sigma_t x_i}\left[ 2\cos\left(\frac{1}{2}\lambda\sigma_t \Delta x \right)\right].
-%   \end{split}
-% \end{equation}
+\begin{equation}\label{eq:add-psi}
+    \delta\psi_{m, i+1}^{(s+1/2)} + \delta\psi_{m, i-1}^{(s+1/2)} = f^{(s+1/2)}_m e^{i\lambda \sigma_t x_i}\left(2\cos(2\beta)  \right) \left(\cos\beta - 2\alpha_m\sin\beta\right)
+\end{equation}
 
-Next, \autoref{eq:discrete-transport} is evaluated using using the Fourier Ansatz forms, plugging in \autoref{eq:alpha-differencing} for $\delta\psi_{m, i}$ and using~\ref{eq:subtract-psi} and~\ref{eq:fourier-alpha} for the cell-edge terms:
-
-
-\begin{multline}
-  2i\mu_m f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i} \sin\left(\frac{1}{2}\lambda \sigma_t \Delta x \right) + \sigma_{t}\Delta x f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i}\left( -2i\alpha_m\sin\left( \frac{1}{2} \lambda\sigma_t \Delta x\right) + e^{\frac{1}{2}i\lambda\sigma_t \Delta x}\right) \\
-  =\frac{\sigma_s \Delta x}{2}h^{(s)}e^{i\lambda \sigma_t x_i}
-\end{multline}
+Using these terms, the transport equation can be written in terms of the Fourier Ansatz (eliminating the common $e^{i\lambda\sigma_t x_i}$ term):
 
 \begin{gather}
-f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i} \left[\left(\mu_m - \sigma_t \Delta x \alpha_m\right)2i\sin\left( \frac{1}{2} \lambda\sigma_t \Delta x\right) + \sigma_t \Delta x e^{\frac{1}{2}i\lambda \sigma_t \Delta x}\right] =\frac{\sigma_s \Delta x}{2}h^{(s)}e^{i\lambda \sigma_t x_i}\\
-f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i} \left[\left(\frac{\mu_m}{\sigma_t \Delta x} -  \alpha_m\right)2i\sin\left( \frac{1}{2} \lambda\sigma_t \Delta x\right) + e^{\frac{1}{2}i\lambda \sigma_t \Delta x}\right] =\frac{c}{2}h^{(s)}e^{i\lambda \sigma_t x_i}\\
-f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i} \left[\left(\frac{1}{e^{\tau_m} - 1}\right)2i\sin\left( \frac{1}{2} \lambda\sigma_t \Delta x\right) + e^{\frac{1}{2}i\lambda \sigma_t \Delta x}\right] =\frac{c}{2}h^{(s)}e^{i\lambda \sigma_t x_i}
+  2f_m^{(s+1/2)}\mu_m i\sin\beta + \sigma_t\Delta x \left(\cos\beta - 2\alpha_m i\sin\beta \right)f_m^{(s+1/2)} = \frac{\sigma_s \Delta x}{2}h^{(s)}\\
+  f_m^{(s+1/2)} = h^{(s)} \frac{\sigma_s \Delta x}{2\left[(2i\sin\beta)(\mu_m - \sigma_t \Delta x \alpha_m) + \sigma_t \Delta x \cos\beta\right]}.
 \end{gather}
 
-The SM equation~(\ref{eq:discrete-sm}) can be expanded by plugging in~\ref{eq:alpha-differencing}, and using~\ref{eq:add-phi}:
-
-\begin{multline}
-    h^{(s+1)}e^{i\lambda \sigma_t x_i}\left[(2a + \sigma_{a}\Delta x) -a \left( 2\cos(\lambda\sigma_t \Delta x)  \right)\right] =\\
-     \frac{1}{\sigma_t \Delta x} \left[\sum_{m=1}^{M}w_m\left(\frac{1}{3} - \mu_m^2 \right) \left\{2f^{(s+1/2)}_m e^{i\lambda \sigma_t x_i} \left( e^{\frac{1}{2}i\lambda\sigma_t \Delta x} - 2i \alpha_m \sin \left(\frac{1}{2}\lambda \sigma_t \Delta x \right)   \right)\right.\right.\\
-    -f^{(s+1/2)}_m e^{i\lambda \sigma_t x_i}e^{i\lambda \sigma_t \Delta x}\left( e^{\frac{1}{2}i\lambda\sigma_t \Delta x} - 2i \alpha_m \sin \left(\frac{1}{2}\lambda \sigma_t \Delta x \right)   \right)\\
-    \left.\left. - f^{(s+1/2)}_m e^{i\lambda \sigma_t x_i}e^{-i\lambda \sigma_t \Delta x}\left( e^{\frac{1}{2}i\lambda\sigma_t \Delta x} - 2i \alpha_m \sin \left(\frac{1}{2}\lambda \sigma_t \Delta x \right)   \right)\right\}\vphantom{\sum_{m=1}^{M}} \right]
-\end{multline}
-
-\begin{multline}
-    h^{(s+1)}e^{i\lambda \sigma_t x_i}\left[(2a + \sigma_{a}\Delta x) -a \left( 2\cos(\lambda\sigma_t \Delta x)  \right)\right] =\\
-     \frac{1}{\sigma_t \Delta x} \left[\sum_{m=1}^{M}w_m\left(\frac{1}{3} - \mu_m^2 \right) \left\{\vphantom{\frac{1}{2}}\left(2 - (e^{i\lambda \sigma_t \Delta x} + e^{-i\lambda \sigma_t \Delta x}) \right)\times \right.\right.\\
-     \left.\left.f^{(s+1/2)}_m e^{i\lambda \sigma_t x_i} \left( e^{\frac{1}{2}i\lambda\sigma_t \Delta x} - 2i \alpha_m \sin \left(\frac{1}{2}\lambda \sigma_t \Delta x \right)   \right)\right\}\vphantom{\sum_{m=1}^{M}} \right]
-\end{multline}
-
-and using an intermediate step from \autoref{eq:add-phi}, 
-
-\begin{multline}
-    h^{(s+1)}e^{i\lambda \sigma_t x_i}\left[(2a + \sigma_{a}\Delta x) -a \left( 2\cos(\lambda\sigma_t \Delta x)  \right)\right] =\\
-     \frac{ e^{i\lambda \sigma_t x_i}}{\sigma_t \Delta x} \left[\sum_{m=1}^{M}w_mf^{(s+1/2)}_m\left(\frac{1}{3} - \mu_m^2 \right) \left\{\left(2 -\cos\left( \lambda \sigma_t \Delta x\right) \right)\times \right.\right.\\
-     \left.\left. \left( e^{\frac{1}{2}i\lambda\sigma_t \Delta x} - 2i \alpha_m \sin \left(\frac{1}{2}\lambda \sigma_t \Delta x \right)   \right)\right\}\right]
-\end{multline}
-
-\begin{multline}
-    h^{(s+1)}e^{i\lambda \sigma_t x_i}\left[\left(\frac{2}{3} + \sigma_{a}\sigma_t(\Delta x)^2\right) -\frac{2}{3} \left( \cos(\lambda\sigma_t \Delta x)  \right)\right] =\\
-      e^{i\lambda \sigma_t x_i} \left[\sum_{m=1}^{M}w_mf^{(s+1/2)}_m\left(\frac{1}{3} - \mu_m^2 \right) \left\{\left(2 -\cos\left( \lambda \sigma_t \Delta x\right) \right)\times \right.\right.\\
-     \left.\left. \left( e^{\frac{1}{2}i\lambda\sigma_t \Delta x} - 2i \alpha_m \sin \left(\frac{1}{2}\lambda \sigma_t \Delta x \right)   \right)\right\}\right]
-\end{multline}
-
-Then, the system for $f$ and $h$ is, eliminating the common $e^{i\lambda \sigma_t x_i}$ similarly to the continous Fourier Analysis,
+The SM equation can be rewritten in the same way
 
 \begin{gather}
-  f_m^{(s+1/2)} \left[\left(\frac{1}{e^{\tau_m} - 1}\right)2i\sin\left( \frac{1}{2} \lambda\sigma_t \Delta x\right) + e^{\frac{1}{2}i\lambda \sigma_t \Delta x}\right] =\frac{c}{2}h^{(s)}\\
   \begin{split}
-    h^{(s+1)}\left[\left(\frac{2}{3} + \sigma_{a}\sigma_t(\Delta x)^2\right) -\frac{2}{3} \left( \cos(\lambda\sigma_t \Delta x)  \right)\right] =\\
-     \frac{1 }{\sigma_t \Delta x} \left[\sum_{m=1}^{M}w_mf^{(s+1/2)}_m\left(\frac{1}{3} - \mu_m^2 \right) \left\{\left(2 -\cos\left( \lambda \sigma_t \Delta x\right) \right)\left( e^{\frac{1}{2}i\lambda\sigma_t \Delta x} - 2i \alpha_m \sin \left(\frac{1}{2}\lambda \sigma_t \Delta x \right)   \right)\right\}\right]  
+    (2a + \sigma_a \Delta x)h^{(s+1)} - a(2\cos(2\beta))h^{(s+1)} =\\
+     \frac{1}{\sigma_t \Delta x} \sum_{m=1}^{M}w_m \left(\frac{1}{3} - \mu_m^2 \right)\left(2 - 2\cos(2\beta)\right)\left(\cos\beta - 2\alpha_m i\sin\beta\right)
   \end{split}
 \end{gather}
-
-Then the expression for $h^{(s+1)}$ is
-
-\begin{multline}
-  h^{(s+1)} = h^{(s)}\sum_{m=1}^{M}\Bigg\{
-   w_m c\left[  e^{\frac{1}{2}i\lambda \sigma_t \Delta x} - 2i\alpha_m \sin\left(   \frac{1}{2}\lambda\sigma_t \Delta x\right)  \right]\left[   \frac{1}{3} - \mu_m^2  \right] \left[2 - \cos\left(\lambda \sigma_t \Delta x \right) \right] \bigg/\\
-\left(2\sigma_t \Delta x \left[\left(\frac{2}{3} + \sigma_{a}\sigma_t(\Delta x)^2\right) -\frac{2}{3} \left( \cos(\lambda\sigma_t \Delta x)  \right)\right]\left[\left(\frac{1}{e^{\tau_m} - 1}\right)2i\sin\left( \frac{1}{2} \lambda\sigma_t \Delta x\right) + e^{\frac{1}{2}i\lambda \sigma_t \Delta x}\right]\right)\Bigg\}
-\end{multline}
-
 
 \subsection{Plots}
 % TODO
