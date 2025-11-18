@@ -1,14 +1,12 @@
 \documentclass{template}
 \title{NE 795 Assignment 4}
 \author{Kyle Hansen}
-\date{14 November 2025}
+\date{18 November 2025}
 
 \usepackage{cancel}
 \usepackage{empheq}
+\usepackage{placeins}
 \newcommand*\multbox[1]{\fbox{\hspace{0ex}#1\hspace{0ex}}}
-
-
-
 
 
 
@@ -163,13 +161,29 @@ where the integral is equal to
 \left[\frac{c}{2}\int_{-1}^{1}\left(\frac{1}{3} - \mu^2 \right) \frac{1}{(1+i\mu\lambda)}d\mu\right] =  \frac{\left(2\left(\lambda^2 + 3 \right)\tan^{-1}\lambda\right) - 6\lambda}{3\lambda^3}
 \end{equation}
 
+\subsection{Plots and Spectral Radius}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.65\textwidth]{continuous.png}\label{fig:continuous}
+  \caption{Continuous Fourier Eigenvalue Spectrum}
+\end{figure}
+
+\FloatBarrier%
 
 
-\subsection{Plots}
-% TODO
+\begin{table}[h!]
+  \centering
+  \caption{Continuous Spectral Radii}
+  \label{tab:continuous}
+  \begin{tabular}{c|ccccc}
+    c &  0.1&0.5 & 0.9& 0.999& 1\\
+    \hline
+    $\rho$ &0.0177  &0.0958  &0.1939  &0.2243  &0.2247
+  \end{tabular}
+\end{table}
 
-\subsection{Spectral Radius}
-% TODO
+\FloatBarrier
 
 
 \section{Discretized Fourier Analysis}
@@ -312,11 +326,12 @@ which uses the identities $\sin(-\theta) = -\sin\theta$ and $\cos(-\theta) = \co
   (\alpha_m)\delta\psi_{m, i+1/2}^{(s+1/2)} + (1 - \alpha_m )\delta\psi_{m, i-1/2}^{(s+1/2)} &= f_m^{(s+1/2)} \left( \alpha_m   e^{i\lambda\sigma_t x_{i-1/2}}     + \left(1-  \alpha_m\right)e^{i\lambda\sigma_t x_{i+1/2}}\right)\\
       &= f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i}\left( \alpha_m   e^{-i\beta}     + \left(1-  \alpha_m\right)e^{i\beta}\right)\\
       &= f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i}\left( i\sin\beta (1- \alpha_m - \alpha_m) + \cos\beta (\alpha + 1 -\alpha)\right)\\
-      &= f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i}\left(\cos\beta - 2\alpha_m\sin\beta\right)
+      &= f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i}\left(\cos\beta - (1 - 2\alpha_m)\sin\beta\right)\\
+      &= f_m^{(s+1/2)} e^{i\lambda\sigma_t x_i}\left(\cos\beta + \tilde{\alpha}_m\sin\beta\right)
 \end{split}
 \end{equation}
 
-The cell-centered scalar flux term from the SM equation becomes
+Where $\tilde{\alpha}_m = (1 - 2\alpha_m)$. The cell-centered scalar flux term from the SM equation becomes
 
 \begin{equation}\label{eq:add-phi}
   \begin{split}
@@ -330,14 +345,14 @@ The cell-centered scalar flux term from the SM equation becomes
 and the center angular flux term from the SM equation similarly becomes
 
 \begin{equation}\label{eq:add-psi}
-    \delta\psi_{m, i+1}^{(s+1/2)} + \delta\psi_{m, i-1}^{(s+1/2)} = f^{(s+1/2)}_m e^{i\lambda \sigma_t x_i}\left(2\cos(2\beta)  \right) \left(\cos\beta - 2\alpha_m\sin\beta\right)
+    \delta\psi_{m, i+1}^{(s+1/2)} + \delta\psi_{m, i-1}^{(s+1/2)} = f^{(s+1/2)}_m e^{i\lambda \sigma_t x_i}\left(2\cos(2\beta)  \right) \left(\cos\beta + \tilde{\alpha}_m\sin\beta\right)
 \end{equation}
 
 Using these terms, the transport equation can be written in terms of the Fourier Ansatz (eliminating the common $e^{i\lambda\sigma_t x_i}$ term):
 
-\begin{gather}
-  2f_m^{(s+1/2)}\mu_m i\sin\beta + \sigma_t\Delta x \left(\cos\beta - 2\alpha_m i\sin\beta \right)f_m^{(s+1/2)} = \frac{\sigma_s \Delta x}{2}h^{(s)}\\
-  f_m^{(s+1/2)} = h^{(s)} \frac{\sigma_s \Delta x}{2\left[(2i\sin\beta)(\mu_m - \sigma_t \Delta x \alpha_m) + \sigma_t \Delta x \cos\beta\right]}.
+\begin{gather}\label{eq:f-expr}
+  2f_m^{(s+1/2)}\mu_m i\sin\beta + \sigma_t\Delta x \left(\cos\beta + \tilde{\alpha}_m i\sin\beta \right)f_m^{(s+1/2)} = \frac{\sigma_s \Delta x}{2}h^{(s)}\\
+  f_m^{(s+1/2)} = h^{(s)} \frac{\sigma_s \Delta x}{2\left[(i\sin\beta)(2\mu_m + \sigma_t \Delta x \tilde{\alpha}_m) + \sigma_t \Delta x \cos\beta\right]}.
 \end{gather}
 
 The SM equation can be rewritten in the same way
@@ -346,14 +361,94 @@ The SM equation can be rewritten in the same way
   \begin{split}
     (2a + \sigma_a \Delta x)h^{(s+1)} - a(2\cos(2\beta))h^{(s+1)} =\\
      \frac{1}{\sigma_t \Delta x} \sum_{m=1}^{M}w_m \left(\frac{1}{3} - \mu_m^2 \right)\left(2 - 2\cos(2\beta)\right)\left(\cos\beta - 2\alpha_m i\sin\beta\right)
-  \end{split}
+  \end{split}\\
+  h^{(s+1)} = \sum_{m=1}^{M}\frac{\left(\frac{1}{3} - \mu_m^2\right) w_m \left(2 - 2\cos2\beta \right)\left(\cos\beta + \tilde{\alpha}_m i\sin\beta \right)f_m^{(s+1/2)}}{\left(2a - 2a\cos2\beta + \sigma_a \Delta x \right) \left(\sigma_t \Delta x \right)}
 \end{gather}
 
-\subsection{Plots}
-% TODO
+Then plugging in \autoref{eq:f-expr}, the expression for $h^{(s+1)} = \omega(\lambda)h^{(s)}$ is found:
 
-\subsection{Spectral Radius}
-% TODO
+\begin{gather}
+  h^{(s+1)} = h^{(s)}\sum_{m=1}^{M}\frac{\left(\frac{1}{3} - \mu_m^2\right) w_m \left(2 - 2\cos2\beta \right)\left(\cos\beta + \tilde{\alpha}_m i\sin\beta \right)(\sigma_s \Delta x)}{2\left[(i\sin\beta)(2\mu_m + \sigma_t \Delta x \tilde{\alpha}_m) + \sigma_t \Delta x \cos\beta\right]\left(2a - 2a\cos2\beta + \sigma_a \Delta x \right) \left(\sigma_t \Delta x \right)}\\
+  h^{(s+1)} = h^{(s)}\frac{c}{2} \frac{\left(2 - 2\cos2\beta \right)}{\left(2a - 2a\cos2\beta + \sigma_a \Delta x \right)}\sum_{m=1}^{M}\frac{\left(\frac{1}{3} - \mu_m^2\right) w_m \left(\cos\beta + \tilde{\alpha}_m i\sin\beta \right)}{\left[(i\sin\beta)(2\mu_m + \sigma_t \Delta x \tilde{\alpha}_m) + \sigma_t \Delta x \cos\beta\right]}
+\end{gather}
+
+using $1 - \cos2\beta = 2\sin\beta$, 
+
+\begin{equation}
+  h^{(s+1)} = h^{(s)}\frac{c}{2} \frac{4\sin^2\beta }{4a\sin^2\beta + \sigma_a \Delta x }\sum_{m=1}^{M}\frac{\left(\frac{1}{3} - \mu_m^2\right) w_m \left(\cos\beta + \tilde{\alpha}_m i\sin\beta \right)}{(i\sin\beta)(2\mu_m + \sigma_t \Delta x \tilde{\alpha}_m) + \sigma_t \Delta x \cos\beta}
+\end{equation}
+
+then, multiplying both sides of the summation term by the complex cojugate of the denominator, 
+
+\begin{multline}
+  h^{(s+1)} = h^{(s)}\frac{c}{2} \frac{4\sin^2\beta }{4a\sin^2\beta + \sigma_a \Delta x }\times\\
+  \sum_{m=1}^{M}\frac{\left(\frac{1}{3} - \mu_m^2\right) w_m \left(\sigma_t\Delta x \cos^2 \beta + (\sigma_t \Delta x \tilde{\alpha}_m  - (2\mu_m + \sigma_t \Delta x \tilde{\alpha}_m)) i\sin\beta \cos\beta + \tilde{\alpha}_m(2\mu_m + \sigma_t \Delta x \tilde{\alpha}_m) \sin^2\beta \right)}{(\sin^2\beta){(2\mu_m + \sigma_t \Delta x \tilde{\alpha}_m)}^2 + {(\sigma_t \Delta x)}^2 \cos^2\beta}
+\end{multline}
+
+If $\{\tilde{\alpha}_m \}$ and $\{\mu_m\}$, then the imaginary term becomes zero in this sum, so this expression is equivalent to:
+
+\begin{multline}
+  h^{(s+1)} = h^{(s)}\frac{c}{2} \frac{4\sin^2\beta }{4a\sin^2\beta + \sigma_a \Delta x }\times\\
+  \sum_{m=1}^{M}\frac{\left(\frac{1}{3} - \mu_m^2\right) w_m \left(\sigma_t\Delta x \cos^2 \beta  + \tilde{\alpha}_m(2\mu_m + \sigma_t \Delta x \tilde{\alpha}_m) \sin^2\beta \right)}{\sin^2\beta{(2\mu_m + \sigma_t \Delta x \tilde{\alpha}_m)}^2 + {(\sigma_t \Delta x)}^2 \cos^2\beta}.
+\end{multline}
+
+Dividing both sides by $\cos^2\beta$ yields
+
+\begin{multline}
+  h^{(s+1)} = h^{(s)}\frac{c}{2} \frac{4\sin^2\beta }{4a\sin^2\beta + \sigma_a \Delta x }\times\\
+  \sum_{m=1}^{M}\frac{\left(\frac{1}{3} - \mu_m^2\right) w_m \left(\sigma_t\Delta x  +  \tilde{\alpha}_m(2\mu_m + \sigma_t \Delta x \tilde{\alpha}_m) \tan^2\beta \right)}{\tan^2\beta{(2\mu_m + \sigma_t \Delta x \tilde{\alpha}_m)}^2 + {(\sigma_t \Delta x)}^2}
+\end{multline}
+
+and dividing both sides by $(\sigma_t \Delta x)^2$ yields:
+
+\begin{equation}
+  h^{(s+1)} = h^{(s)}\frac{c}{2} \frac{4\sin^2\beta }{4a\sin^2\beta + \sigma_a \Delta x }\sum_{m=1}^{M}\frac{1}{\sigma_t \Delta x}\frac{\left(\frac{1}{3} - \mu_m^2\right) w_m \left(1  +  \tilde{\alpha}_m(\frac{2\mu_m}{\sigma_t \Delta x} + \tilde{\alpha}_m) \tan^2\beta \right)}{1 + {(\frac{2\mu_m}{\sigma_t \Delta x} +  \tilde{\alpha}_m)}^2 \tan^2\beta},
+\end{equation}
+
+and
+
+\begin{equation}
+  \omega(\lambda) =\frac{c}{2\sigma_t \Delta x} \frac{4\sin^2\beta }{4a\sin^2\beta + \sigma_a \Delta x }\sum_{m=1}^{M}\frac{\left(\frac{1}{3} - \mu_m^2\right) w_m \left(1  +  \tilde{\alpha}_m(\frac{2\mu_m}{\sigma_t \Delta x} + \tilde{\alpha}_m) \tan^2\beta \right)}{1 + {(\frac{2\mu_m}{\sigma_t \Delta x} +  \tilde{\alpha}_m)}^2 \tan^2\beta}.
+\end{equation}
+
+
+
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{disc_0.5.png}
+    \caption{}
+  \end{subfigure}
+  \begin{subfigure}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{disc_0.9.png}
+    \caption{}
+  \end{subfigure}
+
+  \begin{subfigure}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{disc_1.png}
+    \caption{}
+  \end{subfigure}
+  \caption{Discretized Fourier Eigenvalues}
+  \label{fig:discretized-plots}
+\end{figure}
+
+
+\begin{table}[h!]
+  \centering
+  \caption{Discretized Spectral Radii}
+  \label{tab:discretized}
+  \begin{tabular}{c|ccccc}
+    c   & $\Delta x = 0.01$&$\Delta x = 0.1$ & $\Delta x = 1$&$\Delta x = 10$ &$\Delta x = 100$ \\
+    \hline
+    0.5 & 0.0928& 0.0920 & 0.0662& $6.3\times 10^{-4}$&$6.5\times 10^{-7}$\\
+    0.9 & 0.1910& 0.1899 & 0.1553 &$6.3\times 10^{-3}$ &$5.8\times 10^{-8}$\\
+    1.0 & 0.2224 &0.2213 & 0.1896 & 0.0488 & 0.0049\\
+  \end{tabular}
+\end{table}
 
 
 
