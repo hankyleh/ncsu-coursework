@@ -1,8 +1,8 @@
 \documentclass{template}
 
-\title{MA 580 Assignment 4}
+\title{MA 580 Assignment 5}
 \author{Kyle Hansen}
-\date{31 October 2025}
+\date{Turned in 25 Nov. 2025}
 
 \usepackage{cancel}
 
@@ -146,6 +146,315 @@ and
 
 Then the error of the $n$th iterate is zero, so the algorithm converges in at most $n$ iterations.
 \section{CG Inverse Problem}
+
+\subsection{Normal Equation}
+
+From the regularized inverse equation:
+
+\begin{equation}
+  \min_{m} \frac{1}{2}\norm{Fm - u_d}_2^2 + \frac{\alpha}{2}m^T Rm,
+\end{equation}
+
+the regularization term can be written as the $R$-norm,
+
+\begin{equation}
+  \min_{m} \frac{1}{2}\norm{Fm - u_d}_2^2 + \frac{\alpha}{2} \norm{m}_R^2,
+\end{equation}
+
+and again using the property that $\norm{x}_A = \norm{A^{1/2}x}_2$,
+
+\begin{equation}
+  \min_{m} \frac{1}{2}\norm{Fm - u_d}_2^2 + \frac{\alpha}{2} \norm{R^{1/2}m}_2^2.
+\end{equation}
+
+Next, since for squared norms $\norm{u}_2^2 + \norm{v}_2^2 = \norm{u+v}_2^2$, this becomes
+
+\begin{equation}
+  \min_{m} \frac{1}{2}\norm{Fm + \sqrt{\alpha}R^{1/2}m - u_d}_2^2.
+\end{equation}
+
+Multiplying by $2$, taking the square root, and arranging the terms as composite matrices, the expression becomes 
+
+\begin{equation}
+  \min_{m} \norm{\begin{pmatrix}
+                     F\\
+                     \sqrt{\alpha R}
+                  \end{pmatrix} m  -   \begin{pmatrix}
+                     u_d\\
+                     0
+                  \end{pmatrix}}_2
+\end{equation}
+
+which is a standard least-squares problem, and can be solved by finding the solution to the linear system
+
+\begin{equation}\label{eq:linear-system}
+  M^T M m = M^T b,
+\end{equation}
+
+where
+
+\begin{gather}
+  M = \begin{pmatrix}
+                     F\\
+                     \sqrt{\alpha R}
+                  \end{pmatrix}\\
+  b = \begin{pmatrix}
+                     u_d\\
+                     0
+                  \end{pmatrix}
+\end{gather}
+
+For the code formulation, where the matrix form of $F$ cannot be accesed, these matrix multiplications (using $R^T = R$ and $F^T = F$) are equivalent to
+
+\begin{gather}
+  \label{eq:Mm}M^T M m = \begin{pmatrix}
+                     F & \sqrt{\alpha R}
+                  \end{pmatrix}\begin{pmatrix}
+                     F\\
+                     \sqrt{\alpha R}
+                  \end{pmatrix}m = FFm + \alpha R m\\
+  \label{eq:Mb}M^T b = \begin{pmatrix}
+                     F & \sqrt{\alpha R}
+                  \end{pmatrix}\begin{pmatrix}
+                     u_d\\
+                     0
+                  \end{pmatrix} = Fu_d + 0 = Fu_d.
+\end{gather}
+
+\subsection{MATLAB code overview}
+
+The MATLAB implementation of the regularized least sqaures intializes problem data, and steps backward in time for \verb|nt| steps, and solves \autoref{eq:linear-system} using
+
+\begin{verbatim}
+pcg(@normal_forward_heat, b, tol, 40,[],[],U(:, n))
+\end{verbatim}
+
+where \verb|normal_forward_heat| corresponds with \autoref{eq:Mm} and \verb|b| corresponds with \autoref{eq:Mb}. The tolerance is set to $10^{-8}$, though this is likely more precision than is needed (since the noise already introduces error), and the maximum iterations is set to 40, though this is not exceeded. The solution from the previous step is set to the initial guess.
+
+The regularization matrix $R$ was selected to be $A$, the discretized differential operator from the forward problem, which penalizes solutions with a high second derivative, which is introduced by the noise in the final condition.
+
+\subsection{Regularization parameter}
+
+With $R=A$, the ideal regularization parameter clearly lies in the range of $10^{-2}$ to $10^{-1}$. \autoref{fig:under-smoothed} clearly shows and under-smoothed solution, since the regularization parameter was too low, and \autoref{fig:over-smoothed} shows an over-smoothed solution, where the initial-time solution shows little difference from the final condition.
+
+In this example, since the true solution is known, $\alpha$ can be selected using "guess-and-check," but in real problems this may not be appropriate, and $\alpha$ may need to be selected using more care. Here $\alpha=10^{-1.69}$ was chosen, since it was the value of $\alpha$ where the effect of noise could still be seen in the solution, but not overwhelming the smoother, more physical solution.
+
+
+\begin{figure}
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{alph_175.png}
+    \caption{$\alpha = 10^{-1.75}$}%
+    \label{fig:under-smoothed}
+  \end{subfigure}
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{alph_165.png}
+    \caption{$\alpha = 10^{-1.65}$}%
+    \label{fig:over-smoothed}
+  \end{subfigure}
+
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{alph_1685.png}
+    \caption{$\alpha = 10^{-1.69}$}%
+    \label{fig:med-smoothed}
+  \end{subfigure}
+  \caption{Reg. parameter range}%
+  \label{fig:alpha-choice}
+\end{figure}
+
+\subsection{Solutions and convergence} 
+
+Figures~\ref{fig:n6-solns},~\ref{fig:n7-solns}, and~\ref{fig:n8-solns} show the solutions, convergence, and iterations for each resolution. \autoref{fig:n6-res} most clearly shows the convergence behavior of the pcg iteration, since the solution from the previous time step is taken as the initial iteration, the intial residual $\norm{r_0}$ is highest for the first time steps, so these require more iterations to converge, and have a higher relative residual after iterations.
+
+Once the noise has been mostly smoothed (about 20 iterations for $n_x = 2^6$), the inital guess is very close to the actual solution for most iterations.
+
+The solutions show some non-physical behavior, where the intial temperature is negative in some places. This could be improved by a different choice of $R$.
+
+
+
+\begin{figure}
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{convergence_64.png}
+    \caption{Number of pcg iterations}%
+    \label{fig:n6-iter}
+  \end{subfigure}
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{residual_64.png}
+    \caption{Relative residual}%
+    \label{fig:n6-res}
+  \end{subfigure}
+
+  \begin{subfigure}{0.60\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{starting_64.png}
+    \caption{Solution}%
+    \label{fig:n6}
+  \end{subfigure}
+  \caption{Solution and convergence, $n_x = 2^6$}%
+  \label{fig:n6-solns}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{convergence_128.png}
+    \caption{Number of pcg iterations}%
+    \label{fig:n7-iter}
+  \end{subfigure}
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{residual_128.png}
+    \caption{Relative residual}%
+    \label{fig:n7-res}
+  \end{subfigure}
+
+  \begin{subfigure}{0.60\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{starting_128.png}
+    \caption{Solution}%
+    \label{fig:n7}
+  \end{subfigure}
+  \caption{Solution and convergence, $n_x = 2^7$}%
+  \label{fig:n7-solns}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{convergence_256.png}
+    \caption{Number of pcg iterations}%
+    \label{fig:n8-iter}
+  \end{subfigure}
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{residual_256.png}
+    \caption{Relative residual}%
+    \label{fig:n8-res}
+  \end{subfigure}
+
+  \begin{subfigure}{0.60\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{starting_256.png}
+    \caption{Solution}%
+    \label{fig:n8}
+  \end{subfigure}
+  \caption{Solution and convergence, $n_x = 2^8$}%
+  \label{fig:n8-solns}
+\end{figure}
+
+\clearpage
+
+\appendix
+
+\section{MATLAB code}\label{sec:matlab}
+
+\begin{minted}{matlab}
+clear all
+close all
+
+global R alpha model_data
+init_heat_2d()
+
+%%
+nt = model_data.nt;
+nx = model_data.nx;
+
+s = length(model_data.A);
+q = sqrt(s);
+
+R = model_data.A;
+
+alpha = 10^(-1.69);
+tol = 1e-8;
+
+start = tic;
+
+iter = zeros(1, nt+1);
+flag = 0;
+relres = iter;
+
+U = zeros((nx-1)^2,nt+1);
+U(:, 1) = ud;
+
+model_data.nt = 1;
+
+
+for n = 1:nt
+    b = heat_forward_solve_2d(U(:, n), model_data);
+    [U(:, n+1), flag, relres(n+1), iter(n+1)] = ...
+        pcg(@normal_forward_heat, b, tol, 40,[],[],U(:, n));
+    fprintf("time step %i \n", n)
+end
+
+fprintf("%.2f second runtime", toc(start))
+
+%% plots
+close all
+
+figure()
+plot(iter, LineWidth=2)
+xlabel("Backward time step index")
+ylabel("Iterations")
+title(sprintf("Convergence, n_x = %i", nx))
+set(gcf, "Position", [100 100 500 350])
+saveas(gcf, sprintf("convergence_%i.png", nx))
+
+figure()
+plot(relres, LineWidth=2)
+xlabel("Backward time step index")
+ylabel("Relative Residual")
+yscale("log")
+title(sprintf("Residual, n_x = %i", nx))
+set(gcf, "Position", [100 100 500 350])
+saveas(gcf, sprintf("residual_%i.png", nx))
+
+figure()
+s = surf(xi(2:end-1), yi(2:end-1), reshape(ud, [q, q]));
+s.EdgeColor = 'none';
+view(0,90)
+c = colorbar;
+c.Label.String = 'u';
+set(gcf, "Position", [100 100 500 350])
+
+figure()
+s = surf(xi(2:end-1), yi(2:end-1), reshape(ut, [q, q]));
+s.EdgeColor = 'none';
+view(0,90)
+c = colorbar;
+c.Label.String = 'u';
+set(gcf, "Position", [100 100 500 350])
+saveas(gcf, sprintf("reality_%i.png", nx))
+
+for t = [301]
+    figure()
+    s = surf(xi(2:end-1), yi(2:end-1), reshape(U(:, t), [q, q]));
+    s.EdgeColor = 'none';
+    view(0,90)
+    xlabel("x")
+    ylabel("y")
+    c = colorbar;
+    c.Label.String = 'u';
+    title(sprintf("t=%.3f, n_x = %i", tf - t*dt, nx))
+    set(gcf, "Position", [100 100 500 350])
+    saveas(gcf, sprintf("starting_%i.png", nx))
+end
+
+function M = normal_forward_heat(v)
+    global R alpha model_data
+    
+    M = heat_forward_solve_2d(...
+        heat_forward_solve_2d(v, model_data), model_data) ...
+        + (alpha*R*v);
+end
+\end{minted}
 
 % TODO
 

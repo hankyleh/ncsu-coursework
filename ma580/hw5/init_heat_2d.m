@@ -15,7 +15,7 @@ kappa = .0025;      % diffusion coefficient
 %
 % Spatial discretization
 % 
-nx = 2^7;
+nx = 2^8;
 h = 1/nx;
 xi = [0 : h : 1]'; yi = xi;
 [Xi Yi] = meshgrid(xi,xi);

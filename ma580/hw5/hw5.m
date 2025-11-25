@@ -13,7 +13,7 @@ q = sqrt(s);
 
 R = model_data.A;
 
-alpha = 10^(-1.685);
+alpha = 10^(-1.69);
 tol = 1e-8;
 
 start = tic;
@@ -35,7 +35,7 @@ for n = 1:nt
     fprintf("time step %i \n", n)
 end
 
-fprintf("%.2f second runtime", toc-start)
+fprintf("%.2f second runtime", toc(start))
 
 %% plots
 close all
@@ -45,23 +45,25 @@ plot(iter, LineWidth=2)
 xlabel("Backward time step index")
 ylabel("Iterations")
 title(sprintf("Convergence, n_x = %i", nx))
+set(gcf, "Position", [100 100 500 350])
 saveas(gcf, sprintf("convergence_%i.png", nx))
 
 figure()
 plot(relres, LineWidth=2)
 xlabel("Backward time step index")
 ylabel("Relative Residual")
+yscale("log")
 title(sprintf("Residual, n_x = %i", nx))
+set(gcf, "Position", [100 100 500 350])
 saveas(gcf, sprintf("residual_%i.png", nx))
-
-
 
 figure()
 s = surf(xi(2:end-1), yi(2:end-1), reshape(ud, [q, q]));
 s.EdgeColor = 'none';
 view(0,90)
 c = colorbar;
-    c.Label.String = 'u';
+c.Label.String = 'u';
+set(gcf, "Position", [100 100 500 350])
 
 figure()
 s = surf(xi(2:end-1), yi(2:end-1), reshape(ut, [q, q]));
@@ -69,9 +71,10 @@ s.EdgeColor = 'none';
 view(0,90)
 c = colorbar;
 c.Label.String = 'u';
+set(gcf, "Position", [100 100 500 350])
 saveas(gcf, sprintf("reality_%i.png", nx))
 
-for t = [300]
+for t = [301]
     figure()
     s = surf(xi(2:end-1), yi(2:end-1), reshape(U(:, t), [q, q]));
     s.EdgeColor = 'none';
@@ -81,15 +84,9 @@ for t = [300]
     c = colorbar;
     c.Label.String = 'u';
     title(sprintf("t=%.3f, n_x = %i", tf - t*dt, nx))
+    set(gcf, "Position", [100 100 500 350])
     saveas(gcf, sprintf("starting_%i.png", nx))
 end
-
-
-
-
-
-
-
 
 function M = normal_forward_heat(v)
     global R alpha model_data
@@ -98,5 +95,3 @@ function M = normal_forward_heat(v)
         heat_forward_solve_2d(v, model_data), model_data) ...
         + (alpha*R*v);
 end
-
-

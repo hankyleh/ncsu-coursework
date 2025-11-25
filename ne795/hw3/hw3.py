@@ -44,16 +44,13 @@ def fr(T, nu):
 
 def group_opacity_rosseland(T, nu, kappa):
     def num_func(n):
-        # dBdT(T, n)/kappa(27, T, n)
-        # k = kappa(27, T, n)
-        # return dBdT(T, n)/k
         return (h**3)*(n**7)*(1-numpy.exp(-h*n/(k*T)))**-2
     def dem_func(n):
         return (n**4)*(1-numpy.exp(-h*n/(k*T)))**-2
 
     numerator, err = integrate.quad(num_func, nu[0], nu[1])
     denominator, err = integrate.quad(dem_func, nu[0], nu[1])
-    return 27* denominator/numerator        
+    return 27* denominator/numerator
 
 
 
