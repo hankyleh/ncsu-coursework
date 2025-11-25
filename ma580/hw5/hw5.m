@@ -12,7 +12,8 @@ s = length(model_data.A);
 q = sqrt(s);
 
 R = model_data.A;
-alpha = 10^(-1.75);
+
+alpha = 10^(-1.685);
 tol = 1e-8;
 
 start = tic;
@@ -43,35 +44,44 @@ figure()
 plot(iter, LineWidth=2)
 xlabel("Backward time step index")
 ylabel("Iterations")
-title("convergence")
+title(sprintf("Convergence, n_x = %i", nx))
+saveas(gcf, sprintf("convergence_%i.png", nx))
 
 figure()
 plot(relres, LineWidth=2)
 xlabel("Backward time step index")
 ylabel("Relative Residual")
+title(sprintf("Residual, n_x = %i", nx))
+saveas(gcf, sprintf("residual_%i.png", nx))
 
 
-%%
 
 figure()
 s = surf(xi(2:end-1), yi(2:end-1), reshape(ud, [q, q]));
 s.EdgeColor = 'none';
 view(0,90)
-colorbar
+c = colorbar;
+    c.Label.String = 'u';
 
 figure()
 s = surf(xi(2:end-1), yi(2:end-1), reshape(ut, [q, q]));
 s.EdgeColor = 'none';
 view(0,90)
-colorbar
+c = colorbar;
+c.Label.String = 'u';
+saveas(gcf, sprintf("reality_%i.png", nx))
 
 for t = [300]
     figure()
     s = surf(xi(2:end-1), yi(2:end-1), reshape(U(:, t), [q, q]));
     s.EdgeColor = 'none';
     view(0,90)
-    colorbar
-    title(sprintf("%i", t))
+    xlabel("x")
+    ylabel("y")
+    c = colorbar;
+    c.Label.String = 'u';
+    title(sprintf("t=%.3f, n_x = %i", tf - t*dt, nx))
+    saveas(gcf, sprintf("starting_%i.png", nx))
 end
 
 
