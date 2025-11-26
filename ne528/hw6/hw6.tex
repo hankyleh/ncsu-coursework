@@ -1,0 +1,236 @@
+\documentclass{template}
+\title{NE 795 Assignment 6}
+\author{Kyle Hansen}
+\date{26 November 2025}
+
+\usepackage{cancel}
+
+\begin{document}
+\maketitle
+
+\section{Z-pinch}
+
+\subsection{Sketch}
+
+The z-pinch sketch is shown in \autoref{fig:sketch}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{unnamed.jpg}
+    \caption{Z-pinch sketch}%
+    \label{fig:sketch}
+\end{figure}
+
+\subsection{Field Strength}
+
+By Ampere's magnetic field induced by a current-carrying wire is
+
+\begin{equation}
+    B_\theta = \frac{B_0 r}{a}
+\end{equation}
+
+where
+
+\begin{equation}
+    B_0 = \frac{\mu_0 I_{enc}}{2\pi a}.
+\end{equation}
+
+The current is $I_z(r) = \int_{2\pi}\int_{0}^{r} J_z(r^\prime) r^\prime dr d\theta$, or
+
+\begin{align}
+    I_z &= 2\pi J_0\int_{0}^{r}\left[1 - (\frac{r^\prime}{a})^2 \right] r^\prime d r^\prime\\
+    &= 2\pi J_0 \int_{0}^{r}\left[r^\prime - (\frac{r^{\prime 3}}{a^2}) \right] dr^\prime\\
+    &= 2\pi J_0\left[\frac{r^{\prime 2}}{2} - \frac{r^{\prime 4}}{4a^2} \right]_0^r \\
+    I_z(r) = &= 2\pi J_0\left[\frac{r^2}{2} - \frac{r^4}{4a^2} \right]
+\end{align}
+
+which is equal to $2\pi J_0\left[ \frac{1}{4}a^2  \right]$ when $r \geq a$.
+
+so,
+
+\begin{align}
+    B_0(z) &= \frac{\mu_0}{2\pi a} I_z(r)\\
+    &= \frac{\mu_0}{2\pi a} \left( 2\pi J_0\left[\frac{r^2}{2} - \frac{r^4}{4a^2} \right]\right) \\
+    &= {\mu_0  J_0}\left[\frac{r^2}{2a} - \frac{r^4}{4a^3} \right]
+\end{align}
+
+and
+
+\begin{align}
+    B_\theta(r) &= \frac{B_0 r}{a}\hat{\theta}\\
+        &= \frac{r}{a} {\mu_0  J_0}\left[\frac{r^2}{2a} - \frac{r^4}{4a^3} \right] \hat{\theta}\\
+        &=  {\mu_0  J_0}\left[\frac{r^3}{2a^2} - \frac{r^5}{4a^4} \right] \hat{\theta}
+\end{align}
+
+for $r \leq a$, and 
+
+\begin{align}
+    B_\theta(r) &= \frac{B_0 r}{a}\hat{\theta}\\
+    &= \frac{r}{a} {\mu_0  J_0}\left[\frac{1}{4}a^2\right] \hat{\theta}\\
+    &= \frac{\mu_0 a J_0}{4} r \hat{\theta}
+\end{align}
+
+for $r > a$.
+
+\subsection{Beta}
+
+% TODO
+
+\section{Bremsstrahlung}
+
+The given expression for heating power is
+
+\begin{equation}\label{eq:given}
+    P_{fus} = n_D n_T \langle \sigma v \rangle_{DT} E_\alpha.
+\end{equation}
+
+where $\langle \sigma v \rangle_{DT} = 10^{-34}T_i^3$. Assuming the reactivity is in units of $\text{m}^3/\text{s}$, then the heating power is in $\text{MeV}/\text{s}\text{m}^3$. The approximation
+
+\begin{equation}
+    P_{br} = 1.7 \times 10^{-38} z^2 n_e n_i \sqrt{T_e} \quad \left[ \frac{\text{W}}{\text{m}^3} \right]
+\end{equation}
+
+can be used for Bremsstrahlung loss power, or
+
+\begin{equation}
+    P_{br} = 1.061 \times 10^{-25} z^2 n_e n_i \sqrt{T_e} \quad \left[ \frac{\text{MeV}}{\text{m}^3 \text{s}} \right].
+\end{equation}
+
+for each species $n_i$. Then, assuming $n_D = n_T = \frac{1}{2}n_i  = \frac{1}{2}n_e\gg n_\alpha$, this becomes
+
+\begin{equation}
+    P_{br} = 2 * 1.061 \times 10^{-25}  n_D^2 \sqrt{T_e} \quad \left[ \frac{\text{MeV}}{\text{m}^3 \text{s}} \right]
+\end{equation}
+
+and the ratio of heating power to Bremsstrahlung loss is:
+
+\begin{align}
+    \label{eq:ratio}\frac{P_{fus}}{P_{br}} &= \frac{n_D^2 \left(10^{-34}T_i^3\right) E_\alpha}{1.061 \times 10^{-25}\left(2 \right) n_d^2 \sqrt{T_e}}\\
+    1 &=\frac{\cancel{n_D^2 }\left(10^{-34}T_i^3\right) E_\alpha}{1.061 \times 10^{-25}  \cancel{n_D^2} \cdot 4\sqrt{T_e}}\\
+    T_i^{-5/2} &=\frac{\left(10^{-34}\right) E_\alpha}{2 \cdot 1.061 \times 10^{-25} }\\
+    T_i^{-5/2} &= 1.6494 \times 10^{-9}\\
+    T_i &= 3258.9
+\end{align}
+
+for $P_{br}$ to equal $P_{fus}$, and thus at temperatures below $3.26$ keV, the Bremsstrahlung power loss exceeds the fusion heating power. 
+
+
+
+
+
+\section{Helium Fraction}
+
+Alpha impurities would lead to decreased D and T population, which decreases fusion power, as well as a greater Bremsstrahlung power loss than for either D or T, since $P_{br}$ is proportional to $z^2$. Even a small impurity of helium may have a large effect on this power ratio.
+
+\subsection{Fusion Power Ratio}
+
+ Introducing $\alpha$ impurity fraction $f$, \autoref{eq:ratio} becomes
+
+\begin{equation}
+    \frac{P_{fus}}{P_{br}} = \frac{ \frac{(1-f)^2}{4}n_e^2 \langle\sigma v \rangle_{DT} E_\alpha}{1.061 \times 10^{-25} n_e \sqrt{T_e} \left[ 4fn_e + (1-f)n_e \right]},
+\end{equation}
+
+or, using the value for $\langle\sigma v \rangle_{DT}$,
+
+\begin{equation}
+    \frac{P_{fus}}{P_{br}} = \frac{ \frac{(1-f)^2}{4}n_e^2 10^{-34}T_i^3 E_\alpha}{1.061 \times 10^{-25} n_e \sqrt{T_e} \left[ (3f + 1)n_e \right]}.
+\end{equation}
+
+
+\subsection{10\% helium fraction}
+
+At $3.26$ keV, the balance temperature from the previous problem, the ratio with impurity $f=0.1$ is
+
+\begin{align}
+    \frac{P_{fus}}{P_{br}} &= \frac{ \frac{0.9^2}{4} (10^{-34})(3258.9)^3(3.5)}{1.061 \times 10^{-25} \sqrt{3258.9} (1.3)}\\
+    \frac{P_{fus}}{P_{br}} &= 0.3115
+\end{align}
+
+where clearly even a small helium fraction can greatly decrease net power.
+
+\subsection{Balance with confinment time}
+
+The volumetric helium production rate is
+
+\begin{equation}
+    \left(\frac{d}{dt} n_{He}\right)_+ = \frac{P_{fus}}{E_\alpha} \left[ \text{m}^{-3}\text{s}^{-1} \right]
+\end{equation}
+
+so, for plasma volume $V$ and given $n_e$, the gain in $f$ is
+
+\begin{equation}
+    \left(\frac{df}{dt} \right)_+ = \frac{ \frac{(1-f)^2}{4} n_e (10^{-34})E_\alpha T_i^3}{E_\alpha} = k(1-2f + f^2),
+\end{equation}
+
+and the loss in He or $f$ (over the entire volume) is
+
+\begin{align}
+    \left(\frac{d}{dt} n_{He}\right)_- &= -\frac{n_He}{\tau_{p, He}}\\
+    \left(\frac{df}{dt}\right)_- &= -\frac{f}{\tau_{p, He}}
+\end{align}
+
+so the Helium concentration $f$ is found by solving
+
+\begin{align}
+    \frac{df}{dt} &= k(1-2f + f^2) - \frac{f}{\tau_{p, He}}\\
+    \frac{df}{dt} &= k - (2k + 1/\tau)f + kf^2
+\end{align}
+
+where
+
+\begin{equation}
+    k = \frac{10^{-34} n_e V T_i^3}{ 4}
+\end{equation}
+
+From the next subquestion (where fusion power is a given constant), the simplification can be made that fusion power is constant (no $1-f$ term in fusion power), where the differential equation becomes
+
+\begin{equation}
+    \frac{df}{dt} = \frac{P_{fus} V}{E_\alpha n_eV} - \frac{1}{\tau}f,
+\end{equation}
+
+which has the solution
+
+\begin{equation}
+    f(t) = \frac{P_{fus} V \tau}{E_\alpha n_e V} \left(1 - e^{-t/\tau} \right)
+\end{equation}
+
+which is
+
+\begin{equation}
+    \frac{P_{fus} V \tau}{E_\alpha n_e V}
+\end{equation}
+
+at equilibrium.
+
+\subsection{Numerical Results}
+
+From before, $E_\alpha = 3.5 \text{ MeV} = 5.6076\times 10^{-19}\text{ MJ}$, using the given values,
+
+\begin{equation}
+    \frac{P_{fus}  V\tau}{E_\alpha n_e V} = \frac{(500 \text{ MW})\tau}{(5.6076\times 10^{-19}\text{ MJ})(10^{20}\text{ m}^{-3})(840\text{ m}^3)} = 0.010615\text{ s} \times \tau.
+\end{equation}
+
+Then the equilibrium values of $f$, assuming no effect on fusion power, are
+
+
+\begin{align}
+    f(\tau = 1\text{ s}) &= 0.010615\\
+    f(\tau = 5\text{ s}) &= 0.053074\\
+    f(\tau = 10\text{ s}) &= 0.106148.
+\end{align}
+
+Then a higher confinment time for helium can lead to greater equilibrium helium concentration and therefore higher heat loss due to Bremsstrahlung. As shown in part (b), a helium fraction of $f = 0.1$ leads to significant heat loss, which a helium confinement time of 10s leads to in this example.
+
+
+% TODO
+
+
+
+% \bibliographystyle{ieeetr}
+% \bibliography{references.bib}
+
+
+
+
+
+\end{document}
